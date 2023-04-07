@@ -1,0 +1,88 @@
+﻿@using EntityLayer.Concrete
+@model List<Content>
+@{
+    ViewBag.Title = "ContentByHeading";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i class="fas fa-paint-roller"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0 text-dark"> Content</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-clock mr-1"></i>
+                    Content's
+                </h3>
+                <div class="card-tools">
+                    <a href="/Heading/Index" class="btn btn-outline-info" style="margin-right:15px"><i class="fas fa-angle-left"></i> Back to Heading</a>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" style="margin-right:15px">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body p-0">
+                <br />
+                <div class="col-lg-12">
+                    <div class="tab-pane" id="timeline">
+
+                        <div class="timeline timeline-inverse">
+                            @foreach (var item in Model)
+                            {
+                                <!-- timeline time label -->
+                                <div class="time-label">
+                                    <span class="bg-indigo">
+                                        @(((DateTime)item.ContentDate).ToString("dd MMM yyyy"))
+                                    </span>
+                                </div>
+                                <!-- /.timeline-label -->
+                                <!-- timeline item -->
+                                <div>
+                                    <i class="fas fa-envelope bg-warning"></i>
+
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="far fa-clock"></i> @(((DateTime)item.ContentDate).ToString("HH:mm"))</span>
+
+                                        <h3 class="timeline-header">Written by <a href="#">@item.Writer.WriterName @item.Writer.WriterSurname</a></h3>
+
+                                        <div class="timeline-body">
+                                            @item.ContentCaption
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END timeline item -->
+                            }
+                            <div>
+                                <i class="far fa-clock bg-gray"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+

@@ -1,0 +1,134 @@
+﻿@using EntityLayer.Concrete
+@model List<Category>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- DataTables -->
+<link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i class="fas fa-th"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0 text-dark"> Categories</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-list mr-1"></i>
+                    Category List
+                </h3>
+                <div class="card-tools">
+                    <a href="/AdminCategory/addCategory" class="btn btn-outline-success" style="margin-right:15px">New Category</a>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" style="margin-right:15px">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example2" class="table table-borderless table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending">Category</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending" style="">Description</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Headings: activate to sort column ascending" style="">Headings</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transaction: activate to sort column ascending" style="">Transaction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0">@item.CategoryID</td>
+                                                <td class="">@item.CategoryName</td>
+                                                <td style="">@item.CategoryDescription</td>
+                                                <td style="" class="">
+                                                    <a href="#" class="btn btn-info">Headings</a>
+                                                </td>
+                                                <td style="">
+                                                    <a href="/AdminCategory/Delete/@item.CategoryID" class="btn btn-danger">Delete</a>
+                                                    <a href="/AdminCategory/updateCategory/@item.CategoryID" class="btn btn-warning">Update</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0">@item.CategoryID</td>
+                                                <td class="">@item.CategoryName</td>
+                                                <td style="">@item.CategoryDescription</td>
+                                                <td style="" class="">
+                                                    <a href="#" class="btn btn-info">Headings</a>
+                                                </td>
+                                                <td style="">
+                                                    <a href="/AdminCategory/Delete/@item.CategoryID" class="btn btn-danger">Delete</a>
+                                                    <a href="/AdminCategory/updateCategory/@item.CategoryID" class="btn btn-warning">Update</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts {
+    <!-- DataTables -->
+    <script src="~/AdminLTE-3.0.4/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,128 @@
+﻿@model EntityLayer.Concrete.Message
+@{
+    ViewBag.Title = "trashMessageDetails";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i class="fas fa-comments"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0 text-dark"> Messages</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-book-reader mr-1"></i>
+                    Compose
+                </h3>
+                <div class="card-tools">
+
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" style="margin-right:15px">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.Action("leftMenu", "WriterPanelMessage")
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-9">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Read Mail</h3>
+
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool" data-toggle="tooltip" title="Previous"><i class="fas fa-chevron-left"></i></a>
+                                            <a href="#" class="btn btn-tool" data-toggle="tooltip" title="Next"><i class="fas fa-chevron-right"></i></a>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-header -->
+
+                                    <div class="card-body p-0">
+
+                                        <div class="mailbox-read-info">
+                                            <h4>@Html.DisplayFor(x => x.Subject)</h4>
+                                            <h6>
+                                                From: @Html.DisplayFor(x => x.SenderMail)
+                                                <span class="mailbox-read-time float-right">
+                                                    @DateTime.Parse(Html.DisplayFor(x => x.MessageDate).ToString()).ToString("dd-MMM-yyyy HH:mm")
+                                                </span>
+                                            </h6>
+                                        </div>
+                                        <!-- /.mailbox-read-info -->
+                                        <div class="mailbox-controls with-border text-center">
+                                            <div class="btn-group">
+                                                <a href="/WriterPanelMessage/trashMessageDelete/@Html.DisplayFor(x => x.MessageId)" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Delete">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Reply">
+                                                    <i class="fas fa-reply"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Forward">
+                                                    <i class="fas fa-share"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /.btn-group -->
+                                            <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title="Print">
+                                                <i class="fas fa-print"></i>
+                                            </button>
+                                        </div>
+                                        <!-- /.mailbox-controls -->
+                                        <div class="mailbox-read-message">
+                                            <p>
+                                                @Html.DisplayFor(x => x.MessageContent)
+                                            </p>
+                                        </div>
+                                        <!-- /.mailbox-read-message -->
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <!-- /.card-footer -->
+                                    <div class="card-footer">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button>
+                                            <button type="button" class="btn btn-default"><i class="fas fa-share"></i> Forward</button>
+                                        </div>
+                                        <a href="/WriterPanelMessage/trashMessageDelete/@Html.DisplayFor(x => x.MessageId)" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</a>
+                                        <button type="button" class="btn btn-default"><i class="fas fa-print"></i> Print</button>
+                                    </div>
+                                    <!-- /.card-footer -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>   <!-- /.row -->
+                </section>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+

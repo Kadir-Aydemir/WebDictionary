@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Trash";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i class="fas fa-comments"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0 text-dark"> Messages</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-mail-bulk mr-1"></i>
+                    Mailbox
+                </h3>
+                <div class="card-tools">
+
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" style="margin-right:15px">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.Action("leftMenu", "WriterPanelMessage")
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-9">
+                            <div class="card card-primary card-outline">
+                                <div class="card-header">
+                                    <h3 class="card-title">Trash</h3>
+
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" placeholder="Search Mail">
+                                            <div class="input-group-append">
+                                                <div class="btn btn-primary">
+                                                    <i class="fas fa-search"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+
+                                <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="custom-content-below-inbox-tab" data-toggle="pill" href="#custom-content-below-inbox" role="tab" aria-controls="custom-content-below-inbox" aria-selected="false">Inbox</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-content-below-sendbox-tab" data-toggle="pill" href="#custom-content-below-sendbox" role="tab" aria-controls="custom-content-below-sendbox" aria-selected="false">Sendbox</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="custom-content-below-tabContent">
+                                    <div class="tab-pane fade show active" id="custom-content-below-inbox" role="tabpanel" aria-labelledby="custom-content-below-inbox-tab">
+                                        @Html.Action("trashInbox", "WriterPanelMessage")
+                                    </div>
+                                    <div class="tab-pane fade" id="custom-content-below-sendbox" role="tabpanel" aria-labelledby="custom-content-below-sendbox-tab">
+                                        @Html.Action("trashSendbox", "WriterPanelMessage")
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </section>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts {
+    <script>
+        $(function () {
+            //Enable check and uncheck all functionality
+            $('.checkbox-toggle').click(function () {
+                var clicks = $(this).data('clicks')
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
+                    $('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
+                } else {
+                    //Check all checkboxes
+                    $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
+                    $('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
+                }
+                $(this).data('clicks', !clicks)
+            })
+
+            //Handle starring for glyphicon and font awesome
+            $('.mailbox-star').click(function (e) {
+                e.preventDefault()
+                //detect type
+                var $this = $(this).find('a > i')
+                var glyph = $this.hasClass('glyphicon')
+                var fa = $this.hasClass('fa')
+
+                //Switch states
+                if (glyph) {
+                    $this.toggleClass('glyphicon-star')
+                    $this.toggleClass('glyphicon-star-empty')
+                }
+
+                if (fa) {
+                    $this.toggleClass('fa-star')
+                    $this.toggleClass('fa-star-o')
+                }
+            })
+        })</script>
+}
+
+
+

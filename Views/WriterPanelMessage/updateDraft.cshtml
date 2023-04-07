@@ -1,0 +1,118 @@
+﻿@model EntityLayer.Concrete.DraftMessage
+@{
+    ViewBag.Title = "updateDraft";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i class="fas fa-comments"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0 text-dark"> Messages</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-mail-bulk mr-1"></i>
+                    Mailbox
+                </h3>
+                <div class="card-tools">
+
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" style="margin-right:15px">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.Action("leftMenu", "WriterPanelMessage")
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-9">
+                            @using (Html.BeginForm("updateDraft", "WriterPanelMessage", FormMethod.Post))
+                            {
+                                <div class="card card-primary card-outline">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Edit Draft Message</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(x => x.DraftReceiverMail, new { @placeholder = "To:", @class = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.DraftReceiverMail, "", new { @style = "color:red" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(x => x.DraftSubject, new { @placeholder = "Subject:", @class = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.DraftSubject, "", new { @style = "color:red" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(model => model.DraftMessageContent, new { @class = "form-control", @id = "compose-textarea", @style = "height: 300px" })
+                                            @Html.ValidationMessageFor(x => x.DraftMessageContent, "", new { @style = "color:red" })
+                                        </div>
+                                        @Html.HiddenFor(x => x.DraftSenderMail)
+                                        @Html.HiddenFor(x => x.DraftMessageDate)
+                                        @Html.HiddenFor(x => x.DraftMessageId)
+                                        <div class="form-group">
+                                            <div class="btn btn-default btn-file">
+                                                <i class="fas fa-paperclip"></i> Attachment
+                                                <input type="file" name="attachment">
+                                            </div>
+                                            <p class="help-block">Max. 32MB</p>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Save Draft</button>
+                                            <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Send</button>
+                                        </div>
+                                        <a href="/WriterPanelMessage/draftMessage" class="btn btn-default"><i class="fas fa-times"></i> Discard</a>
+                                    </div>
+                                    <!-- /.card-footer -->
+                                </div>
+                            }
+
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </section>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts {
+    <script>
+        $(function () {
+            //Add text editor
+            $('#compose-textarea').summernote()
+        })</script>
+}
+
+
+
+
+

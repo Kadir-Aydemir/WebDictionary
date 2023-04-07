@@ -1,0 +1,100 @@
+﻿
+@using EntityLayer.Concrete
+@model List<Message>
+
+@{
+    if (Model.Count > 0)
+    {
+        <div class="card-body p-0">
+            <div class="mailbox-controls">
+                <!-- Check all button -->
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                    <i class="far fa-square"></i>
+                </button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
+                </div>
+                <!-- /.btn-group -->
+                <div class="float-right">
+                    1-50/200
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <!-- /.btn-group -->
+                </div>
+                <!-- /.float-right -->
+            </div>
+            <div class="table-responsive mailbox-messages">
+                <table class="table table-hover">
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="icheck-primary">
+                                        <input type="checkbox" value="" id=@item.MessageId>
+                                        <label for="@item.MessageId"></label>
+                                    </div>
+                                </td>
+                                <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
+                                <td class="mailbox-name"><a href="/Message/trashMessageDetails/@item.MessageId">@item.SenderMail</a></td>
+                                <td class="mailbox-subject">
+                                    <a style="color:black" href="/Message/trashMessageDetails/@item.MessageId">@item.Subject -</a>
+                                    @if (item.MessageContent.Length + item.Subject.Length <= 90)
+                                    {<a style="color:black" href="/Message/trashMessageDetails/@item.MessageId">@item.MessageContent</a>}
+                                    @if (item.MessageContent.Length + item.Subject.Length > 90)
+                                    {
+                                        int sub = 90 - item.Subject.Length;
+                                        <a style="color:black" href="/Message/trashMessageDetails/@item.MessageId">@item.MessageContent.Substring(0, sub)...</a>
+                                    }
+                                </td>
+                                @*<td class="mailbox-attachment"><i class="fas fa-paperclip"></i></td>*@
+                                <td><a href="/Message/trashMessageDelete/@item.MessageId" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></a></td>
+                                <td class="mailbox-date">
+                                    @if (item.MessageDate.Day == DateTime.Now.Day)
+                                    {
+                                        @(((DateTime)item.MessageDate).ToString("HH:mm"))
+                                    }
+                                    @if (item.MessageDate.Day != DateTime.Now.Day)
+                                    {
+                                        @(((DateTime)item.MessageDate).ToString("dd MMM"))
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- /.table -->
+            </div>
+            <!-- /.mail-box-messages -->
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer p-0">
+            <div class="mailbox-controls">
+                <!-- Check all button -->
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                    <i class="far fa-square"></i>
+                </button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
+                </div>
+                <!-- /.btn-group -->
+                <div class="float-right">
+                    1-50/200
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <!-- /.btn-group -->
+                </div>
+                <!-- /.float-right -->
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="text-align:center"><h3 style="margin-block:15px"><i class="fas fa-search-location"></i> No deleted data found</h3></div>
+    }
+}
+
