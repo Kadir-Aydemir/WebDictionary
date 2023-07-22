@@ -1,0 +1,602 @@
+﻿@using System.Text.RegularExpressions;
+@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@using EntityLayer.Concrete
+@model List<Content>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    LikeManager lm = new LikeManager(new EfLikeDal());
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    table {
+        font-family: 'Kanit', sans-serif;
+    }
+
+    .modal-content {
+        width: 400px;
+        font-family: 'Kanit', sans-serif;
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border-radius: 30px;
+    }
+
+    .modal-header {
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border: none;
+    }
+
+    .modal-body {
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border: none;
+    }
+
+    @@media (max-width: 479.98px) {
+        .modal-content {
+            width: 360px;
+        }
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-paint-brush"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Content</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+                <div class="card-tools" style="margin-right: 15px;">
+                    @if (User.IsInRole("A"))
+                    {
+                        <a href="/Content/ContentReport" class="btn btn-outline-info btn-sm" style="margin-right:15px"><i class="fas fa-chart-bar"></i> Report</a>
+                    }
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-dark table-hover dataTable dtr-inline projects" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 1%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 30%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Content: activate to sort column ascending">Content</th>
+                                        <th style="width: 18%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Heading: activate to sort column ascending">Heading</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Writer: activate to sort column ascending">Writer</th>
+                                        <th style="width: 6%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Like: activate to sort column ascending">Like</th>
+                                        <th style="width: 7%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                        <th style="width: 18%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transaction: activate to sort column ascending">Transaction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        @functions {
+                                            private string ModifyColumnValue(string value)
+                                            {
+                                                var patternweblink = @"\[(.*?)\]";
+                                                var modifiedValue = Regex.Replace(value, patternweblink, match =>
+                                                {
+                                                    var matchedText = match.Value;
+                                                    var modifiedText = $"<a class=\"weblink\" href=\"{matchedText}\" style=\"color: #12A77F;\" target=\"_blank\">{matchedText}  <i class=\"fas fa-sign-out-alt\"></i></a>";
+                                                    return modifiedText;
+                                                });
+                                                modifiedValue = modifiedValue.Replace("[", "").Replace("]", "");
+
+                                                var patternheadinglink = @"\`(.*?)\`";
+                                                modifiedValue = Regex.Replace(modifiedValue, patternheadinglink, match =>
+                                                {
+                                                    var matchedText = match.Value;
+                                                    var modifiedText = $"<a href=\"/DictionaryPanelContent/SearchHeading?HeadingName={matchedText}\" style=\"color: #572ADE;\" target=\"_blank\">{matchedText}</a>";
+                                                    return modifiedText;
+                                                });
+                                                modifiedValue = modifiedValue.Replace("`", "");
+
+                                                return modifiedValue;
+                                            }
+                                        }
+                                        var modifiedValue = ModifyColumnValue(item.ContentCaption);
+
+                                        var list = lm.GetListByContentID(item.ContentID);
+
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0"> @item.ContentID</td>
+                                                <td class="">
+                                                    @if (item.ContentCaption.Length <= 45)
+                                                    {
+                                                        <a> @Html.Raw(modifiedValue)</a>
+                                                    }
+                                                    @if (item.ContentCaption.Length > 45)
+                                                    {
+                                                        <a>@item.ContentCaption.Substring(0, 45)...</a>
+                                                    }
+                                                    <br />
+                                                    <small>
+                                                        Created: @(((DateTime)item.ContentDate).ToString("dd MMM yyyy HH:mm"))
+                                                    </small>
+                                                </td>
+                                                <td style="">
+                                                    @item.Heading.HeadingName
+                                                </td>
+                                                <td style="">
+                                                    <div class="row">
+                                                        <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                            @if (item.Writer.WriterImage != null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                                            }
+                                                            @if (item.Writer.WriterImage == null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                            }
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <a>@item.Writer.WriterName @item.Writer.WriterSurname</a>
+                                                            <br />
+                                                            <small>
+                                                                Mail: @item.Writer.WriterMail
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    <a id="likeList" data-id="@item.ContentID" style="cursor: pointer;">
+                                                        <small class="like-count">@list.Count <i style="color: #DC235D; padding-inline: 3px" class="fas fa-heart"></i></small>
+                                                    </a>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.ContentRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.ContentRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item btn show-content" data-id=@item.ContentID>
+                                                                    <i class="fas fa-eye">
+                                                                    </i>
+                                                                    Show
+                                                                </a>
+                                                            </li>
+                                                            @if (item.ContentRemove == false)
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <button class="btn btn-warning remove-content" data-id=@item.ContentID style="width:160px;">
+                                                                        <i class="fas fa-exclamation-circle">
+                                                                        </i> Remove
+                                                                    </button>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <button class="btn btn-success active-content" data-id=@item.ContentID style="width:160px;">
+                                                                        <i class="fas fa-recycle"></i>Active
+                                                                    </button>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                        <button class="btn btn-danger delete-content" data-id=@item.ContentID>
+                                                            <i class="fas fa-trash">
+                                                            </i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0"> @item.ContentID</td>
+                                                <td class="">
+                                                    @if (item.ContentCaption.Length <= 45)
+                                                    {
+                                                        <a> @Html.Raw(modifiedValue)</a>
+                                                    }
+                                                    @if (item.ContentCaption.Length > 45)
+                                                    {
+                                                        <a>@item.ContentCaption.Substring(0, 45)...</a>
+                                                    }
+                                                    <br />
+                                                    <small>
+                                                        Created: @(((DateTime)item.ContentDate).ToString("dd MMM yyyy HH:mm"))
+
+                                                    </small>
+                                                </td>
+                                                <td style="">
+                                                    @item.Heading.HeadingName
+                                                </td>
+                                                <td style="">
+                                                    <div class="row">
+                                                        <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                            @if (item.Writer.WriterImage != null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                                            }
+                                                            @if (item.Writer.WriterImage == null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                            }
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <a>@item.Writer.WriterName @item.Writer.WriterSurname</a>
+                                                            <br />
+                                                            <small>
+                                                                Mail: @item.Writer.WriterMail
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    <a id="likeList" data-id="@item.ContentID" style="cursor: pointer;">
+                                                        <small class="like-count">@list.Count <i style="color: #DC235D; padding-inline: 3px" class="fas fa-heart"></i></small>
+                                                    </a>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.ContentRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.ContentRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item btn show-content" data-id=@item.ContentID>
+                                                                    <i class="fas fa-eye">
+                                                                    </i>
+                                                                    Show
+                                                                </a>
+                                                            </li>
+                                                            @if (item.ContentRemove == false)
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <button class="btn btn-warning remove-content" data-id=@item.ContentID style="width:160px;">
+                                                                        <i class="fas fa-exclamation-circle">
+                                                                        </i> Remove
+                                                                    </button>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <button class="btn btn-success btn-sm active-content" data-id=@item.ContentID style="width:160px;">
+                                                                        <i class="fas fa-recycle"></i>Active
+                                                                    </button>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                        <button class="btn btn-danger delete-content" data-id=@item.ContentID>
+                                                            <i class="fas fa-trash">
+                                                            </i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<button type="button" style="display:none" data-toggle="modal" data-target=".modal" id="btn_modallike" name="btn_modallike">
+</button>
+
+<div class="modal fade scrollbar" id="style-7" style="overflow-y: auto; overflow-x: hidden;" tabindex="-1" role="dialog" aria-labelledby="likesModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="likesModalLabel">Likes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span style="color: #9FA0A2;" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '#likeList', function () {
+                var id = $(this).data('id');
+                var url = '@Url.Action("GetLikes", "DictionaryPanelContent")' + '/' + id;
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (result) {
+                        $('.modal .modal-body').html(result);
+                        $("#btn_modallike").click();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: status + '!',
+                            text: 'An error occurred, like list could not be show.' + error,
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.modal').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        });
+
+        function showModal() {
+            $('.modal').modal('show');
+        }
+    </script>
+
+
+    <script>
+        $(document).on('click', '.show-content', function () {
+                var contentid = $(this).data('id');
+                var url = '@Url.Action("Show", "Content")' + '/' + contentid;
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        var status;
+                        var color;
+                        var image;
+                        if (data[7] == 0) {
+                            status = 'Active';
+                            color = 'badge-success';
+                        }
+                        else {
+                            status = 'Removed';
+                            color = 'badge-danger';
+                        }
+                        if (data[6] != null) {
+                            var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data[6])));
+                            image = 'data:image/jpeg;base64,' + base64String;
+                        } else {
+                             image = '/Resources/defaultperson.png';
+                          }
+
+                        var jsonDate = data[2];
+                        var date = new Date(parseInt(jsonDate.substr(6)));
+                        var formattedDate = new Date(date).toLocaleString('tr-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+                        Swal.fire({
+                            title: `${data[3]} <span class="badge ${color} badge-sm">${status}</span >`,
+                            html: `${data[1]}<br><br>★ <b>${data[4]} ${data[5]}</b> <br>⌛ ${formattedDate}`,
+                            imageUrl: image,
+                            imageWidth: 85,
+                            imageHeight: 85,
+                            imageAlt: 'Custom image',
+                            width: 600,
+                            padding: '3em',
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                            cancelButtonText: 'Close',
+                            cancelButtonColor: '#6459DD',
+                            color: '#716add',
+                            background: '#fff url(/AdminLTE-3.0.4/images/alertbackground4444.jpg)',
+                            backdrop: `
+                             rgba(0,0,123,0.4)
+                             url("/AdminLTE-3.0.4/images/nyancatshort.gif")
+                             left top
+                             no-repeat
+                             `
+                        })
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error: " + xhr.responseText);
+                        Swal.fire({
+                            title: status + '!',
+                            text: 'An error occurred, content could not be show. ' + error,
+                            icon: 'error'
+                        });
+
+                    }
+                });
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.remove-content', function () {
+            var id = $(this).data('id');
+            var url = '@Url.Action("Remove", "Content")' + '/' + id;
+
+            Swal.fire({
+                title: 'Warning!',
+                text: 'Are you sure you want to remove this Content?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        success: function() {
+                            Swal.fire({
+                                title: 'Removed!',
+                                text: 'Content was removed successfully.',
+                                icon: 'success'
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred, the content could not be removed.',
+                                icon: 'error'
+                            });
+                        }
+                    });
+                }
+        });
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.delete-content', function () {
+            var id = $(this).data('id');
+             var url = '@Url.Action("Delete", "Content")' + '/' + id;
+
+            Swal.fire({
+                title: 'Warning!',
+                text: 'Are you sure you want to delete this content?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    (async () => {
+
+                        const { value: text } = await Swal.fire({
+                            input: 'textarea',
+                            inputLabel: 'Reason For Deletion (Required)',
+                            inputPlaceholder: 'Type your reason here...',
+                            inputAttributes: {
+                                'aria-label': 'Type your reason here'
+                            },
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Send and delete!',
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return 'You need to write something!'
+                                }
+                            }
+                        })
+
+                        if (text) {
+                            $.ajax({
+                                type: 'POST',
+                                url: url,
+                                data: { reason: text },
+                                success: function () {
+                                    Swal.fire({
+                                        title: 'Deleted!',
+                                        text: 'Content was delete successfully.',
+                                        icon: 'success'
+                                    }).then((result) => {
+                                        location.reload();
+                                    });
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An error occurred, the content could not be deleted.',
+                                        icon: 'error'
+                                    });
+                                }
+                            });
+                        }
+                    })()
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.active-content', function () {
+            var id = $(this).data('id');
+            var url = '@Url.Action("Remove", "Content")' + '/' + id;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                success: function () {
+                    Swal.fire({
+                        title: 'Actived!',
+                        text: 'Content was actived successfully.',
+                        icon: 'success'
+                    }).then((result) => {
+                        location.reload();
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred, the content could not be actived.',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Content').addClass('active');
+        });
+    </script>
+}
+
+

@@ -1,0 +1,315 @@
+﻿@using EntityLayer.Concrete
+@model List<Heading>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-tag"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Headings</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+                <div class="card-tools" style="margin-right: 15px;">
+                    @if (User.IsInRole("A"))
+                    {
+                        <a href="/Heading/HeadingReport" class="btn btn-outline-info btn-sm" style="margin-right:15px"><i class="fas fa-chart-bar"></i> Report</a>
+                    }
+                    <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#insertmodal" id="btn_modal" name="btn_modal">
+                        <i class="fas fa-plus-circle"></i> New Heading
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline projects" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 1%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 27%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Heading: activate to sort column ascending">Heading</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Creator: activate to sort column ascending">Creator</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending">Category</th>
+                                        <th style="width: 12%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                        <th style="width: 20%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transiction: activate to sort column ascending">Transiction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0"> @item.HeadingID</td>
+                                                @if (item.HeadingImage != null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImage", "Heading", new { id = item.HeadingID })">
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <a>@item.HeadingName</a>
+                                                                <br />
+                                                                <small>
+                                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                @if (item.HeadingImage == null)
+                                                {
+                                                    <td style="">
+                                                        <a>@item.HeadingName</a>
+                                                        <br />
+                                                        <small>
+                                                            Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                        </small>
+                                                    </td>
+                                                }
+                                                <td style="">
+                                                    <div class="row">
+                                                        <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                            @if (item.Writer.WriterImage != null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                                            }
+                                                            @if (item.Writer.WriterImage == null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                            }
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <a>@item.Writer.WriterName @item.Writer.WriterSurname</a>
+                                                            <br />
+                                                            <small>
+                                                                Mail: @item.Writer.WriterMail
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="">
+                                                    @item.Category.CategoryName
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.HeadingRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.HeadingRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item" href="/Content/ContentByHeading/@item.HeadingID">
+                                                                    <i class="fas fa-paint-brush">
+                                                                    </i>
+                                                                    Contents
+                                                                </a>
+                                                            </li>
+                                                            @if (item.HeadingRemove == false)
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <a class="dropdown-item update-heading" href="#" data-id=@item.HeadingID>
+                                                                        <i class="fas fa-edit">
+                                                                        </i> Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <button class="btn btn-warning remove-heading" data-id=@item.HeadingID style="width:160px;">
+                                                                        <i class="fas fa-exclamation-circle">
+                                                                        </i> Remove
+                                                                    </button>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <a class="dropdown-item update-heading" href="#" data-id=@item.HeadingID>
+                                                                        <i class="fas fa-edit">
+                                                                        </i> Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <a class="btn btn-success" href="/Heading/Remove/@item.HeadingID" style="width:160px;">
+                                                                        <i class="fas fa-recycle">
+                                                                        </i>
+                                                                        Active
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                        <button class="btn btn-danger delete-heading" data-id=@item.HeadingID>
+                                                            <i class="fas fa-trash">
+                                                            </i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0"> @item.HeadingID</td>
+                                                @if (item.HeadingImage != null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImage", "Heading", new { id = item.HeadingID })">
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <a>@item.HeadingName</a>
+                                                                <br />
+                                                                <small>
+                                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                @if (item.HeadingImage == null)
+                                                {
+                                                    <td style="">
+                                                        <a>@item.HeadingName</a>
+                                                        <br />
+                                                        <small>
+                                                            Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                        </small>
+                                                    </td>
+                                                }
+                                                <td style="">
+                                                    <div class="row">
+                                                        <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                            @if (item.Writer.WriterImage != null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                                            }
+                                                            @if (item.Writer.WriterImage == null)
+                                                            {
+                                                                <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                            }
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <a>@item.Writer.WriterName @item.Writer.WriterSurname</a>
+                                                            <br />
+                                                            <small>
+                                                                Mail: @item.Writer.WriterMail
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="">
+                                                    @item.Category.CategoryName
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.HeadingRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.HeadingRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item" href="/Content/ContentByHeading/@item.HeadingID">
+                                                                    <i class="fas fa-paint-brush">
+                                                                    </i>
+                                                                    Contents
+                                                                </a>
+                                                            </li>
+                                                            @if (item.HeadingRemove == false)
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <a class="dropdown-item update-heading" href="#" data-id=@item.HeadingID>
+                                                                        <i class="fas fa-edit">
+                                                                        </i> Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <button class="btn btn-warning remove-heading" data-id=@item.HeadingID style="width:160px;">
+                                                                        <i class="fas fa-exclamation-circle">
+                                                                        </i> Remove
+                                                                    </button>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <a class="dropdown-item update-heading" href="#" data-id=@item.HeadingID>
+                                                                        <i class="fas fa-edit">
+                                                                        </i> Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <a class="btn btn-success" href="/Heading/Remove/@item.HeadingID" style="width:160px;">
+                                                                        <i class="fas fa-recycle">
+                                                                        </i>
+                                                                        Active
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                        <button class="btn btn-danger delete-heading" data-id=@item.HeadingID>
+                                                            <i class="fas fa-trash">
+                                                            </i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+

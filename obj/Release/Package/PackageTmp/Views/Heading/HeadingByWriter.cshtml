@@ -1,0 +1,145 @@
+﻿@using EntityLayer.Concrete
+@model List<Heading>
+@{
+    ViewBag.Title = "HeadingByWriter";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    .customtext2 {
+        font-family: 'Kanit', sans-serif;
+        font-size: 30px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: absolute;
+    }
+
+    table {
+        font-family: 'Kanit', sans-serif;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-tag"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Headings</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-body">
+                <div class="row" style=" margin-bottom: 30px;">
+                    <div class="col-md-6" style=" padding-left: 15px;">
+                        <div class="customtext2">@ViewBag.writer <a style="font-size: 26px;" target="_blank" href="/DictionaryPanelWriter/Index/@ViewBag.writerid"> <i class="fas fa-eye"></i></a></div>
+                    </div>
+                    <div class="col-md-6" style="text-align:right">
+                        <a href="/Writer/Index" class="btn btn-outline-info btn-sm" style="margin-right:15px"><i class="fas fa-angle-left"></i> Back to Writers</a>
+                    </div>
+                </div>
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover dataTable dtr-inline projects" role="alertdialog" aria-describedby="example2_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Headings: activate to sort column descending" aria-sort="ascending">Headings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td style="" class="project-actions">
+                                                    <div class="position-relative p-3 bg-dark" style="height: 120px; border-radius: 8px; background-color: #3F4145">
+                                                        <div class="ribbon-wrapper ribbon-lg">
+                                                            @if (item.HeadingRemove == true)
+                                                            {
+                                                                <div class="ribbon bg-danger">
+                                                                    Removed
+                                                                </div>
+                                                            }
+                                                            @if (item.HeadingRemove == false)
+                                                            {
+                                                                <div class="ribbon bg-success">
+                                                                    Active
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <a  target="_blank" href="/DictionaryPanelContent/Index/@item.HeadingID"><h5><b>@item.HeadingName</b></h5></a>
+
+                                                        Category: @item.Category.CategoryName
+                                                        <br />
+                                                        <small> Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))</small>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td style="" class="project-actions">
+                                                    <div class="position-relative p-3 bg-dark" style="height: 120px; border-radius: 8px; background-color: #3F4145">
+                                                        <div class="ribbon-wrapper ribbon-lg">
+                                                            @if (item.HeadingRemove == true)
+                                                            {
+                                                                <div class="ribbon bg-danger">
+                                                                    Removed
+                                                                </div>
+                                                            }
+                                                            @if (item.HeadingRemove == false)
+                                                            {
+                                                                <div class="ribbon bg-success">
+                                                                    Active
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <a target="_blank" href="/DictionaryPanelContent/Index/@item.HeadingID"><h5><b>@item.HeadingName</b></h5></a>
+
+                                                        Category: @item.Category.CategoryName
+                                                        <br />
+                                                        <small> Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))</small>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Writer').addClass('active');
+        });
+    </script>
+}
+

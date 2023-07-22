@@ -1,0 +1,172 @@
+﻿@using EntityLayer.Concrete
+@model List<Skill>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-lightbulb"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Skills</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+                <div class="card-tools" style="margin-right: 15px;">
+                    <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#insertmodal" id="btn_modal" name="btn_modal">
+                        <i class="fas fa-plus-circle"></i> New Skill
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline projects" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 1%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 27%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Skill: activate to sort column ascending">Skill</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Value & Color: activate to sort column ascending">Value & Color</th>
+                                        <th style="width: 12%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                        <th style="width: 20%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transiction: activate to sort column ascending">Transiction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0"> @item.SkillID</td>
+                                                <td class="">
+                                                    @item.SkillName
+                                                </td>
+                                                <td class="">
+                                                    @{ string value = item.SkillValue + "%"; }
+                                                    <div class="progress-one col-md-11" data-aos="fade-up" style="margin-top:5px">
+                                                        <div class="progress" style="height: 10px;border-radius:5px;">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated @item.SkillColor" role="progressbar" style="width: @value;height:10px;border-radius:5px;" aria-valuenow="@item.SkillValue" aria-valuemin="1" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                    <small>
+                                                        <a style="margin-left:10px">Value: @value </a>
+                                                        <a style="margin-left:10px">Color: @item.SkillColor</a>
+                                                    </small>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.SkillRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Deactive</span>
+                                                    }
+                                                    @if (item.SkillRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    @if (item.SkillRemove == true)
+                                                    {
+                                                        <button class="btn btn-success active-skill" data-id=@item.SkillID>
+                                                            <i class="fas fa-recycle">
+                                                            </i>
+                                                            Active
+                                                        </button>
+                                                    }
+                                                    @if (item.SkillRemove == false)
+                                                    {
+                                                        <a class="btn btn-secondary update-skill" href="#" data-id=@item.SkillID style="background-color: #6F2CF3; border-color: #6F2CF3 ">
+                                                            <i class="fas fa-edit">
+                                                            </i> Edit
+                                                        </a>
+                                                        <button class="btn btn-warning delete-skill" data-id=@item.SkillID>
+                                                            <i class="fas fa-exclamation-circle">
+                                                            </i> Remove
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0"> @item.SkillID</td>
+                                                <td class="">
+                                                    @item.SkillName
+                                                </td>
+                                                <td class="">
+                                                    @{ string value = item.SkillValue + "%"; }
+                                                    <div class="progress-one col-md-11" data-aos="fade-up" style="margin-top:5px">
+                                                        <div class="progress" style="height: 10px;border-radius:5px;">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated @item.SkillColor" role="progressbar" style="width: @value;height:10px;border-radius:5px;" aria-valuenow="@item.SkillValue" aria-valuemin="1" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                    <small>
+                                                        <a style="margin-left:10px">Value: @value </a>
+                                                        <a style="margin-left:10px">Color: @item.SkillColor</a>
+                                                    </small>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.SkillRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Deactive</span>
+                                                    }
+                                                    @if (item.SkillRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    @if (item.SkillRemove == true)
+                                                    {
+                                                        <button class="btn btn-success active-skill" data-id=@item.SkillID>
+                                                            <i class="fas fa-recycle">
+                                                            </i>
+                                                            Active
+                                                        </button>
+                                                    }
+                                                    @if (item.SkillRemove == false)
+                                                    {
+                                                        <a class="btn btn-secondary update-skill" href="#" data-id=@item.SkillID style="background-color: #6F2CF3; border-color: #6F2CF3 ">
+                                                            <i class="fas fa-edit">
+                                                            </i> Edit
+                                                        </a>
+                                                        <button class="btn btn-warning delete-skill" data-id=@item.SkillID>
+                                                            <i class="fas fa-exclamation-circle">
+                                                            </i> Remove
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+

@@ -46,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Azure.Core, Version=1.25.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Core.1.25.0\lib\net461\Azure.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Identity, Version=1.7.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Identity.1.7.0\lib\netstandard2.0\Azure.Identity.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -55,21 +61,153 @@
     <Reference Include="FluentValidation, Version=11.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.11.5.1\lib\netstandard2.0\FluentValidation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.SqlClient.5.1.1\lib\net462\Microsoft.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.7.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client, Version=4.47.2.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.4.47.2\lib\net461\Microsoft.Identity.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client.Extensions.Msal, Version=2.19.3.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.Extensions.Msal.2.19.3\lib\net45\Microsoft.Identity.Client.Extensions.Msal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Abstractions, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.6.24.0\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.24.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.24.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.6.24.0\lib\net472\Microsoft.IdentityModel.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.OpenIdConnect.6.24.0\lib\net472\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.24.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.6.0.1\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.6.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.24.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.24.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory.Data, Version=1.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.Data.1.0.2\lib\net461\System.Memory.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.ProtectedData.4.7.0\lib\net461\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Permissions.6.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.4.7.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -77,6 +215,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -89,8 +228,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
@@ -129,6 +266,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -136,14 +274,25 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AdminCategoryController.cs" />
+    <Compile Include="Controllers\AuthorizationController.cs" />
+    <Compile Include="Controllers\BlockedController.cs" />
+    <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ContentController.cs" />
+    <Compile Include="Controllers\DictionaryPanelContactController.cs" />
+    <Compile Include="Controllers\DictionaryPanelContentController.cs" />
+    <Compile Include="Controllers\DictionaryPanelController.cs" />
+    <Compile Include="Controllers\DictionaryPanelHeadingController.cs" />
+    <Compile Include="Controllers\DictionaryPanelMessageController.cs" />
+    <Compile Include="Controllers\DictionaryPanelWriterController.cs" />
     <Compile Include="Controllers\DraftMessageController.cs" />
     <Compile Include="Controllers\ErrorPageController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HeadingController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\ShowCaseController.cs" />
+    <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\WriterController.cs" />
     <Compile Include="Controllers\WriterPanelContentController.cs" />
     <Compile Include="Controllers\WriterPanelController.cs" />
@@ -173,6 +322,8 @@
     <Content Include="AdminLTE-3.0.4\build\npm\DocsPublish.js" />
     <Content Include="AdminLTE-3.0.4\build\npm\Plugins.js" />
     <Content Include="AdminLTE-3.0.4\build\npm\Publish.js" />
+    <Content Include="AdminLTE-3.0.4\cropper.css" />
+    <Content Include="AdminLTE-3.0.4\cropper.js" />
     <Content Include="AdminLTE-3.0.4\dist\css\adminlte.css" />
     <Content Include="AdminLTE-3.0.4\dist\css\adminlte.min.css" />
     <Content Include="AdminLTE-3.0.4\dist\css\alt\adminlte.components.css" />
@@ -311,13 +462,56 @@
     <Content Include="AdminLTE-3.0.4\docs\_layouts\home.html" />
     <Content Include="AdminLTE-3.0.4\docs\_layouts\page.html" />
     <Content Include="AdminLTE-3.0.4\docs\_layouts\post.html" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\dist\index.html" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\dist\script.js" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\dist\style.css" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\LICENSE.txt" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\src\index.html" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\src\script.js" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\src\style.css" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground1.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground2.png" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground3.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground4.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground44.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground444.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground4444.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\alertbackground5.png" />
     <Content Include="AdminLTE-3.0.4\images\Amsterdam-Netherlands.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\banner.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\banner2.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\banner3.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\banner4.jpg" />
     <Content Include="AdminLTE-3.0.4\images\Istanbul.jpg" />
     <Content Include="AdminLTE-3.0.4\images\London.jpg" />
     <Content Include="AdminLTE-3.0.4\images\newyorkcity.jpg" />
+    <Content Include="AdminLTE-3.0.4\images\nyancat.gif" />
+    <Content Include="AdminLTE-3.0.4\images\nyancatshort.gif" />
+    <Content Include="AdminLTE-3.0.4\images\rangepic.png" />
+    <Content Include="AdminLTE-3.0.4\images\rangepic2.png" />
     <Content Include="AdminLTE-3.0.4\index.html" />
     <Content Include="AdminLTE-3.0.4\index2.html" />
     <Content Include="AdminLTE-3.0.4\index3.html" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\bootstrap.min.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\bootstrap\bootstrap-grid.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\bootstrap\bootstrap-reboot.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\owl.carousel.min.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\style.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\demo-files\demo.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\demo-files\demo.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\demo.html" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\fonts\icomoon.svg" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\Read Me.txt" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\style.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\images\bg_1.jpg" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\images\undraw_remotely_2j6y.svg" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\index.html" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\js\bootstrap.min.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\js\jquery-3.3.1.min.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\js\main.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\js\owl.carousel.min.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\js\popper.min.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\main.html" />
     <Content Include="AdminLTE-3.0.4\login-form-19\css\bootstrap.min.css" />
     <Content Include="AdminLTE-3.0.4\login-form-19\css\bootstrap\mixins\_border-radius.css" />
     <Content Include="AdminLTE-3.0.4\login-form-19\css\bootstrap\mixins\_screen-reader.css" />
@@ -332,6 +526,22 @@
     <Content Include="AdminLTE-3.0.4\login-form-19\js\main.js" />
     <Content Include="AdminLTE-3.0.4\login-form-19\js\popper.js" />
     <Content Include="AdminLTE-3.0.4\login-form-19\main.html" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap.min.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\mixins\_border-radius.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\mixins\_reset-text.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\mixins\_screen-reader.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\mixins\_text-hide.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\mixins\_visibility.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\utilities\_stretched-link.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\_media.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\style.css" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\images\bg.jpg" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\index.html" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\js\bootstrap.min.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\js\jquery.min.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\js\main.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\js\popper.js" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\main.html" />
     <Content Include="AdminLTE-3.0.4\pages\calendar.html" />
     <Content Include="AdminLTE-3.0.4\pages\charts\chartjs.html" />
     <Content Include="AdminLTE-3.0.4\pages\charts\flot.html" />
@@ -1448,6 +1658,7 @@
     <Content Include="AdminLTE-3.0.4\plugins\jsgrid\jsgrid.min.js" />
     <Content Include="AdminLTE-3.0.4\plugins\jszip\jszip.js" />
     <Content Include="AdminLTE-3.0.4\plugins\jszip\jszip.min.js" />
+    <Content Include="AdminLTE-3.0.4\plugins\LightBox\lightbox.css" />
     <Content Include="AdminLTE-3.0.4\plugins\moment\locales.js" />
     <Content Include="AdminLTE-3.0.4\plugins\moment\locales.min.js" />
     <Content Include="AdminLTE-3.0.4\plugins\moment\locale\af.js" />
@@ -2005,6 +2216,62 @@
     <Content Include="AdminLTE-3.0.4\plugins\toastr\toastr.css" />
     <Content Include="AdminLTE-3.0.4\plugins\toastr\toastr.min.css" />
     <Content Include="AdminLTE-3.0.4\plugins\toastr\toastr.min.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\aos-animation.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\aos.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\bootstrap.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\fontawesome-all.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\roadmap.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\simpleLightbox.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\snow.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\css\style.css" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\banner.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\banner2.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\banner3.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\banner4.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\banner5.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\close.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\contact.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\exp.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g1.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g2.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g3.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g4.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g5.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g6.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g7.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g8.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\g9.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\loader.gif" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\move_up.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\next.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\prev.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\serve.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\stats.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\testimonials.jpg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_addmessage.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_addwriter.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_categories.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_contents.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_error404.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_headings.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_messages.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_myprofile.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_userpanel.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\images\webdictionary_writers.png" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\index.html" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\aos.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\bootstrap.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\easing.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\jquery-2.2.3.min.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\jquery.countup.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\jquery.roadmap.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\jquery.waypoints.min.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\move-top.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\js\simpleLightbox.js" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\w3layouts-license.txt" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-brands-400.svg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-regular-400.svg" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-solid-900.svg" />
     <Content Include="AdminLTE-3.0.4\starter.html" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -2022,6 +2289,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="dictionaryLogo3.ico" />
     <Content Include="error-page-404\dist\index.html" />
     <Content Include="error-page-404\dist\style.css" />
     <Content Include="error-page-404\LICENSE.txt" />
@@ -2030,11 +2298,31 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Resources\adminicon.png" />
+    <Content Include="Resources\crossairblue.png" />
     <Content Include="Resources\defaultperson.png" />
+    <Content Include="Resources\defaultperson_min.png" />
+    <Content Include="Resources\dictionaryLogo.png" />
+    <Content Include="Resources\explore\dp_categoriesandheadings.JPG" />
+    <Content Include="Resources\explore\dp_contact.JPG" />
+    <Content Include="Resources\explore\dp_contents.JPG" />
+    <Content Include="Resources\explore\dp_contentsadd.JPG" />
+    <Content Include="Resources\explore\dp_contentslike.JPG" />
+    <Content Include="Resources\explore\dp_membersonly.JPG" />
+    <Content Include="Resources\explore\dp_sendmessage.JPG" />
+    <Content Include="Resources\explore\dp_signup.JPG" />
+    <Content Include="Resources\explore\dp_writerprofile.JPG" />
+    <Content Include="Resources\explore\wp_allheadings.JPG" />
+    <Content Include="Resources\explore\wp_messagecreate.JPG" />
+    <Content Include="Resources\explore\wp_messagedraft.JPG" />
+    <Content Include="Resources\explore\wp_messageinbox.JPG" />
+    <Content Include="Resources\explore\wp_myheadings.JPG" />
+    <Content Include="Resources\explore\wp_mywritings.JPG" />
+    <Content Include="Resources\explore\wp_profile.JPG" />
+    <Content Include="Resources\javier-miranda.jpg" />
     <Content Include="Resources\kadir.jpg" />
     <Content Include="Resources\noimages.png" />
     <Content Include="Resources\nopicture.png" />
-    <Content Include="Resources\WebDictionary_Logo.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -2419,6 +2707,218 @@
     <Content Include="AdminLTE-3.0.4\login-form-19\scss\bootstrap\_utilities.scss" />
     <Content Include="AdminLTE-3.0.4\login-form-19\scss\bootstrap\_variables.scss" />
     <Content Include="AdminLTE-3.0.4\login-form-19\scss\style.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\css\bootstrap\mixins\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\fonts\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\images\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\js\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\bootstrap-grid.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\bootstrap-reboot.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\bootstrap.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_alert.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_badge.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_box-shadow.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_breakpoints.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_buttons.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_caret.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_deprecate.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_float.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_forms.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_gradients.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_grid.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_hover.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_image.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_list-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_lists.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_pagination.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_reset-text.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_resize.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_screen-reader.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_size.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_table-row.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_text-hide.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_text-truncate.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_transition.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\mixins\_visibility.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_align.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_background.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_borders.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_clearfix.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_display.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_embed.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_flex.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_float.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_overflow.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_position.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_screenreaders.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_shadows.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_sizing.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_spacing.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_stretched-link.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_text.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\utilities\_visibility.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\vendor\_rfs.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_alert.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_badge.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_breadcrumb.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_button-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_buttons.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_card.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_carousel.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_close.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_code.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_custom-forms.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_dropdown.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_forms.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_functions.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_grid.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_images.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_input-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_jumbotron.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_list-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_media.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_mixins.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_modal.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_nav.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_navbar.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_pagination.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_popover.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_print.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_progress.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_reboot.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_root.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_spinners.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_tables.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_toasts.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_tooltip.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_transitions.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_type.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_utilities.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\bootstrap\_variables.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-20\scss\style.scss" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-brands-400.eot" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-brands-400.ttf" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-brands-400.woff" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-brands-400.woff2" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-regular-400.eot" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-regular-400.ttf" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-regular-400.woff" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-regular-400.woff2" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-solid-900.eot" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-solid-900.ttf" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-solid-900.woff" />
+    <Content Include="AdminLTE-3.0.4\Showcaseweb\webfonts\fa-solid-900.woff2" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\css\bootstrap.min.css.map" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\fonts\icomoon.eot" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\fonts\icomoon.ttf" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\fonts\icomoon.woff" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\fonts\icomoon\selection.json" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\images\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\.DS_Store" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\bootstrap-grid.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\bootstrap-reboot.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\bootstrap.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_alert.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_badge.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_box-shadow.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_breakpoints.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_buttons.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_caret.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_deprecate.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_float.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_forms.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_gradients.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_grid.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_hover.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_image.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_list-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_lists.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_pagination.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_reset-text.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_resize.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_screen-reader.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_size.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_table-row.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_text-hide.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_text-truncate.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_transition.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\mixins\_visibility.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_align.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_background.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_borders.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_clearfix.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_display.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_embed.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_flex.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_float.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_overflow.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_position.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_screenreaders.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_shadows.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_sizing.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_spacing.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_stretched-link.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_text.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\utilities\_visibility.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\vendor\_rfs.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_alert.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_badge.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_breadcrumb.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_button-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_buttons.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_card.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_carousel.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_close.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_code.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_custom-forms.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_dropdown.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_forms.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_functions.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_grid.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_images.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_input-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_jumbotron.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_list-group.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_media.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_mixins.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_modal.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_nav.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_navbar.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_pagination.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_popover.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_print.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_progress.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_reboot.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_root.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_spinners.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_tables.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_toasts.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_tooltip.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_transitions.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_type.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_utilities.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\bootstrap\_variables.scss" />
+    <Content Include="AdminLTE-3.0.4\login-form-07\scss\style.scss" />
+    <Content Include="AdminLTE-3.0.4\expandable-animated-card-slider\README.md" />
     <None Include="Scripts\jquery-3.6.4.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.4.js" />
     <Content Include="Scripts\jquery-3.6.4.min.js" />
@@ -2442,15 +2942,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\AdminCategory\Index.cshtml" />
-    <Content Include="Views\AdminCategory\addCategory.cshtml" />
-    <Content Include="Views\AdminCategory\updateCategory.cshtml" />
     <Content Include="Views\Writer\Index.cshtml" />
-    <Content Include="Views\Writer\addWriter.cshtml" />
-    <Content Include="Views\Writer\updateWriter.cshtml" />
     <Content Include="Views\Heading\Index.cshtml" />
-    <Content Include="Views\Heading\addHeading.cshtml" />
     <Content Include="Views\Content\ContentByHeading.cshtml" />
-    <Content Include="Views\Heading\updateHeading.cshtml" />
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\About\AboutPartial.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
@@ -2472,7 +2966,6 @@
     <Content Include="Views\ErrorPage\Page404.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Shared\_WriterLayout.cshtml" />
     <Content Include="Views\WriterPanel\WriterProfile.cshtml" />
     <Content Include="Views\WriterPanel\MyHeading.cshtml" />
     <Content Include="Views\WriterPanel\addHeading.cshtml" />
@@ -2489,11 +2982,65 @@
     <Content Include="Views\WriterPanelMessage\trashInbox.cshtml" />
     <Content Include="Views\WriterPanelMessage\trashSendbox.cshtml" />
     <Content Include="Views\WriterPanelMessage\trashMessageDetails.cshtml" />
+    <Content Include="Views\WriterPanelContent\MyContent.cshtml" />
+    <Content Include="Views\Login\WriterLogin.cshtml" />
+    <Content Include="Views\WriterPanel\AllHeading.cshtml" />
+    <Content Include="Views\WriterPanelContent\addContent.cshtml" />
+    <Content Include="Views\ShowCase\Home.cshtml" />
+    <Content Include="Views\Content\Index.cshtml" />
+    <Content Include="Views\Chart\CategoryHeading.cshtml" />
+    <Content Include="Views\Heading\HeadingReport.cshtml" />
+    <Content Include="Views\Authorization\Index.cshtml" />
+    <Content Include="Views\Heading\HeadingByCategory.cshtml" />
+    <Content Include="Views\Heading\HeadingByWriter.cshtml" />
+    <Content Include="Views\AdminCategory\CategoryReport.cshtml" />
+    <Content Include="Views\Writer\WriterReport.cshtml" />
+    <Content Include="Views\Content\ContentReport.cshtml" />
+    <Content Include="Views\About\AboutReport.cshtml" />
+    <Content Include="Views\Authorization\AdminPartial.cshtml" />
+    <Content Include="Views\AdminCategory\CategoryPartial.cshtml" />
+    <Content Include="Views\Heading\HeadingPartial.cshtml" />
+    <Content Include="Views\ShowCase\ContactPartial.cshtml" />
+    <Content Include="Views\Chart\HeadingContent.cshtml" />
+    <Content Include="Views\Chart\WriterContent.cshtml" />
+    <Content Include="Views\ShowCase\AboutPartial.cshtml" />
+    <Content Include="Views\Skill\Index.cshtml" />
+    <Content Include="Views\Skill\SkillPartial.cshtml" />
+    <Content Include="Views\ShowCase\SkillPartial.cshtml" />
+    <Content Include="Views\Gallery\ImagePartial.cshtml" />
+    <Content Include="Views\ShowCase\ImagePartial.cshtml" />
+    <Content Include="Views\Shared\_WriterLayout.cshtml" />
+    <Content Include="Views\Shared\_DictionaryLayout.cshtml" />
+    <Content Include="Views\DictionaryPanel\Index.cshtml" />
+    <Content Include="Views\DictionaryPanelContent\Index.cshtml" />
+    <Content Include="Views\DictionaryPanelContent\ContentLink.cshtml" />
+    <Content Include="Views\DictionaryPanelContent\addContentPartial.cshtml" />
+    <Content Include="Views\DictionaryPanelHeading\Index.cshtml" />
+    <Content Include="Views\DictionaryPanel\Signup.cshtml" />
+    <Content Include="Views\DictionaryPanel\TermsAndService.cshtml" />
+    <Content Include="Views\DictionaryPanelContact\Contact.cshtml" />
+    <Content Include="Views\DictionaryPanelWriter\Index.cshtml" />
+    <Content Include="Views\DictionaryPanelHeading\writerHeadingsPartial.cshtml" />
+    <Content Include="Views\DictionaryPanelContent\writerContentsPartial.cshtml" />
+    <Content Include="Views\DictionaryPanelWriter\writerCategoriesPartial.cshtml" />
+    <Content Include="Views\DictionaryPanelMessage\Index.cshtml" />
+    <Content Include="Views\DictionaryPanelHeading\categoryHeadingsPartial.cshtml" />
+    <Content Include="Views\DictionaryPanelContent\SearchHeading.cshtml" />
+    <Content Include="Views\DictionaryPanel\weAreSorry.cshtml" />
+    <Content Include="Views\DictionaryPanel\LogOut.cshtml" />
+    <Content Include="Views\WriterPanelContent\updateContent.cshtml" />
+    <Content Include="Views\Blocked\Index.cshtml" />
+    <Content Include="Views\Writer\WriterPartial.cshtml" />
+    <Content Include="Views\Blocked\BlockedPartial.cshtml" />
+    <Content Include="Views\Blocked\BlockedReport.cshtml" />
+    <Content Include="Views\DictionaryPanelContent\_LikesModal.cshtml" />
+    <Content Include="Views\DictionaryPanel\Explore.cshtml" />
+    <Content Include="Views\ErrorPage\Page403.cshtml" />
+    <Content Include="Views\ErrorPage\Page503.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\WriterPanelContent\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -2528,6 +3075,9 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>dictionaryLogo3.ico</ApplicationIcon>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -2542,7 +3092,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50410</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44369/</IISUrl>
+          <IISUrl>https://localhost:44300/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -2558,13 +3108,17 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets'))" />
+    <Error Condition="!Exists('..\packages\BuildWebCompiler.1.12.405\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildWebCompiler.1.12.405\build\BuildWebCompiler.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Data.SqlClient.SNI.5.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Data.SqlClient.SNI.5.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <Import Project="..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets')" />
+  <Import Project="..\packages\BuildWebCompiler.1.12.405\build\BuildWebCompiler.targets" Condition="Exists('..\packages\BuildWebCompiler.1.12.405\build\BuildWebCompiler.targets')" />
+  <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.5.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.5.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,0 +1,297 @@
+﻿@using EntityLayer.Concrete
+@model List<Writer>
+@{
+    BusinessLayer.Concrete.BlockedManager bm = new BusinessLayer.Concrete.BlockedManager(new DataAccessLayer.EntityFramework.EfBlockedDal());
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-pen"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Writers</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+                <div class="card-tools" style="margin-right: 15px;">
+                    @if (User.IsInRole("A"))
+                    {
+                        <a href="/Writer/WriterReport" class="btn btn-outline-info btn-sm" style="margin-right:15px"><i class="fas fa-chart-bar"></i> Report</a>
+                    }
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline projects" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 1%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 5%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Image: activate to sort column ascending">Image</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Writer: activate to sort column ascending">Writer</th>
+                                        <th style="width: 22%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="About: activate to sort column ascending">About</th>
+                                        <th style="width: 17%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Mail: activate to sort column ascending">Mail</th>
+                                        <th style="width: 12%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                        <th style="width: 23%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transiction: activate to sort column ascending">Transiction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        var isblocked = bm.GetBlockedByWriterMail(item.WriterMail);
+
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0"> @item.WriterID</td>
+                                                @if (item.WriterImage != null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:90px;width:90px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                                    </td>
+                                                }
+                                                @if (item.WriterImage == null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:90px;width:90px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                    </td>
+                                                }
+                                                <td class="">
+                                                    <a>@item.WriterName @item.WriterSurname</a>
+                                                    <br />
+                                                    <small>
+                                                        Title: @item.WriterTitle
+                                                    </small>
+                                                </td>
+                                                <td style="">
+                                                    @{
+                                                        if (item.WriterAbout == null)
+                                                        {
+                                                            <a>-</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item.WriterAbout.Length <= 50)
+                                                            {
+                                                                <a style="color: #9FA0A2"> @item.WriterAbout</a>
+                                                            }
+                                                            if (item.WriterAbout.Length > 50)
+                                                            {
+                                                                <a style="color: #9FA0A2"> @item.WriterAbout.Substring(0, 50)...</a>
+                                                            }
+                                                        }
+                                                    }
+                                                </td>
+                                                <td style="">
+                                                    @item.WriterMail
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.WriterRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.WriterRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                    @if (isblocked != null)
+                                                    {
+                                                        <br />
+                                                        <span class="badge badge-dark">Blocked</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item show-details" href="#" data-id=@item.WriterID>
+                                                                    <i class="fas fa-eye"></i>
+                                                                    Show
+                                                                </a>
+                                                            </li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li>
+                                                                <a href="/Heading/HeadingByWriter/@item.WriterID" class="dropdown-item">
+                                                                    <i class="fas fa-tag"></i> Headings
+                                                                </a>
+                                                            </li>
+                                                            @if (User.IsInRole("A"))
+                                                            {
+                                                                if (isblocked == null)
+                                                                {
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item block-writer" href="#" data-id=@item.WriterID>
+                                                                            <i class="fas fa-shield-alt"></i>
+                                                                            Block
+                                                                        </a>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        </ul>
+                                                        @if (User.IsInRole("A"))
+                                                        {
+                                                            if (item.WriterRemove == true)
+                                                            {
+                                                                <a class="btn btn-success" href="/Writer/Delete/@item.WriterID">
+                                                                    <i class="fas fa-recycle"></i>
+                                                                    Active
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button class="btn btn-warning delete-writer" data-id=@item.WriterID>
+                                                                    <i class="fas fa-exclamation-circle">
+                                                                    </i> Remove
+                                                                </button>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0"> @item.WriterID</td>
+                                                @if (item.WriterImage != null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:90px;width:90px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                                    </td>
+                                                }
+                                                @if (item.WriterImage == null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:90px;width:90px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                    </td>
+                                                }
+                                                <td class="">
+                                                    <a>@item.WriterName @item.WriterSurname</a>
+                                                    <br />
+                                                    <small>
+                                                        Title: @item.WriterTitle
+                                                    </small>
+                                                </td>
+                                                <td style="">
+                                                    @{
+                                                        if (item.WriterAbout == null)
+                                                        {
+                                                            <a>-</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item.WriterAbout.Length <= 50)
+                                                            {
+                                                                <a style="color: #9FA0A2"> @item.WriterAbout</a>
+                                                            }
+                                                            if (item.WriterAbout.Length > 50)
+                                                            {
+                                                                <a style="color: #9FA0A2"> @item.WriterAbout.Substring(0, 50)...</a>
+                                                            }
+                                                        }
+                                                    }
+                                                </td>
+                                                <td style="">
+                                                    @item.WriterMail
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.WriterRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.WriterRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                    @if (isblocked != null)
+                                                    {
+                                                        <br />
+                                                        <span class="badge badge-dark">Blocked</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item show-details" href="#" data-id=@item.WriterID>
+                                                                    <i class="fas fa-eye"></i>
+                                                                    Show
+                                                                </a>
+                                                            </li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li>
+                                                                <a href="/Heading/HeadingByWriter/@item.WriterID" class="dropdown-item">
+                                                                    <i class="fas fa-tag"></i> Headings
+                                                                </a>
+                                                            </li>
+                                                            @if (User.IsInRole("A"))
+                                                            {
+                                                                if (isblocked == null)
+                                                                {
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item block-writer" href="#" data-id=@item.WriterID>
+                                                                            <i class="fas fa-shield-alt"></i>
+                                                                            Block
+                                                                        </a>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        </ul>
+                                                        @if (User.IsInRole("A"))
+                                                        {
+                                                            if (item.WriterRemove == true)
+                                                            {
+                                                                <a class="btn btn-success" href="/Writer/Delete/@item.WriterID">
+                                                                    <i class="fas fa-recycle"></i>
+                                                                    Active
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button class="btn btn-warning delete-writer" data-id=@item.WriterID>
+                                                                    <i class="fas fa-exclamation-circle">
+                                                                    </i> Remove
+                                                                </button>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

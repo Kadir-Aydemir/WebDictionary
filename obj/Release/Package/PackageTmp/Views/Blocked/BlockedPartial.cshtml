@@ -1,0 +1,213 @@
+﻿@using EntityLayer.Concrete
+@model List<Blocked>
+
+<div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6"></div>
+        <div class="col-sm-12 col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                <thead>
+                    <tr role="row">
+                        <th style="width: 5%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                        <th style="width: 25%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Writer: activate to sort column ascending">Writer</th>
+                        <th style="width: 17%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="ExpireDate: activate to sort column ascending">Expire</th>
+                        <th style="width: 25%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Reason: activate to sort column ascending">Reason</th>
+                        <th style="width: 12%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                        <th style="width: 16%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transaction: activate to sort column ascending">Transaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        TimeSpan difference = item.ExpireDate.Subtract(DateTime.Now);
+                        int leftdays = (int)difference.TotalDays;
+                        TimeSpan difference2 = item.ExpireDate.Subtract(item.BlockedDate);
+                        int totaldays = (int)difference2.TotalDays;
+
+                        if ((Model.IndexOf(item)) % 2 == 0)
+                        {
+                            <tr role="row" class="odd">
+                                <td class="sorting_1" tabindex="0">@item.BlockID</td>
+                                <td style="">
+                                    <div class="row">
+                                        <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                            @if (item.Writer.WriterImage != null)
+                                            {
+                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                            }
+                                            @if (item.Writer.WriterImage == null)
+                                            {
+                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="~/Resources/defaultperson_min.png">
+                                            }
+                                        </div>
+                                        <div class="col-md-10">
+                                            <a>@item.Writer.WriterName @item.Writer.WriterSurname</a>
+                                            <br />
+                                            <small>
+                                                Mail: @item.Writer.WriterMail
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="">
+                                    <div>
+                                        <small>
+                                            @(((DateTime)item.ExpireDate).ToString("dd MMM yyyy")) ~
+                                            @{
+                                                if (item.Situation == false)
+                                                {
+                                                    <a style="color:darkgoldenrod">left: @leftdays/@totaldays</a>
+                                                }
+                                                else
+                                                {
+                                                    <a style="color:darkgoldenrod">expire</a>
+                                                }
+                                            }
+                                        </small>
+                                        <br />
+                                        <small>
+                                            Blocked Date:  @(((DateTime)item.BlockedDate).ToString("dd MMM yyyy"))
+                                        </small>
+                                    </div>
+                                </td>
+                                <td style="">
+                                    <small>
+                                        @item.Reason
+                                    </small>
+                                </td>
+                                <td style="" class="text-center">
+                                    @if (item.Situation == true)
+                                    {
+                                        <span class="badge badge-danger">Inactive</span>
+                                    }
+                                    @if (item.Situation == false)
+                                    {
+                                        <span class="badge badge-success">Active</span>
+                                    }
+                                </td>
+                                <td style="" class="text-right">
+                                    @if (User.IsInRole("A"))
+                                    {
+                                        if (item.Situation == false)
+                                        {
+                                            <a class="btn btn-secondary update-blocked" data-id=@item.BlockID style="background-color: #6459DD; border-color: #6459DD; color: white">
+                                                <i class="fas fa-edit">
+                                                </i> Edit
+                                            </a>
+                                            <button class="btn btn-danger cancel-blocked" data-id=@item.BlockID>
+                                                <i class="fas fa-times">
+                                                </i> Cancel
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            if (leftdays > 0)
+                                            {
+                                                <a class="btn btn-success" href="/Blocked/Delete/@item.BlockID">
+                                                    <i class="fas fa-recycle">
+                                                    </i> Active
+                                                </a>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr role="row" class="even">
+                                <td class="sorting_1" tabindex="0">@item.BlockID</td>
+                                <td style="">
+                                    <div class="row">
+                                        <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                            @if (item.Writer.WriterImage != null)
+                                            {
+                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })">
+                                            }
+                                            @if (item.Writer.WriterImage == null)
+                                            {
+                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="~/Resources/defaultperson_min.png">
+                                            }
+                                        </div>
+                                        <div class="col-md-10">
+                                            <a>@item.Writer.WriterName @item.Writer.WriterSurname</a>
+                                            <br />
+                                            <small>
+                                                Mail: @item.Writer.WriterMail
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="">
+                                    <div>
+                                        <small>
+                                            @(((DateTime)item.ExpireDate).ToString("dd MMM yyyy")) ~
+                                            @{
+                                                if (item.Situation == false)
+                                                {
+                                                    <a style="color:darkgoldenrod">left: @leftdays/@totaldays</a>
+                                                }
+                                                else
+                                                {
+                                                    <a style="color:darkgoldenrod">expire</a>
+                                                }
+                                            }
+                                        </small>
+                                        <br />
+                                        <small>
+                                            Blocked Date:  @(((DateTime)item.BlockedDate).ToString("dd MMM yyyy"))
+                                        </small>
+                                    </div>
+                                </td>
+                                <td style="">
+                                    <small>
+                                        @item.Reason
+                                    </small>
+                                </td>
+                                <td style="" class="text-center">
+                                    @if (item.Situation == true)
+                                    {
+                                        <span class="badge badge-danger">Inactive</span>
+                                    }
+                                    @if (item.Situation == false)
+                                    {
+                                        <span class="badge badge-success">Active</span>
+                                    }
+                                </td>
+                                <td style="" class="text-right">
+                                    @if (User.IsInRole("A"))
+                                    {
+                                        if (item.Situation == false)
+                                        {
+                                            <a class="btn btn-secondary update-blocked" data-id=@item.BlockID style="background-color: #6459DD;border-color: #6459DD;color:white">
+                                                <i class="fas fa-edit">
+                                                </i> Edit
+                                            </a>
+                                            <button class="btn btn-danger cancel-blocked" data-id=@item.BlockID>
+                                                <i class="fas fa-times">
+                                                </i> Cancel
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            if (leftdays > 0)
+                                            {
+                                                <a class="btn btn-success" href="/Blocked/Delete/@item.BlockID">
+                                                    <i class="fas fa-recycle">
+                                                    </i> Active
+                                                </a>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

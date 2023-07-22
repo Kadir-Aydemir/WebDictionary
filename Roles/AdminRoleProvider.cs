@@ -41,7 +41,7 @@ namespace WebDictionary.Roles
 
         public override string[] GetRolesForUser(string username)
         {
-            var user=am.GetAdminForRole(username);
+            var user = am.GetAdminForRole(username);
             return new string[] { user.AdminRole };
         }
 

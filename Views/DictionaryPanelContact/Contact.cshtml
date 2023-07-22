@@ -1,0 +1,547 @@
+﻿@model EntityLayer.Concrete.Contact
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_DictionaryLayout.cshtml";
+}
+
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    .customtext {
+        font-family: 'Kanit', sans-serif;
+        font-size: 55px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+    }
+
+    .center-div .customtext2 {
+        font-size: 16px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+
+    .customtext2 {
+        font-size: 16px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+
+    .containerr {
+        font-family: 'Kanit', sans-serif;
+        transform: translate(0,-50%);
+        width: 100%;
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+        .containerr h1 {
+            position: relative;
+            font-size: 25px;
+            padding: 0;
+            margin: 0;
+            bottom: -12px;
+        }
+
+    p {
+        font-family: 'Kanit', sans-serif;
+        font-size: 16px;
+    }
+
+    .card {
+        background-color: #181A1F;
+        color: #9FA0A2;
+        margin-block: 20px;
+        box-shadow: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 75vh;
+    }
+
+    @@media (max-width: 479.98px) {
+        .card {
+            /*width: 40vh;*/
+            height: 50vh;
+        }
+
+       /* .containerr {
+            margin-top: 30px;
+        }
+
+            .containerr h1 {
+                font-size: 35px;
+            }*/
+
+        .customtext {
+            font-size: 35px;
+        }
+
+        p {
+            /*  margin-right: 30px;*/
+            font-size: 12px;
+        }
+    }
+
+
+    *,
+    *:after,
+    *:before {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --transition: 0.25s;
+        --spark: 1.8s;
+        --hue: 245;
+    }
+
+    body {
+        --active: 0;
+        background: hsl( var(--hue) calc(var(--active) * 97%) 6% );
+        transition: background var(--transition);
+        overflow: hidden;
+    }
+
+    .buttonn {
+        --cut: 0.1em;
+        --active: 0;
+        --bg: radial-gradient( 120% 120% at 126% 126%, hsl(var(--hue) calc(var(--active) * 97%) 98% / calc(var(--active) * 0.9)) 40%, transparent 50% ) calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat, radial-gradient( 120% 120% at 120% 120%, hsl(var(--hue) calc(var(--active) * 97%) 70% / calc(var(--active) * 1)) 30%, transparent 70% ) calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat, hsl(var(--hue) calc(var(--active) * 100%) calc(12% - (var(--active) * 8%)));
+        background: var(--bg);
+        font-size: 2rem;
+        font-weight: 500;
+        border: 0;
+        cursor: pointer;
+        padding: 0.9em 1.3em;
+        display: flex;
+        align-items: center;
+        gap: 0.25em;
+        white-space: nowrap;
+        border-radius: 2rem;
+        position: relative;
+        box-shadow: 0 0 calc(var(--active) * 6em) calc(var(--active) * 3em) hsl(var(--hue) 97% 61% / 0.5), 0 0.05em 0 0 hsl(var(--hue) calc(var(--active) * 97%) calc((var(--active) * 50%) + 30%)) inset, 0 -0.05em 0 0 hsl(var(--hue) calc(var(--active) * 97%) calc(var(--active) * 10%)) inset;
+        transition: box-shadow var(--transition), scale var(--transition), background var(--transition);
+        scale: calc(1 + (var(--active) * 0.1));
+        transform-style: preserve-3d;
+        perspective: 100vmin;
+        overflow: hidden;
+    }
+
+        .buttonn:active {
+            scale: 1;
+        }
+
+    .star {
+        height: calc(var(--size) * 1px);
+        aspect-ratio: 1;
+        background: white;
+        border-radius: 50%;
+        /*	filter: blur(4px);*/
+        position: absolute;
+        opacity: var(--alpha);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(10deg) rotate(0deg) translateY(calc(var(--distance) * 1px));
+        animation: orbit calc(var(--duration) * 1s) calc(var(--delay) * -1s) infinite linear;
+    }
+
+    @@keyframes orbit {
+        to {
+            transform: translate(-50%, -50%) rotate(10deg) rotate(360deg) translateY(calc(var(--distance) * 1px));
+        }
+    }
+
+    .galaxy {
+        position: absolute;
+        width: 100%;
+        aspect-ratio: 1;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        overflow: hidden;
+        opacity: var(--active);
+        transition: opacity var(--transition);
+        /*transform-style: preserve-3d;
+        perspective: 100vmin;*/
+        /*	opacity: 0.25;*/
+    }
+
+    .galaxy__ring {
+        height: 200%;
+        width: 200%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        transform: translate(-28%, -40%) rotateX(-24deg) rotateY(-30deg) rotateX(90deg);
+        transform-style: preserve-3d;
+        /*	background: red;*/
+    }
+
+    .galaxy__container {
+        position: absolute;
+        inset: 0;
+        opacity: var(--active);
+        transition: opacity var(--transition);
+        mask: radial-gradient(white, transparent);
+    }
+
+    .star--static {
+        animation: none;
+        top: 50%;
+        left: 50%;
+        transform: translate(0, 0);
+        max-height: 4px;
+        filter: brightness(4);
+        opacity: 0.9;
+        animation: move-x calc(var(--duration) * 0.1s) calc(var(--delay) * -0.1s) infinite linear, move-y calc(var(--duration) * 0.2s) calc(var(--delay) * -0.2s) infinite linear;
+    }
+
+    .buttonn:hover .star--static {
+        animation-play-state: paused;
+    }
+
+    @@keyframes move-x {
+        0% {
+            translate: -100px 0;
+        }
+
+        100% {
+            translate: 100px 0;
+        }
+    }
+
+    @@keyframes move-y {
+        0% {
+            transform: translate(0, -50px);
+        }
+
+        100% {
+            transform: translate(0, 50px);
+        }
+    }
+
+    .spark {
+        position: absolute;
+        inset: 0;
+        border-radius: 2rem;
+        rotate: 0deg;
+        overflow: hidden;
+        mask: linear-gradient(white, transparent 50%);
+        animation: flip calc(var(--spark) * 2) infinite steps(2, end);
+    }
+
+    @@keyframes flip {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .spark:before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        aspect-ratio: 1;
+        top: 0%;
+        left: 50%;
+        z-index: -1;
+        translate: -50% -15%;
+        rotate: 0;
+        transform: rotate(-90deg);
+        opacity: calc((var(--active)) + 0.4);
+        background: conic-gradient( from 0deg, transparent 0 340deg, white 360deg );
+        transition: opacity var(--transition);
+        animation: rotate var(--spark) linear infinite both;
+    }
+
+    .spark:after {
+        content: "";
+        position: absolute;
+        inset: var(--cut);
+        border-radius: 2rem;
+    }
+
+    .backdrop {
+        position: absolute;
+        inset: var(--cut);
+        background: var(--bg);
+        border-radius: 2rem;
+        transition: background var(--transition);
+    }
+
+    @@keyframes rotate {
+        to {
+            transform: rotate(90deg);
+        }
+    }
+
+
+
+    @@supports(selector(:has(:is(+ *)))) {
+        body:has(.buttonn:is(:hover, :focus-visible)) {
+            --active: 1;
+            --play-state: running;
+        }
+
+        .bodydrop {
+            display: none;
+        }
+    }
+
+    .buttonn:is(:hover, :focus-visible) ~ :is(.bodydrop, .particle-pen) {
+        --active: 1;
+        --play-state: running;
+    }
+
+    .bodydrop {
+        background: hsl( 260 calc(var(--active) * 97%) 6% );
+        position: fixed;
+        inset: 0;
+        z-index: -1
+    }
+
+
+
+    .buttonn:is(:hover, :focus-visible) {
+        --active: 1;
+        --play-state: running;
+    }
+
+
+    .galaxy-button {
+        position: relative;
+    }
+
+    @@keyframes float-out {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .text {
+        translate: 2% -6%;
+        letter-spacing: 0.01ch;
+        /*background: linear-gradient(90deg, hsl(0 0% calc((var(--active) * 100%) + 65%)), hsl(0 0% calc((var(--active) * 100%) + 26%)));
+        -webkit-background-clip: text;*/
+        color: hsl(0 0% calc(60% + (var(--active) * 26%)));
+    }
+
+    .buttonn svg {
+        inline-size: 1.25em;
+        translate: -25% -5%;
+    }
+
+    .divexplore {
+        justify-content: right;
+        display: flex;
+        margin-top: 50px;       
+    }
+
+    @@media (max-width: 479.98px) {
+        .divexplore {
+            justify-content: center;
+        }
+    }
+
+    .form-group {
+        font-family: 'Kanit', sans-serif;
+        margin-bottom: 50px;
+        padding-inline: 25px;
+    }
+
+        .form-group .form-control {
+            color: #9FA0A2;
+            border-radius: 8px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            border: 2px solid #0000;
+        }
+
+            .form-group .form-control:hover {
+                background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+            }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-feather"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0"> Contact Us</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<div class="row scrollbar" id="style-7" style="background-color: #181A1F; color: #9FA0A2; height: 80vh; border-radius: 40px; overflow-y: auto; overflow-x: hidden;">
+    <section class="col-lg-6">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="margin-top: 0; margin-left: 0;">
+            <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; padding-top: 0px; padding-left: 0px; ">
+                <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_7msclaec.json"
+                               background="transparent" speed="1" style="max-width: 100vh; max-height: 100vh;" loop autoplay></lottie-player>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-6">
+        <div class="card">
+            <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; text-align:center;">
+                <div style="" class="customtext">Tell me nice things</div>
+                <p>
+                    * Your messages will not be forwarded to the authors.
+                    * Complaints regarding records written about individuals can only be made by the natural person himself or, if he is a legal person, by his official or legal representative. Complaints made by third parties will not be considered.
+                    * I'm currently on a space exploration, I'll check your message when I get back.
+                    * How can we help you in this space 🪐
+                </p>
+                <br />
+                @using (Html.BeginForm("Contact", "DictionaryPanelContact", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <div class="row">
+                                <div class="col-md-6 mt-4">
+                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "*Name" })
+                                    @Html.ValidationMessageFor(x => x.Name, "", new { @style = "color:red; font-size:12px;" })
+                                    <br />
+                                    @Html.TextBoxFor(x => x.Mail, new { @class = "form-control", placeholder = "*Mail" })
+                                    @Html.ValidationMessageFor(x => x.Mail, "", new { @style = "color:red; font-size:12px;" })
+                                    <br />
+                                    @Html.TextBoxFor(x => x.Subject, new { @class = "form-control", placeholder = "*Subject" })
+                                    @Html.ValidationMessageFor(x => x.Subject, "", new { @style = "color:red; font-size:12px;" })
+                                </div>
+                                <div class="col-md-6 mt-4">
+                                    @Html.TextAreaFor(x => x.Message, 6, 15, new { @class = "form-control", placeholder = "*Your message", @maxlength = "1000" })
+                                    <p id="charCount">0/1000</p>
+                                    @Html.ValidationMessageFor(x => x.Message, "", new { @style = "color:red; font-size:12px;" })
+                                </div>
+                            </div>
+                        }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.TextBoxFor(x => x.Subject, new { @class = "form-control ", placeholder = "*Subject" })
+                            @Html.ValidationMessageFor(x => x.Subject, "", new { @style = "color:red; font-size:12px;" })
+                            <br />
+                            @Html.TextAreaFor(x => x.Message, 6, 15, new { @class = "form-control", placeholder = "*Your message", @maxlength = "1000" })
+                            <p id="charCount">0/1000</p>
+                            @Html.ValidationMessageFor(x => x.Message, "", new { @style = "color:red; font-size:12px;" })
+                        }
+                        <div class="divexplore">
+                            <div class="galaxy-button" style="text-align:center;">
+                                <button type="submit" class="buttonn" id="signUpButton">
+                                    <span class="spark"></span>
+                                    <span class="backdrop"></span>
+                                    <span class="galaxy__container">
+                                        <span class="star star--static"></span>
+                                        <span class="star star--static"></span>
+                                        <span class="star star--static"></span>
+                                        <span class="star star--static"></span>
+                                    </span>
+                                    <span class="galaxy">
+                                        <span class="galaxy__ring">
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                            <span class="star"></span>
+                                        </span>
+                                    </span>
+                                    <span class="text">
+                                        <div class="containerr">
+                                            <h1><i class="fas fa-rocket" style="margin-right:15px;"></i> Launch</h1>
+                                        </div>
+                                    </span>
+                                </button>
+                                <div class="bodydrop"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        const RANDOM = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+        const PARTICLES = document.querySelectorAll('.star')
+        PARTICLES.forEach(P => {
+            P.setAttribute('style', `
+                                                --angle: ${RANDOM(0, 360)};
+                                                --duration: ${RANDOM(6, 20)};
+                                                --delay: ${RANDOM(1, 10)};
+                                                --alpha: ${RANDOM(40, 90) / 100};
+                                                --size: ${RANDOM(2, 6)};
+                                                --distance: ${RANDOM(40, 200)};`
+            )
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var textarea = $("#Message");
+            var charCount = $("#charCount");
+
+            textarea.on("input", function () {
+                var textLength = textarea.val().length;
+                charCount.text(textLength + "/1000");
+            });
+        });
+    </script>
+
+    @if (ViewBag.send == "true")
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: 'Launched!',
+                    text: 'Your message was Launched 🚀 successfully.',
+                    icon: 'success'
+                }).then(() => {
+                    var message = $("#Message");
+                    var subject = $("#Subject");
+                    var mail = $("#Mail");
+                    var name = $("#Name");
+
+                    message.text("");
+                    subject.text("");
+                    mail.text("");
+                    name.text("");
+                });                     
+            });
+        </script>
+    }
+}

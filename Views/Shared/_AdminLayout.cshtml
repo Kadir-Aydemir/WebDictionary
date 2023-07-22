@@ -1,6 +1,16 @@
-﻿@{
+﻿@using System.Text.RegularExpressions;
+@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@{
     Layout = null;
+
+    MessageManager mm = new MessageManager(new EfMessageDal());
+    int inbox = mm.GetListInboxNotRead(User.Identity.Name).Count();
+
+    ContactManager cm = new ContactManager(new EfContactDal());
+    int contact = cm.GetListNotRead().Count();
 }
+
 <!DOCTYPE html>
 <html style="height:auto">
 <head>
@@ -9,6 +19,7 @@
     <title>Web Dictionary</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="~/Resources/dictionaryLogo.png">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -20,7 +31,7 @@
     <!-- JQVMap -->
     <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/AdminLTE-3.0.4/dist/css/adminlte.min.css">
+    <link href="~/AdminLTE-3.0.4/dist/css/adminlte.min.css" rel="stylesheet" />
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
@@ -31,354 +42,451 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- notify -->
     <link href="~/AdminLTE-3.0.4/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <style>
+        .custom-menu {
+            border: 2px solid #0000;
+            border-radius: 8px;
+            background: linear-gradient(#0F1116,#0F1116) padding-box, linear-gradient(#572ADE,#12A77F) border-box;
+            margin-top: 5px;
+            overflow: hidden;
+            height: 930px;
+        }
 
+        .custom-button {
+            border: 1px solid #0000;
+            border-radius: 6px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            width: 160px;
+        }
+
+            .custom-button:hover {
+                transition: opacity .3s ease;
+                color: white;
+                background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+                border-color: transparent;
+            }
+
+        .scrollbar {
+            overflow-y: scroll;
+        }
+
+        .force-overflow {
+            min-height: 250px;
+        }
+
+        #style-7::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #181A1F;
+            border-radius: 10px;
+        }
+
+        #style-7::-webkit-scrollbar {
+            width: 5px;
+            background-color: #181A1F;
+        }
+
+        #style-7::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, #12A77F), color-stop(0.72, #572ADE), color-stop(0.86, #572ADE));
+        }
+
+        .mailbox-messages tr {
+            border-bottom: 1px solid #0000;
+        }
+
+        .mailbox-messages td {
+            border: none;
+            color: #572ADE;
+        }
+
+        .card-primary.card-outline {
+            border-top: 3px solid #0000;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        }
+
+            .card-primary.card-outline .mailbox-messages .mailbox-name a {
+                color: #12A77F;
+            }
+
+        .form-control.form-control-sm {
+            color: #9FA0A2;
+            border: 2px solid #0000;
+            border-radius: 6px;
+            background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            margin-right: 16px;
+        }
+
+            .form-control.form-control-sm:hover {
+                background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+            }
+    </style>
+    @RenderSection("scriptshead", false)
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse scrollbar" id="style-7" style="overflow-y: auto; overflow-x: hidden;">
     <div class="wrapper">
-
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-dark navbar-indigo">
+        <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: #0F1116; color: #9FA0A2; border-color: #0F1116;">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color:white"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-
-            <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
+                    <div class="dropdown" style="margin-right:40px">
+                        <button class="btn btn-outline-light dropdown-toggle custom-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="~/Resources/adminicon.png" alt="User Image" style="width:28px;height:28px;margin-right:10px;">
+                            @{Regex regex = new Regex(@"(.+)(?=@)");
+                                Match match = regex.Match(User.Identity.Name);
+                                string username = string.Empty;
+                                if (match.Success) { username = match.Groups[1].Value; }} @username
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/Login/LogOutAdmin" class="dropdown-item btn-sm">
+                                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                                        Sign Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-dark" style="background-color: #0F1116; color: #9FA0A2;">
+                <div class="custom-menu">
+                    <!-- Brand Logo -->
+                    <a href="/AdminCategory/Index" class="brand-link">
+                        <img src="~/Resources/dictionaryLogo.png" class="brand-image">
+                        <span class="brand-text font-weight-bold">WebDictionary</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="~/AdminLTE-3.0.4/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
+                    <!-- Sidebar -->
+                    <div class="sidebar">
+                        <!-- Sidebar user panel (optional) -->
+                        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                            <div class="image">
+                                <img src="~/Resources/adminicon.png" class="img-circle elevation-2" alt="User Image">
                             </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="~/AdminLTE-3.0.4/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
+                            <div class="info">
+                                <a href="/Authorization/Index" class="d-block"> @username</a>
                             </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="~/AdminLTE-3.0.4/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                        </div>
+                        <!-- Sidebar Menu -->
+                        <nav class="mt-2">
+                            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                <li class="nav-item">
+                                    <a href="/AdminCategory/Index" class="nav-link" id="Category">
+                                        <i class="nav-icon fas fa-layer-group"></i>
+                                        <p>
+                                            Categories
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Heading/Index" class="nav-link" id="Heading">
+                                        <i class="nav-icon fas fa-tag"></i>
+                                        <p>
+                                            Headings
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Writer/Index" class="nav-link" id="Writer">
+                                        <i class="nav-icon fas fa-pen"></i>
+                                        <p>
+                                            Writers
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Content/Index" class="nav-link" id="Content">
+                                        <i class="nav-icon fas fa-paint-brush"></i>
+                                        <p>
+                                            Contents
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/About/Index" class="nav-link" id="About">
+                                        <i class="nav-icon fas fa-info"></i>
+                                        <p>
+                                            About Us
+                                        </p>
+                                    </a>
+                                </li>
+                                @if (User.IsInRole("A"))
+                                {
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link" id="Report">
+                                            <i class="nav-icon fas fa-chart-bar"></i>
+                                            <p>
+                                                Reports
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="/AdminCategory/CategoryReport" class="nav-link">
+                                                    <i class="nav-icon fas fa-layer-group"></i>
+                                                    <p>Category Report</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/Heading/HeadingReport" class="nav-link">
+                                                    <i class="nav-icon fas fa-tag"></i>
+                                                    <p>Heading Report</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/Writer/WriterReport" class="nav-link">
+                                                    <i class="nav-icon fas fa-pen"></i>
+                                                    <p>Writer Report</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/Content/ContentReport" class="nav-link">
+                                                    <i class="nav-icon fas fa-paint-brush"></i>
+                                                    <p>Content Report</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/About/AboutReport" class="nav-link">
+                                                    <i class="nav-icon fas fa-info"></i>
+                                                    <p>About Report</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/Blocked/BlockedReport" class="nav-link">
+                                                    <i class="nav-icon fas fa-shield-alt"></i>
+                                                    <p>Blocked Report</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link" id="Chart">
+                                            <i class="nav-icon fas fa-chart-area"></i>
+                                            <p>
+                                                Charts
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="/Chart/CategoryHeading" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Category-Heading</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/Chart/HeadingContent" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Heading-Content</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/Chart/WriterContent" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Writer-Content</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Blocked/Index" class="nav-link" id="Blocked">
+                                            <i class="nav-icon fas fa-shield-alt"></i>
+                                            <p>
+                                                Blocked Log's
+                                            </p>
+                                        </a>
+                                    </li>
+                                }
+                                <li class="nav-item">
+                                    <a href="/Contact/Index" class="nav-link" id="Contact">
+                                        <i class="nav-icon fas fa-comments"></i>
+                                        <p>
+                                            Contact & Messages
+                                        </p>
+                                        <span class="badge bg-danger float-right">@inbox</span>
+                                        <span class="badge bg-success float-right" style="margin-right:18px;">@contact</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Authorization/Index" class="nav-link" id="Authorization">
+                                        <i class="nav-icon fas fa-id-card-alt"></i>
+                                        <p>
+                                            Authorizations
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Skill/Index" class="nav-link" id="Skill">
+                                        <i class="nav-icon fas fa-lightbulb"></i>
+                                        <p>
+                                            Skill
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Gallery/Index" class="nav-link" id="Gallery">
+                                        <i class="nav-icon far fa-image"></i>
+                                        <p>
+                                            Gallery
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item has-treeview">
+                                    <a href="#" class="nav-link" id="Error">
+                                        <i class="nav-icon far fa-angry"></i>
+                                        <p>
+                                            Error Pages
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="/ErrorPage/Page403" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>403</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/ErrorPage/Page404" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>404</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/ErrorPage/Page503" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>503</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/ShowCase/Home" class="nav-link" target="_blank">
+                                        <i class="nav-icon fas fa-star"></i>
+                                        <p>
+                                            Go Showcase
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/DictionaryPanel/Index" class="nav-link" target="_blank">
+                                        <i class="nav-icon fas fa-rocket"></i>
+                                        <p>
+                                            Go Dictionary
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- /.sidebar-menu -->
                     </div>
-                </li>
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
-                </li>
-                @*<li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                            <i class="fas fa-th-large"></i>
-                        </a>
-                    </li>*@
-            </ul>
-        </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-light-indigo elevation-4">
-            <!-- Brand Logo -->
-            <a href="#" class="brand-link">
-                <img src="~/Resources/WebDictionary_Logo.jpg" alt="WebDictionary Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">WebDictionary</span>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/Resources/kadir.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Kadir Aydemir</a>
-                    </div>
+                    <!-- /.sidebar -->
                 </div>
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
-                        @if (User.IsInRole("A"))
-                        {
-                            <li class="nav-item">
-                                <a href="/AdminCategory/Index" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i>
-                                    <p>
-                                        Categories
-                                    </p>
-                                </a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a href="/Heading/Index" class="nav-link">
-                                <i class="nav-icon fas fa-heading"></i>
-                                <p>
-                                    Headings
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Writer/Index" class="nav-link">
-                                <i class="nav-icon fas fa-pen"></i>
-                                <p>
-                                    Writers
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Content/Index" class="nav-link">
-                                <i class="nav-icon fas fa-paint-roller"></i>
-                                <p>
-                                    Contents
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Charts
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pie Chart</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Column Chart</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Line Chart</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/About/Index" class="nav-link">
-                                <i class="nav-icon fas fa-info"></i>
-                                <p>
-                                    About Us
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Contact/Index" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    Contact & Messages
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-id-card-alt"></i>
-                                <p>
-                                    Authorizations
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Gallery/Index" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
-                                <p>
-                                    Gallery
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-angry"></i>
-                                <p>
-                                    Error Pages
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pie Chart</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Column Chart</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Line Chart</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/gallery.html" class="nav-link">
-                                <i class="nav-icon fas fa-paper-plane"></i>
-                                <p>
-                                    Go Site
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    Log Out
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
+            </aside>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper" style="background-color: #0F1116; color: #9FA0A2;">
+                <section class="content">
+                    <div class="container-fluid" style="max-width: 1280px; width: 100%;">
+                        @RenderBody()
+                    </div>
+                </section>
             </div>
-            <!-- /.sidebar -->
-        </aside>
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <section class="content">
-                <div class="container-fluid">
-                    @RenderBody()
+            <footer class="main-footer" style="background-color: #0F1116; color: #9FA0A2; display: flex; justify-content: center;border:none; ">
+                <!-- Default to the left -->
+                <div class="row" style="width:550px;height:50px;">
+                    <div class="col-2" style="display: flex; justify-content: center;width:15%;padding:0;">
+                        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_gbHcwp1UaT.json"
+                                       background="transparent" speed="1" style="max-width: 50px; max-height: 50px;" loop autoplay></lottie-player>
+                    </div>
+                    <div class="col-10" style="display: flex; justify-content: flex-start; width: 85%;margin-top:12px;">
+                        <strong>
+                            Copyright &copy; 2023. All rights reserved. Design by
+                            <a style="color: #12A77F" href="https://github.com/Kadir-Aydemir" target="_blank"> Kadir AYDEMİR</a>
+                        </strong>
+                    </div>
                 </div>
-            </section>
+            </footer>
         </div>
-    </div>
-    <!-- ./wrapper -->
-    <!-- jQuery -->
-    <script src="~/AdminLTE-3.0.4/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="~/AdminLTE-3.0.4/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>$.widget.bridge('uibutton', $.ui.button)</script>
-    <!-- Bootstrap 4 -->
-    <script src="~/AdminLTE-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/AdminLTE-3.0.4/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="~/AdminLTE-3.0.4/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="~/AdminLTE-3.0.4/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="~/AdminLTE-3.0.4/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="~/AdminLTE-3.0.4/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="~/AdminLTE-3.0.4/plugins/moment/moment.min.js"></script>
-    <script src="~/AdminLTE-3.0.4/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="~/AdminLTE-3.0.4/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="~/AdminLTE-3.0.4/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/AdminLTE-3.0.4/dist/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/AdminLTE-3.0.4/dist/js/pages/dashboard.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/AdminLTE-3.0.4/dist/js/demo.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
+        <!-- ./wrapper -->
+        <!-- jQuery -->
+        <script src="~/AdminLTE-3.0.4/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/AdminLTE-3.0.4/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>$.widget.bridge('uibutton', $.ui.button)</script>
+        <!-- Bootstrap 4 -->
+        <script src="~/AdminLTE-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/Scripts/bootstrap.bundle.js"></script>
+        <!-- ChartJS -->
+        <script src="~/AdminLTE-3.0.4/plugins/chart.js/Chart.min.js"></script>
+        <!-- Sparkline -->
+        <script src="~/AdminLTE-3.0.4/plugins/sparklines/sparkline.js"></script>
+        <!-- JQVMap -->
+        <script src="~/AdminLTE-3.0.4/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="~/AdminLTE-3.0.4/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+        <!-- jQuery Knob Chart -->
+        <script src="~/AdminLTE-3.0.4/plugins/jquery-knob/jquery.knob.min.js"></script>
+        <!-- daterangepicker -->
+        <script src="~/AdminLTE-3.0.4/plugins/moment/moment.min.js"></script>
+        <script src="~/AdminLTE-3.0.4/plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="~/AdminLTE-3.0.4/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/AdminLTE-3.0.4/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/AdminLTE-3.0.4/dist/js/adminlte.js"></script>
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="~/AdminLTE-3.0.4/dist/js/pages/dashboard.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/AdminLTE-3.0.4/dist/js/demo.js"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>
+            $.widget.bridge('uibutton', $.ui.button)
+        </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <!-- DataTables -->
+        <script src="~/AdminLTE-3.0.4/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/AdminLTE-3.0.4/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/AdminLTE-3.0.4/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/AdminLTE-3.0.4/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
-    @RenderSection("scripts", false)
-</body>
+        <script>
+            $(function () {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                });
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                });
+            });
+        </script>
+        <script>
+            $('[data-toggle="tooltip"]').tooltip();
+        </script>
+        @{ string yol = "@lottiefiles";}
+        <script src="https://unpkg.com/@yol/lottie-player@latest/dist/lottie-player.js"></script>
+
+        @RenderSection("scripts", false)
+    </body>
 </html>
 

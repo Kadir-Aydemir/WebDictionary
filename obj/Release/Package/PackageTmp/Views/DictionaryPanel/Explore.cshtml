@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "Explore";
+    Layout = "~/Views/Shared/_DictionaryLayout.cshtml";
+}
+
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css'>
+<link rel="stylesheet" href="~/AdminLTE-3.0.4/expandable-animated-card-slider/dist/style.css">
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-street-view"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0"> Explore</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<div style="background-color: #181A1F; color: #9FA0A2; height: 80vh; border-radius: 40px; ">
+    <div class="card" style="background-color: #181A1F; padding: 0; border-radius: 40px;">
+        <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; padding: 0;">
+
+            <section class="game-section">
+                <div class="owl-carousel custom-carousel owl-theme">
+                    <div class="item active" style="background-image: url('/Resources/explore/dp_signup.JPG');">
+                        <div class="item-desc">
+                            <h3>Sign Up</h3>
+                            <p>
+                                By clicking the 'Sign up' button in the top menu of the Dictionary,
+                                you can become a member immediately and leave an indelible mark on history.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_contact.JPG');">
+                        <div class="item-desc">
+                            <h3>Contact</h3>
+                            <p>
+                                You can send us your questions, comments, complaints and suggestions
+                                immediately by clicking the 'Contact' button in the top menu of the Dictionary.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_membersonly.JPG');">
+                        <div class="item-desc">
+                            <h3>Members Only</h3>
+                            <p>
+                                You cannot create contents, create headings, like contents, or send messages to authors without registering with the Dictionary.
+                                Sign up now and take your place in this space.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_categoriesandheadings.JPG');">
+                        <div class="item-desc">
+                            <h3>Headings & Create</h3>
+                            <p>
+                                You can select a category from the Categories tab and create a heading for the category.
+                                You can add an image to this heading. Headings with images are more engaging. You should try this.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_writerprofile.JPG');">
+                        <div class="item-desc">
+                            <h3>Writer Review</h3>
+                            <p>
+                                You can view an writer's profile, Dictionary statistics, heading-content-category data.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_sendmessage.JPG');">
+                        <div class="item-desc">
+                            <h3>Send Message</h3>
+                            <p>
+                                You can also redirect from the writer's profile to the message page and send a message to the writer.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_contents.JPG');">
+                        <div class="item-desc">
+                            <h3>Content's</h3>
+                            <p>
+                                To see the content, you should head to the relevant headings.
+                                From here, you can read the contents under the heading, like, share the link and view the statistics by hovering over the picture of the relevant writer.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_contentslike.JPG');">
+                        <div class="item-desc">
+                            <h3>Show Like's</h3>
+                            <p>
+                                You can view the likes of your own content or other content by clicking on the number of likes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/dp_contentsadd.JPG');">
+                        <div class="item-desc">
+                            <h3>Create Content</h3>
+                            <p>
+                                After logging in, you can create your own content from the bottom of the content page.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_profile.JPG');">
+                        <div class="item-desc">
+                            <h3>Your Profile</h3>
+                            <p>
+                                When you log in to the site, it directs you to the Writer panel.
+                                The first page that will appear in the Writer panel is your profile page.
+                                Here you can change your profile picture and other information or close your account.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_mywritings.JPG');">
+                        <div class="item-desc">
+                            <h3>Your Writing's</h3>
+                            <p>
+                                All the content you have created will be listed here. Here you can edit or deactivate your content.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_myheadings.JPG');">
+                        <div class="item-desc">
+                            <h3>Your Heading's</h3>
+                            <p>
+                                All the heading you have created will be listed here.
+                                Here you can edit the headings,view the content of the relevant heading or deactivate your headings.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_allheadings.JPG');">
+                        <div class="item-desc">
+                            <h3>All Heading's</h3>
+                            <p>
+                                All active headings in the Dictionary are listed here.
+                                You can search the list, see the person who created the heading, see the content of the relevant heading and create content.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_messageinbox.JPG');">
+                        <div class="item-desc">
+                            <h3>Your Message's</h3>
+                            <p>
+                                Here you can view, delete and reply to messages sent to you.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_messagecreate.JPG');">
+                        <div class="item-desc">
+                            <h3>Create Message</h3>
+                            <p>
+                                Unlike the Dictionary, you can create more detailed messages in the Writer panel. 
+                                You can send images to each other, create stylish text, create tables, send internet links and even play video links in mail.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item" style="background-image: url('/Resources/explore/wp_messagedraft.JPG');">
+                        <div class="item-desc">
+                            <h3>Draft Message</h3>
+                            <p>
+                                You can save the message you created in drafts if you want to send it another time or complete it later.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex;justify-content:center">
+                    <small>
+                        <i class="fas fa-mouse mr-1"></i>
+                        Click and slide
+                    </small>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+    <script src="~/AdminLTE-3.0.4/expandable-animated-card-slider/dist/script.js"></script>
+}

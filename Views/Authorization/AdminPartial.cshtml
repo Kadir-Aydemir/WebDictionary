@@ -1,0 +1,223 @@
+﻿@using EntityLayer.Concrete
+@model List<Admin>
+@{ var id = ViewBag.userId;}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-id-card-alt"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Authorization's</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">               
+                <div class="card-tools" style="margin-right: 15px;">
+                    @if (User.IsInRole("A"))
+                    {
+                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#insertmodal" id="btn_modal" name="btn_modal">
+                            <i class="fas fa-plus-circle"></i> New Admin
+                        </button>
+                    }
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 7%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 30%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Mail: activate to sort column ascending">Mail</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Authority: activate to sort column ascending">Authority</th>
+                                        <th style="width: 23%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                        <th style="width: 20%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transaction: activate to sort column ascending">Transaction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0">@item.AdminId</td>
+                                                <td class="">@item.AdminUserName</td>
+                                                <td style="">@item.AdminRole</td>
+                                                <td style="" class="project-actions text-center">
+                                                    @if (item.AdminStatus == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.AdminStatus == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    @if (User.IsInRole("A"))
+                                                    {
+                                                        if (item.AdminStatus == true)
+                                                        {
+                                                            <a class="btn btn-success" href="/Authorization/Delete/@item.AdminId">
+                                                                <i class="fas fa-recycle">
+                                                                </i>
+                                                                Active
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Action
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li>
+                                                                        <a class="dropdown-item update-mail" href="#" data-id=@item.AdminId>
+                                                                            <i class="far fa-envelope">
+                                                                            </i> Change Mail
+                                                                        </a>
+                                                                    </li>
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item update-password" href="#" data-id=@item.AdminId>
+                                                                            <i class="fas fa-lock">
+                                                                            </i> Change Password
+                                                                        </a>
+                                                                    </li>
+                                                                    @if (item.AdminId != id)
+                                                                    {
+                                                                        <li><hr class="dropdown-divider"></li>
+                                                                        <li>
+                                                                            <a class="dropdown-item update-role" href="#" data-id=@item.AdminId>
+                                                                                <i class="fas fa-user-secret">
+                                                                                </i> Change Role
+                                                                            </a>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                                <button class="btn btn-warning delete-category" data-id=@item.AdminId>
+                                                                    <i class="fas fa-exclamation-circle">
+                                                                    </i> Remove
+                                                                </button>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @if (User.IsInRole("E"))
+                                                    {
+                                                        if (item.AdminId == id)
+                                                        {
+                                                            <a class="btn btn-secondary update-mail" style="background-color: #6F2CF3; border-color: #6F2CF3 " href="#" data-id=@item.AdminId>
+                                                                <i class="far fa-envelope">
+                                                                </i> Change Mail
+                                                            </a>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0">@item.AdminId</td>
+                                                <td class="">@item.AdminUserName</td>
+                                                <td style="">@item.AdminRole</td>
+                                                <td style="" class="project-actions text-center">
+                                                    @if (item.AdminStatus == true)
+                                                    {
+                                                        <span class="badge badge-danger">Removed</span>
+                                                    }
+                                                    @if (item.AdminStatus == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="text-right">
+                                                    @if (User.IsInRole("A"))
+                                                    {
+                                                        if (item.AdminStatus == true)
+                                                        {
+                                                            <a class="btn btn-success" href="/Authorization/Delete/@item.AdminId">
+                                                                <i class="fas fa-recycle">
+                                                                </i>
+                                                                Active
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-secondary dropdown-toggle" style="background-color: #6F2CF3; border-color: #6F2CF3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Action
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li>
+                                                                        <a class="dropdown-item update-mail" href="#" data-id=@item.AdminId>
+                                                                            <i class="far fa-envelope">
+                                                                            </i> Change Mail
+                                                                        </a>
+                                                                    </li>
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item update-password" href="#" data-id=@item.AdminId>
+                                                                            <i class="fas fa-lock">
+                                                                            </i> Change Password
+                                                                        </a>
+                                                                    </li>
+                                                                    @if (item.AdminId != id)
+                                                                    {
+                                                                        <li><hr class="dropdown-divider"></li>
+                                                                        <li>
+                                                                            <a class="dropdown-item update-role" href="#" data-id=@item.AdminId>
+                                                                                <i class="fas fa-user-secret">
+                                                                                </i> Change Role
+                                                                            </a>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                                <button class="btn btn-warning delete-category" data-id=@item.AdminId>
+                                                                    <i class="fas fa-exclamation-circle">
+                                                                    </i> Remove
+                                                                </button>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @if (User.IsInRole("E"))
+                                                    {
+                                                        if (item.AdminId == id)
+                                                        {
+                                                            <a class="btn btn-secondary update-mail" style="background-color: #6F2CF3; border-color: #6F2CF3 " href="#" data-id=@item.AdminId>
+                                                                <i class="far fa-envelope">
+                                                                </i> Change Mail
+                                                            </a>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

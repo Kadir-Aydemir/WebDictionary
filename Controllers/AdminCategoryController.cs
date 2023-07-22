@@ -6,38 +6,41 @@ using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace WebDictionary.Controllers
 {
     public class AdminCategoryController : Controller
     {
         CategoryManager cm = new CategoryManager(new EfCategoryDal());
+        CategoryValidator categoryValidator = new CategoryValidator();
 
-        [Authorize(Roles ="A")]
         public ActionResult Index()
         {
-            var ctg = cm.GetList();
-            return View(ctg);
-        }
-
-        [Authorize]
-        public ActionResult addCategory()
-        {        
             return View();
         }
 
         [HttpPost]
-        public ActionResult addCategory(Category p)
+        public ActionResult Index(Category category, FormCollection form)
         {
-            CategoryValidator categoryValidator = new CategoryValidator();
-            ValidationResult result = categoryValidator.Validate(p);
+            ValidationResult result = categoryValidator.Validate(category);
             if (result.IsValid)
             {
-                cm.AddCategory(p);
-                return RedirectToAction("Index");
+                if (form["btnInsert"] != null)
+                {                  
+                    cm.AddCategory(category);
+                    ViewBag.insertresult = "true";
+                }
+                else if (form["btnUpdate"] != null)
+                {                   
+                    cm.UpdateCategory(category);
+                    ViewBag.updateresult = "true";
+                }
             }
             else
             {
@@ -45,44 +48,52 @@ namespace WebDictionary.Controllers
                 {
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
-                return View();
+                if (form["btnInsert"] != null)
+                {
+                    ViewBag.alert = "true";
+                }
+                else if (form["btnUpdate"] != null)
+                {
+                    ViewBag.updatealert = "true";
+                }
             }
+          
+            return View();
         }
 
-        [Authorize]
+        public PartialViewResult CategoryPartial()
+        {
+            var list = cm.GetListAll();
+            return PartialView(list);
+        }
+
         public ActionResult Delete(int id)
         {
             var ctgid = cm.GetCategory(id);
-            cm.DeleteCategory(ctgid);
-            return RedirectToAction("Index");
+            if (ctgid.CategoryStatus == true)
+            {
+                ctgid.CategoryStatus = false;
+            }
+            else
+            {
+                ctgid.CategoryStatus = true;
+            }
+            cm.UpdateCategory(ctgid);
+            return RedirectToAction("Index");          
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult updateCategory(int id)
         {
             var ctgid = cm.GetCategory(id);
-            return View(ctgid);
+            return Json(ctgid, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public ActionResult updateCategory(Category p)
+        [Authorize(Roles ="A")]
+        public ActionResult CategoryReport()
         {
-            CategoryValidator categoryValidator = new CategoryValidator();
-            ValidationResult result = categoryValidator.Validate(p);
-            if (result.IsValid)
-            {
-                cm.UpdateCategory(p);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-                return View();
-            }
+            var list = cm.GetListAll();
+            return View(list);
         }
     }
 }

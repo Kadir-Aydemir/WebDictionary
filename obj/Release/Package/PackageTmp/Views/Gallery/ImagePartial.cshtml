@@ -1,0 +1,179 @@
+﻿@using EntityLayer.Concrete
+@model List<ImageFile>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-image"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Gallery</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+                <div class="card-tools" style="margin-right: 15px;">
+                    <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#insertmodal" id="btn_modal" name="btn_modal">
+                        <i class="fas fa-plus-circle"></i> New Image
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline projects" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 5%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 38%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Name</th>
+                                        <th style="width: 17%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Image & Color: activate to sort column ascending">Image</th>
+                                        <th style="width: 20%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                        <th style="width: 20%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transiction: activate to sort column ascending">Transiction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0"> @item.ImageId</td>
+                                                <td class="">
+                                                    @item.ImageName
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="proj_gallery_grid" data-aos="zoom-in">
+                                                        <div class="section_1_gallery_grid" data-aos="zoom-in">
+                                                            <a title=" @item.ImageName" href="@Url.Action("GetImage", "Gallery", new { id = item.ImageId })">
+                                                                <div class="section_1_gallery_grid1">
+                                                                    <img src="@Url.Action("GetImage", "Gallery", new { id = item.ImageId })" alt=" " class="img-fluid" style="max-width: 190px; max-height: 100px;" />
+                                                                    <div class="proj_gallery_grid1_pos">
+                                                                        <h3>Recognize</h3>
+
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>                                
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.ImageRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Inactive</span>
+                                                    }
+                                                    @if (item.ImageRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    @if (item.ImageRemove == true)
+                                                    {
+                                                        <button class="btn btn-success active-image" data-id=@item.ImageId>
+                                                            <i class="fas fa-recycle">
+                                                            </i>
+                                                            Active
+                                                        </button>
+                                                    }
+                                                    @if (item.ImageRemove == false)
+                                                    {
+                                                        <a class="btn btn-secondary update-image" href="#" data-id=@item.ImageId style="background-color: #6F2CF3; border-color: #6F2CF3 ">
+                                                            <i class="fas fa-edit">
+                                                            </i> Edit
+                                                        </a>
+                                                        <button class="btn btn-warning delete-image" data-id=@item.ImageId>
+                                                            <i class="fas fa-exclamation-circle">
+                                                            </i> Remove
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0"> @item.ImageId</td>
+                                                <td class="">
+                                                    @item.ImageName
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="proj_gallery_grid" data-aos="zoom-in">
+                                                        <div class="section_1_gallery_grid" data-aos="zoom-in">
+                                                            <a title=" @item.ImageName" href="@Url.Action("GetImage", "Gallery", new { id = item.ImageId })">
+                                                                <div class="section_1_gallery_grid1">
+                                                                    <img src="@Url.Action("GetImage", "Gallery", new { id = item.ImageId })" alt=" " class="img-fluid" style="max-width: 190px; max-height: 100px;" />
+                                                                    <div class="proj_gallery_grid1_pos">
+                                                                        <h3>Recognize</h3>
+
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    @if (item.ImageRemove == true)
+                                                    {
+                                                        <span class="badge badge-danger">Inactive</span>
+                                                    }
+                                                    @if (item.ImageRemove == false)
+                                                    {
+                                                        <span class="badge badge-success">Active</span>
+                                                    }
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    @if (item.ImageRemove == true)
+                                                    {
+                                                        <button class="btn btn-success active-image" data-id=@item.ImageId>
+                                                            <i class="fas fa-recycle">
+                                                            </i>
+                                                            Active
+                                                        </button>
+                                                    }
+                                                    @if (item.ImageRemove == false)
+                                                    {
+                                                        <a class="btn btn-secondary update-image" href="#" data-id=@item.ImageId style="background-color: #6F2CF3; border-color: #6F2CF3 ">
+                                                            <i class="fas fa-edit">
+                                                            </i> Edit
+                                                        </a>
+                                                        <button class="btn btn-warning delete-image" data-id=@item.ImageId>
+                                                            <i class="fas fa-exclamation-circle">
+                                                            </i> Remove
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+

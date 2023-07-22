@@ -1,0 +1,945 @@
+﻿@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@using EntityLayer.Concrete
+@model List<Heading>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DictionaryLayout.cshtml";
+
+    CategoryManager cm = new CategoryManager(new EfCategoryDal());
+    var category = cm.GetCategory(ViewBag.categoryid);
+
+    ContentManager com = new ContentManager(new EfContentDal(), new EfHeadingDal(), new EfWriterDal());
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    .center-div {
+        font-family: 'Kanit', sans-serif;
+        display: flex;
+        justify-content: center;
+    }
+
+        .center-div .customtext {
+            font-size: 40px;
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .center-div .customtext2 {
+            font-size: 16px;
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+    .customtext2 {
+        font-size: 16px;
+        font-weight:600;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+
+
+    .ghostcontainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 43vh;
+        background: #1d1f24;
+    }
+
+        .ghostcontainer .ghost {
+            position: relative;
+            width: 160px;
+            height: 200px;
+        }
+
+            .ghostcontainer .ghost .bodyy {
+                position: relative;
+                width: 160px;
+                height: 200px;
+                border-top-right-radius: 80px;
+                border-top-left-radius: 80px;
+                background-color: #ebeae1;
+                animation: float 4s ease infinite;
+            }
+
+                .ghostcontainer .ghost .bodyy .face {
+                    display: flex;
+                    flex-wrap: wrap;
+                    position: absolute;
+                    top: 67px;
+                    left: 37px;
+                    width: 72px;
+                    height: 41px;
+                }
+
+                    .ghostcontainer .ghost .bodyy .face .eye {
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 100%;
+                        background-color: #272b24;
+                    }
+
+                        .ghostcontainer .ghost .bodyy .face .eye.left {
+                            margin-right: 32px;
+                        }
+
+                    .ghostcontainer .ghost .bodyy .face .smile {
+                        margin-top: 6px;
+                        width: 32px;
+                        height: 16px;
+                        margin-left: 20px;
+                        border-bottom-left-radius: 16px 12px;
+                        border-bottom-right-radius: 16px 12px;
+                        border-top-left-radius: 4px;
+                        border-top-right-radius: 4px;
+                        background-color: #272b24;
+                    }
+
+                    .ghostcontainer .ghost .bodyy .face .rosy {
+                        position: absolute;
+                        top: 28px;
+                        width: 22px;
+                        height: 8px;
+                        border-radius: 100%;
+                        background-color: #ffaa9e;
+                    }
+
+                        .ghostcontainer .ghost .bodyy .face .rosy.left {
+                            left: -6px;
+                            transform: rotate(-8deg);
+                        }
+
+                        .ghostcontainer .ghost .bodyy .face .rosy.right {
+                            right: -6px;
+                            transform: rotate(8deg);
+                        }
+
+                .ghostcontainer .ghost .bodyy .arm {
+                    position: absolute;
+                    top: 136px;
+                    width: 60px;
+                    height: 40px;
+                    background-color: #f0efda;
+                }
+
+                    .ghostcontainer .ghost .bodyy .arm.left {
+                        left: -4px;
+                        border-radius: 60% 100%;
+                        animation: arms-left 4s ease infinite;
+                    }
+
+                    .ghostcontainer .ghost .bodyy .arm.right {
+                        right: -65px;
+                        border-radius: 100% 60%;
+                        animation: arms-right 4s ease infinite;
+                    }
+
+                .ghostcontainer .ghost .bodyy .bottom {
+                    display: flex;
+                    position: absolute;
+                    top: 100%;
+                    left: 0px;
+                    right: -1px;
+                }
+
+                    .ghostcontainer .ghost .bodyy .bottom div {
+                        flex-grow: 1;
+                        position: relative;
+                        top: -14px;
+                        height: 28px;
+                        border-radius: 100%;
+                        background-color: #ebeae1;
+                    }
+
+                        .ghostcontainer .ghost .bodyy .bottom div:nth-child(2n) {
+                            top: -10px;
+                            margin: 0 -2px;
+                            border-top: 10px solid #f0efda;
+                            background: transparent;
+                        }
+
+            .ghostcontainer .ghost .shadow {
+                position: absolute;
+                bottom: -100px;
+                left: 50%;
+                width: 200px;
+                height: 12px;
+                border-radius: 100%;
+                background-color: #191d18;
+                animation: shadow 4s ease infinite;
+            }
+
+    @@keyframes float {
+        0%, 100% {
+            top: 0px;
+        }
+
+        40% {
+            top: -40px;
+        }
+    }
+
+    @@keyframes arms-left {
+        0%, 100% {
+            transform: translate(-50%, -50%) rotate(50deg);
+        }
+
+        40% {
+            transform: translate(-50%, -50%) rotate(40deg);
+        }
+    }
+
+    @@keyframes arms-right {
+        0%, 100% {
+            transform: translate(-50%, -50%) rotate(-50deg);
+        }
+
+        40% {
+            transform: translate(-50%, -50%) rotate(-40deg);
+        }
+    }
+
+    @@keyframes shadow {
+        0%, 100% {
+            transform: translateX(-50%) scale(1);
+        }
+
+        40% {
+            transform: translateX(-50%) scale(0.5);
+        }
+    }
+
+    .containerr {
+        font-family: 'Kanit', sans-serif;
+        transform: translate(0,-50%);
+        width: 100%;
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+        .containerr h1 {
+            position: relative;
+            font-size: 25px;
+            padding: 0;
+            margin: 0;
+            bottom: -12px;
+        }
+
+    *,
+    *:after,
+    *:before {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --transition: 0.25s;
+        --spark: 1.8s;
+        --hue: 245;
+    }
+
+    body {
+        --active: 0;
+        background: hsl( var(--hue) calc(var(--active) * 97%) 6% );
+        transition: background var(--transition);
+        overflow: hidden;
+    }
+
+    .buttonn {
+        --cut: 0.1em;
+        --active: 0;
+        --bg: radial-gradient( 120% 120% at 126% 126%, hsl(var(--hue) calc(var(--active) * 97%) 98% / calc(var(--active) * 0.9)) 40%, transparent 50% ) calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat, radial-gradient( 120% 120% at 120% 120%, hsl(var(--hue) calc(var(--active) * 97%) 70% / calc(var(--active) * 1)) 30%, transparent 70% ) calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat, hsl(var(--hue) calc(var(--active) * 100%) calc(12% - (var(--active) * 8%)));
+        background: var(--bg);
+        font-size: 2rem;
+        font-weight: 500;
+        border: 0;
+        cursor: pointer;
+        padding: 0.9em 1.3em;
+        display: flex;
+        align-items: center;
+        gap: 0.25em;
+        white-space: nowrap;
+        border-radius: 2rem;
+        position: relative;
+        box-shadow: 0 0 calc(var(--active) * 6em) calc(var(--active) * 3em) hsl(var(--hue) 97% 61% / 0.5), 0 0.05em 0 0 hsl(var(--hue) calc(var(--active) * 97%) calc((var(--active) * 50%) + 30%)) inset, 0 -0.05em 0 0 hsl(var(--hue) calc(var(--active) * 97%) calc(var(--active) * 10%)) inset;
+        transition: box-shadow var(--transition), scale var(--transition), background var(--transition);
+        scale: calc(1 + (var(--active) * 0.1));
+        transform-style: preserve-3d;
+        perspective: 100vmin;
+        overflow: hidden;
+    }
+
+        .buttonn:active {
+            scale: 1;
+        }
+
+    .star {
+        height: calc(var(--size) * 1px);
+        aspect-ratio: 1;
+        background: white;
+        border-radius: 50%;
+        /*	filter: blur(4px);*/
+        position: absolute;
+        opacity: var(--alpha);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(10deg) rotate(0deg) translateY(calc(var(--distance) * 1px));
+        animation: orbit calc(var(--duration) * 1s) calc(var(--delay) * -1s) infinite linear;
+    }
+
+    @@keyframes orbit {
+        to {
+            transform: translate(-50%, -50%) rotate(10deg) rotate(360deg) translateY(calc(var(--distance) * 1px));
+        }
+    }
+
+    .galaxy {
+        position: absolute;
+        width: 100%;
+        aspect-ratio: 1;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        overflow: hidden;
+        opacity: var(--active);
+        transition: opacity var(--transition);
+        /*transform-style: preserve-3d;
+        perspective: 100vmin;*/
+        /*	opacity: 0.25;*/
+    }
+
+    .galaxy__ring {
+        height: 200%;
+        width: 200%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        transform: translate(-28%, -40%) rotateX(-24deg) rotateY(-30deg) rotateX(90deg);
+        transform-style: preserve-3d;
+        /*	background: red;*/
+    }
+
+    .galaxy__container {
+        position: absolute;
+        inset: 0;
+        opacity: var(--active);
+        transition: opacity var(--transition);
+        mask: radial-gradient(white, transparent);
+    }
+
+    .star--static {
+        animation: none;
+        top: 50%;
+        left: 50%;
+        transform: translate(0, 0);
+        max-height: 4px;
+        filter: brightness(4);
+        opacity: 0.9;
+        animation: move-x calc(var(--duration) * 0.1s) calc(var(--delay) * -0.1s) infinite linear, move-y calc(var(--duration) * 0.2s) calc(var(--delay) * -0.2s) infinite linear;
+    }
+
+    .buttonn:hover .star--static {
+        animation-play-state: paused;
+    }
+
+    @@keyframes move-x {
+        0% {
+            translate: -100px 0;
+        }
+
+        100% {
+            translate: 100px 0;
+        }
+    }
+
+    @@keyframes move-y {
+        0% {
+            transform: translate(0, -50px);
+        }
+
+        100% {
+            transform: translate(0, 50px);
+        }
+    }
+
+    .spark {
+        position: absolute;
+        inset: 0;
+        border-radius: 2rem;
+        rotate: 0deg;
+        overflow: hidden;
+        mask: linear-gradient(white, transparent 50%);
+        animation: flip calc(var(--spark) * 2) infinite steps(2, end);
+    }
+
+    @@keyframes flip {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .spark:before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        aspect-ratio: 1;
+        top: 0%;
+        left: 50%;
+        z-index: -1;
+        translate: -50% -15%;
+        rotate: 0;
+        transform: rotate(-90deg);
+        opacity: calc((var(--active)) + 0.4);
+        background: conic-gradient( from 0deg, transparent 0 340deg, white 360deg );
+        transition: opacity var(--transition);
+        animation: rotate var(--spark) linear infinite both;
+    }
+
+    .spark:after {
+        content: "";
+        position: absolute;
+        inset: var(--cut);
+        border-radius: 2rem;
+    }
+
+    .backdrop {
+        position: absolute;
+        inset: var(--cut);
+        background: var(--bg);
+        border-radius: 2rem;
+        transition: background var(--transition);
+    }
+
+    @@keyframes rotate {
+        to {
+            transform: rotate(90deg);
+        }
+    }
+
+
+
+    @@supports(selector(:has(:is(+ *)))) {
+        body:has(.buttonn:is(:hover, :focus-visible)) {
+            --active: 1;
+            --play-state: running;
+        }
+
+        .bodydrop {
+            display: none;
+        }
+    }
+
+    .buttonn:is(:hover, :focus-visible) ~ :is(.bodydrop, .particle-pen) {
+        --active: 1;
+        --play-state: running;
+    }
+
+    .bodydrop {
+        background: hsl( 260 calc(var(--active) * 97%) 6% );
+        position: fixed;
+        inset: 0;
+        z-index: -1
+    }
+
+
+
+    .buttonn:is(:hover, :focus-visible) {
+        --active: 1;
+        --play-state: running;
+    }
+
+
+    .galaxy-button {
+        position: relative;
+    }
+
+    @@keyframes float-out {
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .text {
+        translate: 2% -6%;
+        letter-spacing: 0.01ch;
+        /*background: linear-gradient(90deg, hsl(0 0% calc((var(--active) * 100%) + 65%)), hsl(0 0% calc((var(--active) * 100%) + 26%)));
+        -webkit-background-clip: text;*/
+        color: hsl(0 0% calc(60% + (var(--active) * 26%)));
+    }
+
+    .buttonn svg {
+        inline-size: 1.25em;
+        translate: -25% -5%;
+    }
+
+    .divexplore {
+        justify-content: right;
+        display: flex;
+    }
+
+    @@media (max-width: 479.98px) {
+        .divexplore {
+            justify-content: center;
+        }
+    }
+
+
+    p {
+        font-family: 'Kanit', sans-serif;
+        font-size: 14px;
+    }
+
+
+    .custom-p {
+        margin-inline: 30px;
+        font-family: 'Kanit', sans-serif;
+        font-size: 20px;
+    }
+
+    table {
+        font-family: 'Kanit', sans-serif;
+    }
+
+
+    .form-group {
+        font-family: 'Kanit', sans-serif;
+        margin-bottom: 40px;
+        /* padding-inline: 25px;*/
+    }
+
+        .form-group .form-control {
+            color: #9FA0A2;
+            border-radius: 8px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            border: 2px solid #0000;
+        }
+
+            .form-group .form-control:hover {
+                background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+            }
+
+    .custom-file-inputt {
+        border: 2px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        padding: 0px;
+        place-content: left;
+    }
+
+        .custom-file-inputt::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        .custom-file-inputt::before {
+            margin-top: -2px;
+            margin-left: -2px;
+            content: 'Choose Image';
+            height: 38px;
+            display: inline-block;
+            background-color: #181A1F;
+            border: 2px solid #12A77F;
+            border-radius: 6px;
+            padding: 5px;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+    .image-container {
+        margin-left: 7px;
+        padding: 5px;
+        display: inline-flex;
+        align-items: flex-start;
+        text-align: center;
+        position: relative;
+        max-width: 200px;
+        max-height: 110px;
+        border: 2px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        display: none;
+    }
+
+    #cancelImagebutton {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:22px;" class="fas fa-tag"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0"> Heading's</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<div class="row">
+    <section class="col-lg-4">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; max-height: 83vh; border-radius: 30px; ">
+            <div class="card-body scrollbar" id="style-7" style=" height: 100%; overflow-y: auto; overflow-x: hidden;margin-block:20px;">
+                <div class="center-div">
+                    <div class="customtext">Headings</div>
+                    <div class="customtext2"> (@Model.Count)</div>
+                </div>
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example2" class="table table-borderless table-hover table-dark dataTable" role="alertdialog" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="" tabindex="0" rowspan="1" colspan="1" ></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        int count = com.GetListByHeadingId(item.HeadingID).Count();
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                @if (item.HeadingImage != null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style=" display: grid; place-items: center; padding: 0; width: 18%;">
+                                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                                    <img style="max-height: 45px; max-width: 45px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = item.HeadingID })">
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-9" style="width: 73%;">
+                                                                <a style="color: #d0d2d6;font-size:14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                                <br />
+                                                                <a style="color: #d0d2d6;font-size:14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                                    <small style="font-size: 12px; color: #9FA0A2">
+                                                                        Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                    </small>
+                                                                </a>                                                          
+                                                            </div>
+                                                            <div class="col-md-1" style="width: 9%;">
+                                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                @if (item.HeadingImage == null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-11" style="width: 91%;">
+                                                                <a style="color: #d0d2d6; font-size: 14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                                <br />
+                                                                <a style="color: #d0d2d6;font-size:14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                                    <small style="font-size: 12px; color: #9FA0A2">
+                                                                        Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                    </small>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-1" style="width: 9%;">
+                                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                @if (item.HeadingImage != null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style=" display: grid; place-items: center;padding:0;width: 18%;">
+                                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                                    <img style="max-height: 45px; max-width: 45px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = item.HeadingID })">
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-9" style="width: 73%;">
+                                                                <a style="color: #d0d2d6; font-size: 14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                                <br />
+                                                                <a style="color: #d0d2d6;font-size:14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                                    <small style="font-size: 12px; color: #9FA0A2">
+                                                                        Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                    </small>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-1" style="width: 9%;">
+                                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                @if (item.HeadingImage == null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-11" style="width: 91%;">
+                                                                <a style="color: #d0d2d6;font-size:14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                                <br />
+                                                                <a style="color: #d0d2d6;font-size:14px;" href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                                    <small style="font-size: 12px; color: #9FA0A2">
+                                                                        Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                    </small>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-1" style="width: 9%;">
+                                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-8">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; height: 83vh; border-radius: 30px; ">
+            <div class="card-body scrollbar" id="style-7" style=" height: 100%; overflow-y: auto; overflow-x: hidden; ">
+                <div class="center-div">
+                    <div class="customtext">@category.CategoryName</div>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="row">
+                        <div class="col-md-6" style="padding-left:20px;">
+                            <div class="card" style=" height: 25vh; background-color: #181A1F;box-shadow:none;">
+                                <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; ">
+                                    <lottie-player src="@category.CategoryDescription"
+                                                   background="transparent" speed="1" style="max-width: 100vh; max-height: 100vh;" loop autoplay></lottie-player>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-inline:15px;">
+                            <div class="card" style=" height: 25vh; background-color: #181A1F; box-shadow: none;">
+                                <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; padding:0;padding-top:20px;">
+                                    <p style="text-align:center;">
+                                        * Please check if the same or similar heading has been opened before creating a heading.
+                                        * The heading should be opened in the category for the purpose. Inconsistent headings can be removed.
+                                        * Complaints regarding records written about individuals can only be made by the natural person himself or, if he is a legal person, by his official or legal representative. Complaints made by third parties will not be considered.
+                                        * Let's start a discussion in our own space and watch what happens 🪐
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card" style=" height: 30vh; background-color: #181A1F;box-shadow:none;">
+                                <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; ">
+                                    @Html.Action("categoryHeadingsPartial", "DictionaryPanelHeading", new { id = ViewBag.categoryid })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div style="background-color: #1d1f24; color: #9FA0A2; margin: 20px; border-radius: 30px;padding:15px;">
+                        <div style="margin-block:40px;position:relative">
+                            <p class="custom-p"><a style="font-weight: 600; background: linear-gradient(to left, #e37515 0%, #be1145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; ">Unfortunately</a>, you cannot create a heading without logging in, this privilege is for <a style="font-weight:600; background: linear-gradient(to left, #572ADE 0%, #12A77F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">members only</a>. Yes, it's a privilege to join us 👻</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div style="display: grid; place-items: center; height: 100%; max-width: 100%;">
+                                    <p class="custom-p">
+                                        If you already have an account, <a style="color: #12A77F; font-weight: 500;">Sign in</a> now!
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="ghostcontainer">
+                                    <div class="ghost">
+                                        <div class="bodyy">
+                                            <div class="face">
+                                                <div class="eye left"></div>
+                                                <div class="eye right"></div>
+                                                <div class="smile"></div>
+                                                <div class="rosy left"></div>
+                                                <div class="rosy right"></div>
+                                            </div>
+                                            <div class="arm left">
+                                                <a class="btn" href="/Login/WriterLogin" style="background-color: #12A77F;color:white;width:80px;">
+                                                    Sign in
+                                                </a>
+                                            </div>
+                                            <div class="arm right">
+                                                <a class="btn" href="/DictionaryPanel/Signup" style="background-color: #572ADE;color:white;width:80px;">
+                                                    Sign up
+                                                </a>
+                                            </div>
+                                            <div class="bottom">
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                        <div class="shadow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="display: grid; place-items: center; height: 100%; max-width: 100%;margin-left:20px;">
+                                    <p class="custom-p">If you are not a member, you can <a style="color: #572ADE; font-weight: 600;">Sign up</a> here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+    <script>
+        const RANDOM = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+        const PARTICLES = document.querySelectorAll('.star')
+        PARTICLES.forEach(P => {
+            P.setAttribute('style', `
+                        --angle: ${RANDOM(0, 360)};
+                        --duration: ${RANDOM(6, 20)};
+                        --delay: ${RANDOM(1, 10)};
+                        --alpha: ${RANDOM(40, 90) / 100};
+                        --size: ${RANDOM(2, 6)};
+                        --distance: ${RANDOM(40, 200)};`)
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if (!$.browser.webkit) {
+                $('.wrapper').html('<p>Sorry! Non webkit users. :(</p>');
+            }
+        });
+    </script>
+
+    <!-- bs-custom-file-input -->
+    <script src="~/AdminLTE-3.0.4/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+    <script>
+        function readImageIn(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#ImagePathIn').attr('src', e.target.result);
+                    $('#ImagePathIn').show();
+                    $('#cancelImagebutton').show();
+                    $('.image-container').show();
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <script>
+        function cancelImageSelection() {
+            $('#formFile').val('');
+            $('#ImagePathIn').attr('src', '');
+            $('#ImagePathIn').hide();
+            $('#cancelImagebutton').hide();
+            $('.image-container').hide();
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var textbox = $("#HeadingName");
+            var charCount = $("#charCount");
+
+            textbox.on("input", function () {
+                var textLength = textbox.val().length;
+                charCount.text(textLength + "/50");
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#myForm').submit(function (event) {
+                event.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (!data.success) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error'
+                            });
+                        } else {                           
+                            Swal.fire({
+                                title: 'Loaded!',
+                                text: 'Your heading was Loaded ⚡ successfully. Lets write first content.',
+                                icon: 'success'
+                            }).then(() => {
+                                var headingID = data.heading.HeadingID;
+                                location.href = '/DictionaryPanelContent/Index/' + headingID
+                            });
+                        }
+                       
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: status + '!',
+                            text: 'An error occurred, Heading could not be loaded. Please make sure that this field is not blank or less than 3 characters! ' + error,
+                            icon: 'error'
+                        });
+                        console.log = xhr;
+                    }
+                });
+            });
+        });
+    </script>
+
+}

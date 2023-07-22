@@ -1,0 +1,40 @@
+﻿@model EntityLayer.Concrete.Content
+
+<div class="row add-content-card">
+    <section class="col-md-6">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #1d1f24; color: #9FA0A2; box-shadow: none; display:flex;justify-content:center">
+            <div class="card-body" style="height: 400px; max-width: 100%; max-height: 80%;">
+                <lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_WdTEui.json"
+                               background="transparent" speed="1" style="max-width: 100vh; max-height: 100vh;" loop autoplay></lottie-player>
+            </div>
+        </div>
+    </section>
+    <section class="col-md-6">
+        <div class="card" style="background-color: #1d1f24; color: #9FA0A2; box-shadow: none; display: flex; justify-content: center ">
+            <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%;">
+                <div class="row" style=" padding-inline: 25px;margin-bottom:5px;text-align:left;">
+                    <button id="addLinkButton" class="btn btn-outline-light custom-buttonn-auto" data-toggle="tooltip" title="Make sure you type the full heading" style="margin:5px;">
+                    Heading link
+                    </button>
+                    <button id="addWebLinkButton" class="btn btn-outline-light custom-buttonn-auto" data-toggle="tooltip" title="The link you provided must be prefixed with 'Http(s)://' for it to be valid" style="margin:5px;">
+                    Http://
+                    </button>
+                </div>
+                @using (Html.BeginForm("addContentPartial", "DictionaryPanelContent", FormMethod.Post, new { id = "myForm" }))
+                {
+                    <div class="form-group">
+                        @Html.Label("Content Caption")
+                        @Html.TextAreaFor(x => x.ContentCaption, 10, 40, new { @class = "form-control", @maxlength = "1000", @placeholder = "Write something here..." })
+                        <p id="charCount">0/1000</p>
+                        <input type="hidden" name="HeadingID" value="@ViewBag.headingid" />
+                        <div style="text-align: right;">
+                            <button class="btn btn-outline-light custom-button">Add Content</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+

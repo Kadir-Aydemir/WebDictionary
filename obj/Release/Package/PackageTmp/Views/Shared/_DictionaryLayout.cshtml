@@ -1,0 +1,509 @@
+﻿@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@{
+    Layout = null;
+    CategoryManager cam = new CategoryManager(new EfCategoryDal());
+    var allcategory = cam.GetList();
+
+    HeadingManager hm = new HeadingManager(new EfHeadingDal(), new EfCategoryDal());
+    var category = hm.ListCategoryHeading().OrderByDescending(x => x.Count).ToList();
+
+    ContentManager cm = new ContentManager(new EfContentDal(), new EfHeadingDal(), new EfWriterDal());
+    var popular = cm.ListHeadingContent().OrderByDescending(x => x.Count).ToList();
+
+    WriterManager wm = new WriterManager(new EfWriterDal());
+    var writer = wm.GetWriterIdByMail(User.Identity.Name);
+
+    MessageManager mm = new MessageManager(new EfMessageDal());
+    int inbox = mm.GetListInboxNotRead(User.Identity.Name).Count();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Web Dictionary</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="~/Resources/dictionaryLogo.png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link href="~/AdminLTE-3.0.4/dist/css/adminlte.min.css" rel="stylesheet" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- notify -->
+    <link href="~/AdminLTE-3.0.4/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+        .custom-navbar {
+            border: 2px solid #0000;
+            border-radius: 8px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 8px;
+        }
+
+        .custom-button {
+            border: 1px solid #0000;
+            border-radius: 6px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            width: 160px;
+        }
+
+            .custom-button:hover {
+                transition: opacity .3s ease;
+                color: white;
+                background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+                border-color: transparent;
+            }
+
+        .dropdown-menu {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            color: #d0d2d6;
+            border-radius: 12px;
+            /* border: 2px solid #0000;*/
+            background-color: #181A1F;
+            /* background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;*/
+        }
+
+            .dropdown-menu a {
+                color: #d0d2d6;
+            }
+
+                .dropdown-menu a:hover {
+                    background-color: whitesmoke;
+                    border-radius: 5px;
+                }
+
+
+        .custom-button-header {
+            border: 1px solid #0000;
+            border-radius: 6px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            width: auto;
+        }
+
+            .custom-button-header:hover {
+                transition: opacity .3s ease;
+                color: white;
+                background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+                border-color: transparent;
+            }
+
+        @@media (max-width: 479.98px) {
+            .dropdown-menu {
+                width: 320px;
+            }
+        }
+
+        @@media (min-width: 480px) {
+            .dropdown-menu {
+                width: 420px;
+            }
+        }
+
+        @@media (min-width: 1080px) {
+            .dropdown-menu {
+                width: 600px;
+            }
+        }
+
+        .scrollbar {
+            overflow-y: scroll;
+        }
+
+        .force-overflow {
+            min-height: 250px;
+        }
+
+        #style-7::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #181A1F;
+            border-radius: 10px;
+        }
+
+        #style-7::-webkit-scrollbar {
+            width: 5px;
+            background-color: #181A1F;
+        }
+
+        #style-7::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, #12A77F), color-stop(0.72, #572ADE), color-stop(0.86, #572ADE));
+        }
+
+        h1 {
+            font-family: 'Kanit', sans-serif;
+        }
+    </style>
+    @RenderSection("scriptshead", false)
+</head>
+<body class="hold-transition sidebar-collapse layout-top-nav scrollbar" id="style-7" style="overflow-y: auto; overflow-x: hidden;">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-lg navbar-dark custom-navbar" style="background-color: #0F1116; color: #9FA0A2;">
+            <div class="container" style="max-width: 1280px; width: 100%;">
+                <a href="/DictionaryPanel/Index" class="navbar-brand">
+                    <img src="~/Resources/dictionaryLogo.png" alt="Logo" class="brand-image">
+                    <span class="brand-text font-weight-bold">WebDictionary</span>
+                </a>
+
+                <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                    <!-- Left navbar links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i> Popular</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/DictionaryPanel/Index" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/DictionaryPanelContact/Contact" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Categories</a>
+                            <div aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow dropdownCategory">
+                                <div class="row">
+                                    @{ Random random = new Random();}
+                                    @for (int i = 0; i < allcategory.Count; i++)
+                                    {
+                                        if (i % 3 == 0 && i != 0)
+                                        {
+                                        @:</div>
+                                        @:<div class="row">
+                                        }
+
+                                        <div class="col-md-4">
+                                            @{int count = 0;
+                                                string color = "bg-indigo";
+
+                                                if (i % 2 == 1)
+                                                {
+                                                    color = "bg-success";
+                                                }
+
+                                                foreach (var item in category)
+                                                {
+                                                    if (item.CategoryID == allcategory[i].CategoryID)
+                                                    {
+                                                        count = item.Count;
+                                                    }
+                                                }
+                                            }
+                                            <a href="/DictionaryPanelHeading/Index/@allcategory[i].CategoryID" class="dropdown-item">@allcategory[i].CategoryName <span class="badge @color float-right">@count</span></a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- SEARCH FORM -->
+                    @using (Html.BeginForm("SearchHeading", "DictionaryPanelContent", FormMethod.Get, new { @class = "form-inline ml-0 ml-md-3" }))
+                    {
+                        <div class="input-group input-group-sm" style="margin-block:10px;">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search heading" aria-label="Search" name="HeadingName">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+
+                    <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <div class="dropdown" style="margin-right:30px">
+                                    <button class="btn btn-outline-light dropdown-toggle custom-button-header" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @if (writer.WriterImage == null)
+                                        {
+                                            <img src="~/Resources/defaultperson.png" alt="User Image" class="img-circle img-fluid" style="width:28px;height:28px;margin-right:10px;">
+                                        }
+                                        @if (writer.WriterImage != null)
+                                        {
+                                            <img src="@Url.Action("GetImageWriter", "DictionaryPanel", new { id = writer.WriterID })" alt="User Image" class="img-circle img-fluid" style="width:28px;height:28px;margin-right:10px;">
+                                        }
+                                        @{ var name = writer.WriterName + " " + writer.WriterSurname; }
+                                        @if (name.Length <= 18)
+                                        {
+                                            @name
+                                        }
+                                        @if (name.Length > 18)
+                                        {
+                                            @name.Substring(0, 18)
+                                        }
+                                    </button>
+                                    <ul class="dropdown-menu" style="width: 190px">
+                                        <li>
+                                            <a href="/WriterPanel/WriterProfile" class="dropdown-item btn-sm">
+                                                <i class="nav-icon fas fa-user-alt"></i>
+                                                Account <span class="badge badge-pill bg-danger float-right">@inbox</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/DictionaryPanel/LogOut" class="dropdown-item btn-sm">
+                                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                                Sign Out
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="btn" href="/Login/WriterLogin" style="background-color: #12A77F;color:white">
+                                    Sign in
+                                </a>
+                            </li>
+                            <li class="nav-item" style="margin-left:10px;">
+                                <a class="btn" href="/DictionaryPanel/Signup" style="background-color: #572ADE;color:white">
+                                    Sign up
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="row">
+            <!-- /.navbar -->
+            <div class="col-0">
+                <!-- Main Sidebar Container -->
+                <aside class="main-sidebar sidebar-dark-dark elevation-0" style="background-color: #0F1116; position: fixed; top: 95px;">
+                    <div style="background-color: #181A1F; color: #9FA0A2;">
+                        <!-- Brand Logo -->
+                        <a href="#" class="brand-link" style="border-color: #181A1F;cursor:default;">
+                            <i class="fas fa-star" style="margin-inline:20px;"></i>
+                            <span class="brand-text font-weight-normal">Popular</span>
+                        </a>
+                        <!-- Sidebar -->
+                        <div class="sidebar">
+                            <nav class="mt-2">
+                                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="flex-wrap: nowrap;">
+                                    @if (popular.Count <= 20)
+                                    {
+                                        foreach (var item in popular)
+                                        {
+                                            <li class="nav-item active">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID" class="nav-link">
+                                                    @{var image = hm.GetHeading(item.HeadingID);}
+                                                    <div class="row">
+                                                        @if (image.HeadingImage != null)
+                                                        {
+                                                            <div class="col-md-3" style=" display: grid; place-items: center;padding:0;width: 27%;">
+                                                                <img style="max-height: 40px; max-width: 40px; border-radius: 5px;" alt="Avatar" src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = item.HeadingID })">
+                                                            </div>
+                                                            <div class="col-md-8" style=" display: flex; align-items: center; padding: 0; width: 64%;">
+                                                                @item.HeadingName
+                                                            </div>
+                                                            <div class="col-md-1" style=" display: grid; place-items: center; padding: 0; width: 9%;">
+                                                                <span class="badge bg-indigo" style="">@item.Count</span>
+                                                            </div>
+                                                        }
+                                                        @if (image.HeadingImage == null)
+                                                        {
+                                                            <div class="col-md-10" style="width: 83%;">
+                                                                @item.HeadingName
+                                                            </div>
+                                                            <div class="col-md-2" style=" display: grid; place-items: center; width: 17%;">
+                                                                <span class="badge bg-indigo" style="margin-left:10px;">@item.Count</span>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                    @if (popular.Count > 20)
+                                    {
+                                        for (int i = 0; i < 20; i++)
+                                        {
+                                            <li class="nav-item active">
+                                                <a href="/DictionaryPanelContent/Index/@popular[i].HeadingID" class="nav-link">
+                                                    @{var image = hm.GetHeading(popular[i].HeadingID);}
+                                                    <div class="row">
+                                                        @if (image.HeadingImage != null)
+                                                        {
+                                                            <div class="col-md-3" style=" display: grid; place-items: center; padding: 0; width: 27%;">
+                                                                <img style="max-height: 40px; max-width: 40px; border-radius: 8px;" alt="Avatar" src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = popular[i].HeadingID })">
+                                                            </div>
+                                                            <div class="col-md-8" style="display: flex; flex-wrap: nowrap; align-items: center; padding: 1px; width: 64%; ">
+                                                                @popular[i].HeadingName
+                                                            </div>
+                                                            <div class="col-md-1" style=" display: grid; place-items: center; padding: 0; width: 9%;">
+                                                                <span class="badge bg-indigo" style="margin-left:10px;">@popular[i].Count</span>
+                                                            </div>
+                                                        }
+                                                        @if (image.HeadingImage == null)
+                                                        {
+                                                            <div class="col-md-10" style="width: 83%;">
+                                                                @popular[i].HeadingName
+                                                            </div>
+                                                            <div class="col-md-2" style=" display: grid; place-items: center; width: 17%;">
+                                                                <span class="badge bg-indigo" style="margin-left:10px;">@popular[i].Count</span>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </nav>
+                            <!-- /.sidebar-menu-->
+                        </div>
+                        <!-- /.sidebar -->
+                    </div>
+                </aside>
+            </div>
+            <div class="col-12">
+                <!-- Content Wrapper. Contains page content -->
+                <div class="content-wrapper" style="background-color: #0F1116; color: #9FA0A2; display: flex; justify-content: center; ">
+                    <section class="content" style="max-width: 1280px; width: 100%;">
+                        <div class="container" style="max-width: 1280px; width: 100%;">
+                            @RenderBody()
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer" style="background-color: #0F1116; color: #9FA0A2; display: flex; justify-content: center;border:none; ">
+            <!-- Default to the left -->
+            <div class="row" style="width:550px;height:50px;">
+                <div class="col-2" style="display: flex; justify-content: center;width:15%;padding:0;">
+                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_gbHcwp1UaT.json"
+                                   background="transparent" speed="1" style="max-width: 50px; max-height: 50px;" loop autoplay></lottie-player>
+                </div>
+                <div class="col-10" style="display: flex; justify-content: flex-start; width: 85%;margin-top:12px;">
+                    <strong>
+                        Copyright &copy; 2023. All rights reserved. Design by
+                        <a style="color: #12A77F" href="https://github.com/Kadir-Aydemir" target="_blank"> Kadir AYDEMİR</a>
+                    </strong>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>$.widget.bridge('uibutton', $.ui.button)</script>
+    <!-- Bootstrap 4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+
+    <!-- ChartJS -->
+    <script src="~/AdminLTE-3.0.4/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/AdminLTE-3.0.4/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/AdminLTE-3.0.4/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/AdminLTE-3.0.4/plugins/moment/moment.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/AdminLTE-3.0.4/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/AdminLTE-3.0.4/dist/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/AdminLTE-3.0.4/dist/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/AdminLTE-3.0.4/dist/js/demo.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script src="~/AdminLTE-3.0.4/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+
+    <!-- DataTables -->
+    <script src="~/AdminLTE-3.0.4/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({
+                    scrollTop: $(this.hash).offset().top
+                }, 900);
+            });
+        });
+
+    </script>
+
+    @{ string yol = "@lottiefiles";}
+    <script src="https://unpkg.com/@yol/lottie-player@latest/dist/lottie-player.js"></script>
+    @RenderSection("scripts", false)
+
+</body>
+</html>

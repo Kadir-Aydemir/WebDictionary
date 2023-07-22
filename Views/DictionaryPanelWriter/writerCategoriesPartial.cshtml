@@ -1,0 +1,64 @@
+﻿@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@using EntityLayer.Concrete
+@model List<Category>
+
+@{
+    HeadingManager hm = new HeadingManager(new EfHeadingDal(), new EfCategoryDal());
+}
+
+<div style="margin-top:16px;">
+    <a style="font-weight:600; background: linear-gradient(to left, #572ADE 0%, #12A77F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Categories where person create content
+    </a>
+</div>
+
+
+<div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4" style="margin-block:20px;">
+    <div class="row">
+        <div class="col-sm-12 col-md-6"></div>
+        <div class="col-sm-12 col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="example1" class="table table-borderless table-hover table-dark dataTable" role="alertdialog" style="background-color: #181A1F; color: #9FA0A2;">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        int count = hm.GetListByCategory(item.CategoryID).Count();
+                        if ((Model.IndexOf(item)) % 2 == 0)
+                        {
+                            <tr role="row" class="odd">
+                                <td style="">
+                                    <div class="row">
+                                        <div class="col-md-11" style="width: 91%;">
+                                            <a style="color: #d0d2d6" href="/DictionaryPanelHeading/Index/@item.CategoryID">@item.CategoryName</a>
+                                        </div>
+                                        <div class="col-md-1" style="width: 9%;">
+                                            <a href="/DictionaryPanelHeading/Index/@item.CategoryID"><span class="badge bg-indigo" style="">@count</span></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr role="row" class="even">
+                                <td style="">
+                                    <div class="row">
+                                        <div class="col-md-11" style="width: 91%;">
+                                            <a style="color: #d0d2d6" href="/DictionaryPanelHeading/Index/@item.CategoryID">@item.CategoryName</a>
+                                        </div>
+                                        <div class="col-md-1" style="width: 9%;">
+                                            <a href="/DictionaryPanelHeading/Index/@item.CategoryID"><span class="badge bg-indigo" style="">@count</span></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

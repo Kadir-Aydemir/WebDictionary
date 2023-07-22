@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace WebDictionary.Controllers
 {
+    [AllowAnonymous]
     public class ErrorPageController : Controller
     {
         // GET: ErrorPage
@@ -19,6 +20,13 @@ namespace WebDictionary.Controllers
         public ActionResult Page404()
         {
             Response.StatusCode = 404;
+            Response.TrySkipIisCustomErrors = true;
+            return View();
+        }
+
+        public ActionResult Page503()
+        {
+            Response.StatusCode = 503;
             Response.TrySkipIisCustomErrors = true;
             return View();
         }

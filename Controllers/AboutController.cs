@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace WebDictionary.Controllers
 {
@@ -17,29 +18,27 @@ namespace WebDictionary.Controllers
         AboutManager am = new AboutManager(new EfAboutDal());
         AboutValidator validator = new AboutValidator();
 
-        [Authorize]
         public ActionResult Index()
-        {
-            var list = am.GetList();
-            return View(list);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult addAbout()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult addAbout(About about)
+        public ActionResult Index(About about, FormCollection form)
         {
             ValidationResult result = validator.Validate(about);
             if (result.IsValid)
             {
-                am.AddAbout(about);
-                ViewBag.okay=true;
-                return RedirectToAction("Index");
+                if (form["btnInsert"] != null)
+                {
+                    am.AddAbout(about);
+                    ViewBag.insertresult = "true";
+                }
+                else if (form["btnUpdate"] != null)
+                {
+                    am.UpdateAbout(about);
+                    ViewBag.updateresult = "true";
+                }
             }
             else
             {
@@ -47,15 +46,58 @@ namespace WebDictionary.Controllers
                 {
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
-                ViewBag.okay = false;
-                return RedirectToAction("Index");
-            }            
+                if (form["btnInsert"] != null)
+                {
+                    ViewBag.alert = "true";
+                }
+                else if (form["btnUpdate"] != null)
+                {
+                    ViewBag.updatealert = "true";
+                }            
+            }
+            return View();
         }
 
-        [Authorize]
         public PartialViewResult AboutPartial()
         {
-            return PartialView();
+            var list = am.GetList();
+            return PartialView(list);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var find = am.GetAbout(id);
+            if (find.AboutRemove == true)
+            {
+                find.AboutRemove = false;
+            }
+            else
+            {
+                find.AboutRemove = true;
+            }
+            am.UpdateAbout(find);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult updateAbout(int id)
+        {
+            var about = am.GetAbout(id);
+            return Json(about, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult Show(int id)
+        {
+            var about = am.GetAbout(id);
+            return Json(about, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "A")]
+        public ActionResult AboutReport()
+        {
+            var list = am.GetList();
+            return View(list);
         }
     }
 }

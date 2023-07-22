@@ -1,0 +1,127 @@
+﻿@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@using EntityLayer.Concrete
+@model List<Heading>
+
+@{
+    ContentManager com = new ContentManager(new EfContentDal(), new EfHeadingDal(), new EfWriterDal());
+}
+
+<div style="margin-top:16px;">
+    <a style="font-weight:600; background: linear-gradient(to left, #572ADE 0%, #12A77F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Headings created by the person
+    </a>
+</div>
+
+
+<div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4" style="margin-block:20px;">
+    <div class="row">
+        <div class="col-sm-12 col-md-6"></div>
+        <div class="col-sm-12 col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="example2" class="table table-borderless table-hover table-dark dataTable " role="alertdialog" style="background-color: #181A1F; color: #9FA0A2;">
+                <thead>
+                    <tr role="row">
+                        <th style="" tabindex="0" rowspan="1" colspan="1">Headings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        int count = com.GetListByHeadingId(item.HeadingID).Count();
+                        if ((Model.IndexOf(item)) % 2 == 0)
+                        {
+                            <tr role="row" class="odd">
+                                @if (item.HeadingImage != null)
+                                {
+                                    <td style="">
+                                        <div class="row">
+                                            <div class="col-md-2" style=" display: grid; place-items: center; padding: 0; width: 18%;">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                    <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = item.HeadingID })">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9" style="width: 73%;">
+                                                <a style="color: #d0d2d6" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                <br />
+                                                <small style="cursor:default;">
+                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                </small>
+                                            </div>
+                                            <div class="col-md-1" style="width:9%;">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                                @if (item.HeadingImage == null)
+                                {
+                                    <td style="">
+                                        <div class="row">
+                                            <div class="col-md-11" style="width: 91%;">
+                                                <a style="color: #d0d2d6" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                <br />
+                                                <small style="cursor:default;">
+                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                </small>
+                                            </div>
+                                            <div class="col-md-1" style="width: 9%;">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr role="row" class="even">
+                                @if (item.HeadingImage != null)
+                                {
+                                    <td style="">
+                                        <div class="row">
+                                            <div class="col-md-2" style=" display: grid; place-items: center; padding: 0; width: 18%;">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID">
+                                                    <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = item.HeadingID })">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9" style="width: 73%;">
+                                                <a style="color: #d0d2d6" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                <br />
+                                                <small style="cursor:default;">
+                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                </small>
+                                            </div>
+                                            <div class="col-md-1" style="width:9%;">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                                @if (item.HeadingImage == null)
+                                {
+                                    <td style="">
+                                        <div class="row">
+                                            <div class="col-md-11" style="width: 91%;">
+                                                <a style="color: #d0d2d6" href="/DictionaryPanelContent/Index/@item.HeadingID">@item.HeadingName</a>
+                                                <br />
+                                                <small style="cursor:default;">
+                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                </small>
+                                            </div>
+                                            <div class="col-md-1" style="width: 9%;">
+                                                <a href="/DictionaryPanelContent/Index/@item.HeadingID"><span class="badge bg-indigo" style="">@count</span></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

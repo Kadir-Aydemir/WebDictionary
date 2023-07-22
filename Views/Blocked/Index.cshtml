@@ -1,0 +1,235 @@
+﻿@model EntityLayer.Concrete.Blocked
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    .card {
+        font-family: 'Kanit', sans-serif;
+    }
+
+    table {
+        font-family: 'Kanit', sans-serif;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-shield-alt"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> Blocked Log's</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+                <div class="card-tools" style="margin-right: 15px;">
+                    @if (User.IsInRole("A"))
+                    {
+                        <a href="/Blocked/BlockedReport" class="btn btn-outline-info btn-sm" style="border-radius: 13px; margin: 3px; padding: 6px,10px; "><i class="fas fa-chart-bar"></i> Report</a>
+                    }
+                    <button style="border-radius: 13px; margin: 3px; padding: 6px,10px; " onclick="location.href='@Url.Action("Index", "Blocked")'" type="button" class="btn btn-primary btn-sm">
+                        Show All
+                    </button>
+                    <button style="border-radius: 13px; margin: 3px; padding: 6px,10px; " onclick="location.href='@Url.Action("Index", "Blocked", new { status = "false" })'" type="button" class="btn btn-success btn-sm">
+                        Show Active
+                    </button>
+                    <button style="border-radius: 13px; margin: 3px; padding: 6px,10px;" onclick="location.href='@Url.Action("Index", "Blocked", new { status = "true" })'" type="button" class="btn btn-danger btn-sm">
+                        Show Inactive
+                    </button>
+                    <button style="border-radius: 13px; margin: 3px; padding: 6px,10px;" onclick="location.href='@Url.Action("CheckExpire", "Blocked")'" type="button" class="btn btn-dark btn-sm">
+                        Check Expire's
+                    </button>
+                </div>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                @Html.Action("BlockedPartial", "Blocked", new { status = ViewBag.status })
+            </div>
+        </div>
+    </section>
+</div>
+
+<button type="button" style="display:none" data-toggle="modal" data-target="#blockmodal" id="btn_modalblock" name="btn_modalblock">
+</button>
+
+<div class="modal fade" id="blockmodal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="color: #383A3E ">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fas fa-shield-alt">
+                    </i> Update Blocking Process
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Index", "Blocked", FormMethod.Post))
+                {
+                    <p>Blocked Date: <a style="color: #572ADE" id="BlockedDate"></a></p>
+                    <p>Expire Date: <a style="color: #12A77F"  id="ExpireDate"></a></p>
+                    <p>Left days: <a style="color: darkgoldenrod" id="leftDays"></a></p>
+                    <p>Past days: <a style="color: red" id="pastDays"></a></p>
+
+                    <div class="form-group">
+                        @Html.Label("How many days?")
+                        <input type="number" name="dayCount" class="form-control" id="day" />
+                        @Html.ValidationMessageFor(x => x.ExpireDate, "", new { @style = "color:red" })
+                        <br />
+                        @Html.Label("Reason")
+                        @Html.TextAreaFor(x => x.Reason, 4, 30, new { @class = "form-control", @maxlength = "200", @id = "Reason" })
+                        @Html.ValidationMessageFor(x => x.Reason, "", new { @style = "color:red" })
+                        <br />
+                        @Html.HiddenFor(x => x.WriterID, new { @id = "WriterID" })
+                        @Html.HiddenFor(x => x.BlockID, new { @id = "BlockID" })
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-danger" style="margin-top: 10px;">Update Block</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+                $('#blockmodal').on('hidden.bs.modal', function () {
+                    $(this).removeData('bs.modal');
+                });
+            });
+
+            function showModal() {
+                $('#blockmodal').load('/Blocked/Index');
+                $('#blockmodal').modal('show');
+            }
+        </script>
+        <script>
+        $(document).on('click', '.update-blocked', function () {
+                var id = $(this).data('id');
+                var url = '@Url.Action("updateBlocked", "Blocked")' + '/' + id;
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#blockmodal').find('#BlockID').val(data[0]);
+                        $('#blockmodal').find('#WriterID').val(data[1]);
+
+                        var blockedDate = new Date(parseInt(data[2].substr(6)));
+                        var formattedexpireDate = blockedDate.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
+                        $('#blockmodal').find('#ExpireDate').text(formattedexpireDate);
+
+                        $('#blockmodal').find('#Reason').val(data[3]);
+
+                        var blockedDate = new Date(parseInt(data[4].substr(6)));
+                        var formattedBlockedDate = blockedDate.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
+                        $('#blockmodal').find('#BlockedDate').text(formattedBlockedDate);
+
+                        $('#blockmodal').find('#leftDays').text(data[5]);
+                       /* var dayvalue = parseInt(data[6]);*/
+                        $('#blockmodal').find('#day').val(data[6]);
+                        $('#blockmodal').find('#pastDays').text(data[7]);
+                        $('#blockmodal').find('#day').attr('min', data[7]);
+
+                        $("#btn_modalblock").click();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: status + '!',
+                            text: 'An error occurred, the category could not be show.' + error,
+                            icon: 'error'
+                        });
+                    }
+                });
+        });
+        </script>
+
+        @if (ViewBag.updatealert == "true")
+        {
+            <script>
+                $(document).ready(function () {
+                    $("#btn_modalblock").click();
+                });
+            </script>
+        }
+
+        @if (ViewBag.updateresult == "true")
+        {
+            <script>
+                $(document).ready(function () {
+                    Swal.fire({
+                        title: 'Updated!',
+                        text: 'The Blocking process was updated successfully.',
+                        icon: 'success'
+                    });
+                });
+            </script>
+        }
+
+        <script>
+        $(document).on('click', '.cancel-blocked', function () {
+            var id = $(this).data('id');
+            var url = '@Url.Action("Delete", "Blocked")' + '/' + id;
+
+            Swal.fire({
+                title: 'Warning!',
+                text: 'Are you sure you want to cancel this blocking process?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, cancel!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        success: function() {
+                            Swal.fire({
+                                title: 'Canceled!',
+                                text: 'Blocking process was canceled successfully.',
+                                icon: 'success'
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred, the blocking process could not be canceled. ',
+                                icon: 'error'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $('#Blocked').addClass('active');
+            });
+        </script>
+    }
+

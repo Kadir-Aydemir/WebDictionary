@@ -1,0 +1,31 @@
+﻿@using EntityLayer.Concrete
+@model List<Like>
+
+<ul>
+    @foreach (var like in Model)
+    {
+        <li style="margin-bottom:20px;">
+            <div class="row">
+                <div class="col-3">
+                    @if (like.Writer.WriterImage != null)
+                    {
+                        <img style="height: 50px; width: 50px; border-radius: 6px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImageWriter", "DictionaryPanel", new { id = like.WriterID })">
+                    }
+                    else
+                    {                      
+                        <img style="height: 50px; width: 50px; border-radius: 6px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                    }
+                </div>
+                <div class="col-9">
+                    <a href="/DictionaryPanelWriter/Index/@like.WriterID" style="font-weight:600; background: linear-gradient(to left, #572ADE 0%, #12A77F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        @like.Writer.WriterName  @like.Writer.WriterSurname
+                    </a>
+                    <br />
+                    <small>
+                        Liked: @(((DateTime)like.LikeDate).ToString("dd MMM yyyy HH:mm"))
+                    </small>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

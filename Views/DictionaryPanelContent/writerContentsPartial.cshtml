@@ -1,0 +1,151 @@
+﻿@using System.Text.RegularExpressions;
+@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@using EntityLayer.Concrete
+@model List<Content>
+@{
+    WriterManager wm = new WriterManager(new EfWriterDal());
+
+    LikeManager lm = new LikeManager(new EfLikeDal());
+
+    string scheme = Request.Url.Scheme;
+    string authority = Request.Url.Authority;
+    string baseUrl = $"{scheme}://{authority}/";
+}
+
+<div style="margin-top:16px;">
+    <a style="font-weight:600; background: linear-gradient(to left, #572ADE 0%, #12A77F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Contents created by the person
+    </a>
+</div>
+
+<div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4" style="margin-block:20px;">
+    <div class="row">
+        <div class="col-sm-12 col-md-6"></div>
+        <div class="col-sm-12 col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 tab-pane" id="timeline">
+            <table id="example1" class="table table-borderless dataTable" role="alertdialog">
+                <thead>
+                    <tr role="row">
+                        <th style="" tabindex="0" rowspan="1" colspan="1">Contents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        @functions {
+                            private string ModifyColumnValue(string value)
+                            {
+                                var patternweblink = @"\[(.*?)\]";
+                                var modifiedValue = Regex.Replace(value, patternweblink, match =>
+                                {
+                                    var matchedText = match.Value;
+                                    var modifiedText = $"<a class=\"weblink\" href=\"{matchedText}\" style=\"color: #12A77F;\" target=\"_blank\">{matchedText}  <i class=\"fas fa-sign-out-alt\"></i></a>";
+                                    return modifiedText;
+                                });
+                                modifiedValue = modifiedValue.Replace("[", "").Replace("]", "");
+
+                                var patternheadinglink = @"\`(.*?)\`";
+                                modifiedValue = Regex.Replace(modifiedValue, patternheadinglink, match =>
+                                {
+                                    var matchedText = match.Value;
+                                    var modifiedText = $"<a href=\"/DictionaryPanelContent/SearchHeading?HeadingName={matchedText}\" style=\"color: #572ADE;\" target=\"_blank\">{matchedText}</a>";
+                                    return modifiedText;
+                                });
+                                modifiedValue = modifiedValue.Replace("`", "");
+
+                                return modifiedValue;
+                            }
+                        }
+                        var modifiedValue = ModifyColumnValue(item.ContentCaption);
+
+                        string link = baseUrl + "DictionaryPanelContent/ContentLink/" + item.ContentID;
+
+                        var list = lm.GetListByContentID(item.ContentID);
+
+                        <tr role="row" class="odd">
+                            <td style="margin: 0px; padding: 0px; position: relative;">
+                                <div class="timeline timeline-inverse" style="margin:0px;padding:0px;">
+                                    <div class="time-label">
+                                        <span class="bg-indigo">
+                                            @(((DateTime)item.ContentDate).ToString("dd MMM yyyy"))
+                                        </span>
+                                    </div>
+                                    <!-- /.timeline-label -->
+                                    <!-- timeline item -->
+                                    <div style="margin: 0px; padding: 0px;">
+                                        @if (item.Writer.WriterImage != null)
+                                        {
+                                            <img style="height: 40px; width: 40px; margin-left: 12px; border-radius: 50%;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImageWriter", "DictionaryPanel", new { id = item.WriterID })">
+                                        }
+                                        @if (item.Writer.WriterImage == null)
+                                        {
+                                            <img style="height: 40px; width: 40px; margin-left: 12px; border-radius: 50%;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson_min.png">
+                                        }
+                                        <div class="timeline-item" style="background-color: #1d1f24; border-color: #181A1F; color: #d0d2d6; top: -30px; margin-left: 70px;border-radius:20px;padding:10px; ">
+                                            <div class="time" style="text-align: right; padding: 0;">
+                                                <input type="text" class="entry-link" value="@link">
+                                                <button type="button" data-toggle="tooltip" title="Copy link" class="btn btn-dark copy-button">
+                                                    <i class="fas fa-link"></i>
+                                                </button>
+                                            </div>
+                                            <h3 class="timeline-header" style="border-color: #1d1f24; color: #d0d2d6 "><i class="fas fa-tag"></i> <a href="/DictionaryPanelContent/Index/@item.HeadingID" style="color: #12A77F;"> @item.Heading.HeadingName</a></h3>
+                                            <div class="timeline-body">
+                                                @Html.Raw(modifiedValue)
+                                            </div>
+                                            <div class="timeline-footer" style="padding:0">
+                                                <div class="row" style="height:60px;">
+                                                    <div class="col-6" style="display: flex; justify-content: left; height: 60px;">
+                                                        <div style="display:flex;justify-content:center;">
+                                                            <small style="margin-top:20px;padding-inline:10px;"><i class="far fa-clock"></i> @(((DateTime)item.ContentDate).ToString("HH:mm"))</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6" style="display: flex; justify-content: right; height: 60px;">
+                                                        <div class="like-container">
+                                                            @if (User.Identity.IsAuthenticated)
+                                                            {
+                                                                var wrtr = wm.GetWriterIdByMail(User.Identity.Name);
+                                                                var like = lm.GetLike(item.ContentID, wrtr.WriterID);
+                                                                <div class="like-container">
+                                                                    @if (like != null)
+                                                                    {
+                                                                        <label class="like">
+                                                                            <input type="checkbox" style="display:none;" id="likeCheckbox" data-id=@item.ContentID checked />
+                                                                            <div class="hearth"></div>
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="like">
+                                                                            <input type="checkbox" style="display:none;" id="likeCheckbox" data-id=@item.ContentID />
+                                                                            <div class="hearth"></div>
+                                                                        </label>
+                                                                    }
+                                                                    <a id="likeList" data-id="@item.ContentID" style="cursor:pointer;">
+                                                                        <small class="like-count"> @list.Count</small>
+                                                                    </a>
+                                                                </div>
+                                                            }
+                                                            @if (!User.Identity.IsAuthenticated)
+                                                            {
+                                                                <small data-toggle="tooltip" data-html="true" title="<b>Sign up</b> now and start liking" style="margin-top:20px;padding-inline:20px;">@list.Count <i class="fas fa-heart"></i></small>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- END timeline item -->
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

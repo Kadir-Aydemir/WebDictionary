@@ -1,0 +1,65 @@
+﻿@model EntityLayer.Concrete.Heading
+
+@using (Html.BeginForm("Index", "DictionaryPanelHeading", FormMethod.Post, new { enctype = "multipart/form-data", id = "myForm" }))
+{
+    <div class="form-group">
+        <div class="" style="width: 100%; padding-inline: 7px;">
+            @Html.TextBoxFor(x => x.HeadingName, new { @class = "form-control", @maxlength = "50", placeholder = "*Heading" })
+            <p id="charCount" style="text-align: center;">0/50</p>
+            @Html.ValidationMessageFor(x => x.HeadingName, "", new { @style = "color:red; font-size:12px;" })
+        </div>
+        <div class="" style="width: 100%; padding-inline: 7px;margin-top:20px;">
+            <input class="form-control custom-file-inputt" type="file" accept="image/*" id="formFile" name="imageFile" onchange="readImageIn(this);">
+        </div>
+        <br />
+        <div class="image-container">
+            <img src="" alt="" style="max-width: 190px; max-height: 100px;" id="ImagePathIn">
+            <a class="btn btn-dark" id="cancelImagebutton" style="display: none;" onclick="cancelImageSelection()"><i class="fas fa-trash"></i></a>
+        </div>
+        <input type="text" name="CategoryId" value="@ViewBag.categoryid" hidden>
+    </div>
+    <div class="divexplore">
+        <div class="galaxy-button" style="text-align:center;">
+            <button type="submit" class="buttonn" id="signUpButton">
+                <span class="spark"></span>
+                <span class="backdrop"></span>
+                <span class="galaxy__container">
+                    <span class="star star--static"></span>
+                    <span class="star star--static"></span>
+                    <span class="star star--static"></span>
+                    <span class="star star--static"></span>
+                </span>
+                <span class="galaxy">
+                    <span class="galaxy__ring">
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                    </span>
+                </span>
+                <span class="text">
+                    <div class="containerr">
+                        <h1><i class="fas fa-bolt" style="margin-right:15px;"></i> Discussion</h1>
+                    </div>
+                </span>
+            </button>
+            <div class="bodydrop"></div>
+        </div>
+    </div>
+}

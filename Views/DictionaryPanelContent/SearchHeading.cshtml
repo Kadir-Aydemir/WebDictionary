@@ -1,0 +1,978 @@
+﻿@using System.Text.RegularExpressions;
+@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@using EntityLayer.Concrete
+@model List<Content>
+@{
+    ViewBag.Title = "SearchHeading";
+    Layout = "~/Views/Shared/_DictionaryLayout.cshtml";
+
+    ContentManager cm = new ContentManager(new EfContentDal(), new EfHeadingDal(), new EfWriterDal());
+
+    HeadingManager hm = new HeadingManager(new EfHeadingDal(), new EfCategoryDal());
+
+    WriterManager wm = new WriterManager(new EfWriterDal());
+
+    LikeManager lm = new LikeManager(new EfLikeDal());
+
+    string scheme = Request.Url.Scheme;
+    string authority = Request.Url.Authority;
+    string baseUrl = $"{scheme}://{authority}/";
+}
+
+<style>
+    .center-div {
+        display: flex;
+        justify-content: center;
+        font-family: 'Kanit', sans-serif;
+    }
+
+    .customtext {
+        font-family: 'Kanit', sans-serif;
+        font-size: 55px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+    }
+
+    .center-div .customtext {
+        font-size: 40px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+    }
+
+    .customtext2 {
+        font-size: 16px;
+        background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        font-family: 'Kanit', sans-serif;
+        background-color: #181A1F;
+        color: #9FA0A2;
+        box-shadow: none;
+    }
+
+    .entry-link {
+        display: none;
+    }
+
+    @@media (max-width: 479.98px) {
+        .custom-img {
+            max-width: 350px;
+            max-height: 240px;
+        }
+    }
+
+    @@media (min-width: 480px) {
+        .custom-img {
+            max-width: 400px;
+            max-height: 300px;
+        }
+    }
+
+    .profile-card {
+        width: 50px;
+        height: 50px;
+        /* */
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 0 0 22px #3336;
+        transition: .6s;
+        font-family: 'Kanit', sans-serif;
+        background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        border: 3px solid #0000;
+    }
+
+        .profile-card:hover {
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            height: 360px;
+            width: 250px;
+            padding: 30px;
+            background: #fff;
+        }
+
+        .profile-card .imgg {
+            width: 100%;
+            height: 100%;
+            transition: .6s;
+            z-index: 10;
+        }
+
+        .profile-card:hover .imgg {
+            transform: translateY(-60px);
+            border-radius: 10px;
+        }
+
+
+    .imgg {
+        width: 100%;
+        border-radius: 50%;
+        /*box-shadow: 0 0 22px #3336;*/
+        transition: .6s;
+    }
+
+    .captionn {
+        text-align: center;
+        transform: translateY(-70px);
+        display: none;
+        transition: .6s;
+        font-family: 'Kanit', sans-serif;
+    }
+
+    .profile-card:hover .captionn {
+        display: block;
+    }
+
+    .captionn h3 {
+        position: relative;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        color: #181A1F;
+        font-size: 28px;
+        font-weight: 400;
+        /* top: -25px;*/
+        margin-block: 20px;
+    }
+
+    .captionn p {
+        position: relative;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        font-size: 15px;
+        color: #9FA0A2;
+        top: -15px
+    }
+
+    .social-links {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        position: relative;
+        top: -20px;
+        margin-top: 20px;
+    }
+
+        .social-links a {
+            margin-top: 10px;
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .social-links i {
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    .form-group {
+        font-family: 'Kanit', sans-serif;
+        margin-bottom: 50px;
+        padding-inline: 25px;
+    }
+
+        .form-group .form-control {
+            color: #9FA0A2;
+            border: 2px solid #0000;
+            border-radius: 8px;
+            background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        }
+
+            .form-group .form-control:hover {
+                background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+            }
+
+    @@media (max-width: 479.98px) {
+        .form-group {
+            margin-bottom: 25px;
+            padding-inline: 0px;
+        }
+    }
+
+    .form-control.form-control-sm {
+        color: #9FA0A2;
+        border: 2px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        margin-right: 16px;
+    }
+
+        .form-control.form-control-sm:hover {
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+        }
+
+    .custom-button-b2 {
+        border: 2px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left, #1d1f24 0%, #1d1f24 100%) border-box;
+    }
+
+        .custom-button-b2:hover {
+            transition: opacity .3s ease;
+            color: white;
+            background: linear-gradient(to left, #e37515 0%, #be1145 100%) padding-box, linear-gradient(to left, #e37515 0%, #be1145 100%) border-box;
+            border-color: transparent;
+        }
+
+    table {
+        font-family: 'Kanit', sans-serif;
+    }
+
+    .custom-buttonn {
+        border: 1px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        width: 160px;
+    }
+
+        .custom-buttonn:hover {
+            transition: opacity .3s ease;
+            color: white;
+            background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            border-color: transparent;
+        }
+
+    .custom-buttonn-auto {
+        border: 1px solid #0000;
+        border-radius: 8px;
+        background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        width: auto;
+    }
+
+        .custom-buttonn-auto:hover {
+            transition: opacity .3s ease;
+            color: white;
+            background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            border-color: transparent;
+        }
+
+    .weblink:hover {
+        text-decoration: underline;
+    }
+
+    .fill-button {
+        color: white;
+        background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        border-color: transparent;
+        width: auto;
+    }
+
+    #hide-div {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        border-radius: 30%;
+    }
+
+    #notContent-div {
+        display: inline-flex;
+        align-items: flex-start;
+        text-align: center;
+        position: relative;
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border-radius: 40px;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+
+    .copy-button {
+        display: block;
+        width: var(--sizee);
+        height: var(--sizee);
+        cursor: pointer;
+        border-radius: 999px;
+        overflow: visible;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+        background: #1d1f24;
+        border: 1px solid #0000;
+    }
+
+    /* like css */
+    :root {
+        --sizee: 60px;
+        --framess: 62;
+    }
+
+    .like {
+        display: block;
+        width: var(--sizee);
+        height: var(--sizee);
+        cursor: default;
+        border-radius: 999px;
+        overflow: visible;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .like-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
+    #likeList {
+        position: absolute;
+        top: -8px;
+        z-index: 999;
+    }
+
+    .hearth {
+        background-image: url('https://assets.codepen.io/23500/Hashflag-AppleEvent.svg');
+        background-size: calc(var(--sizee) * var(--framess)) var(--sizee);
+        background-repeat: no-repeat;
+        background-position-x: calc(var(--sizee) * (var(--framess) * -1 + 2));
+        background-position-y: calc(var(--sizee) * 0.02);
+        width: var(--sizee);
+        height: var(--sizee);
+        display: flex;
+        justify-content: center;
+    }
+
+    input:checked + .hearth {
+        animation: like 1s steps(calc(var(--framess) - 3));
+        animation-fill-mode: forwards;
+    }
+
+    @@keyframes like {
+        0% {
+            background-position-x: 0;
+        }
+
+        100% {
+            background-position-x: calc(var(--sizee) * (var(--framess) * -1 + 3));
+        }
+    }
+
+    @@media (hover: hover) {
+        .like:hover {
+            background-color: #e1255e15;
+        }
+
+            .like:hover .hearth {
+                background-position-x: calc(var(--sizee) * (var(--framess) * -1 + 1));
+            }
+
+        .copy-button:hover {
+            background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        }
+
+        .like-count:hover {
+            color: #DC235D;
+        }
+    }
+    /* --like css-- */
+
+    .modal-content {
+        width: 400px;
+        font-family: 'Kanit', sans-serif;
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border-radius: 30px;
+    }
+
+    .modal-header {
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border: none;
+    }
+
+    .modal-body {
+        background-color: #181A1F;
+        color: #9FA0A2;
+        border: none;
+    }
+
+    .add-content-card {
+        background-color: #1d1f24;
+        color: #9FA0A2;
+        margin: 30px;
+        border-radius: 30px;
+    }
+
+    @@media (max-width: 479.98px) {
+        .add-content-card {
+            margin: 10px;
+        }
+
+        .modal-content {
+            width: 360px;
+        }
+    }
+</style>
+
+@if (ViewBag.noresult != "true")
+{
+    if (!Model.Any())
+    {
+        <div class="row mt-4" id="notContent-div" style="margin-inline:5px;">
+            <section class="col-lg-4">
+                <!-- Custom tabs (Charts with tabs)-->
+                <div class="card">
+                    <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; text-align: center; display: flex; justify-content: center; ">
+                        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_ovkwxuvz.json"
+                                       background="transparent" speed="1" style="max-height: 260px;max-width:260px;" loop autoplay></lottie-player>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-8">
+                <div class="card">
+                    <div class="card-body" style="height: 100%; max-width: 100%; max-height: 100%; text-align: center;padding:40px;">
+                        <div style="" class="customtext">Start the discussion</div>
+                        <p>
+                            No content has been created yet.
+                            Be the first to comment on this.
+                            When expressing your thoughts, avoid being against the rules of society, human values ​​and Dictionary rules.
+                            Bad, insulting and inappropriate content may be the reason for you to be blocked for a while.
+                            Remember, your thoughts shape a society.
+                            Now, enlighten the community with your ideas.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <a class="btn btn-dark" id="hide-div" onclick="hideDiv()"><i class="fas fa-times"></i></a>
+        </div>
+    }
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:24px;" class="fas fa-paint-brush"></i></li>
+                    <li style="margin-left:10px"><h1 class="m-0"> Content's</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        @if (ViewBag.noresult == "true")
+        {
+            <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 30px;">
+                <div class="card-body" style=" margin-top: 10px;">
+                    <div class="center-div" style="margin-bottom: 70px;">
+                        <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_hd8ztfyp.json"
+                                       background="transparent" speed="1" class="custom-img" loop autoplay></lottie-player>
+                    </div>
+                    <div class="center-div">
+                        <div class="customtext">@ViewBag.word</div>
+                    </div>
+                    <div class="center-div">
+                        <p>
+                            The heading you are looking for "@ViewBag.word" does not exist in Dictionary. You can create a heading if you want.
+                        </p>
+                    </div>
+                </div><!-- /.card-header -->
+            </div>
+        }
+        @if (ViewBag.noresult != "true")
+        {
+            var heading = hm.GetHeading(ViewBag.headingid);
+            <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+                <div class="card-header" style=" margin-top: 10px;">
+                    <div class="center-div">
+                        @if (heading.HeadingImage != null)
+                        {
+                            <a href="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = heading.HeadingID })" target="_blank">
+                                <img src="@Url.Action("GetImageHeading", "DictionaryPanel", new { id = heading.HeadingID })" alt="" style=" border-radius: 12px; margin-block: 10px;" class="custom-img">
+                            </a>
+                        }
+                    </div>
+                    <div class="center-div">
+                        <div class="customtext">@heading.HeadingName</div>
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="center-div">
+                            <a class="btn btn-dark fill-button scroll" href="#addcontent">
+                                <i class="fas fa-pen" style="margin-right:5px;"></i> Write this heading
+                            </a>
+                        </div>
+                    }
+                </div><!-- /.card-header -->
+
+                <div class="card-body" style=" margin-bottom: 10px;">
+                    @if (!Model.Any())
+                    {
+                        <div class="center-div">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a style="font-size: 18px; font-weight: 600; background: linear-gradient(to left, #e37515 0%, #be1145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; ">
+                                    No content yet. Start the conversation.
+                                </a>
+                            }
+                            else
+                            {
+                                <a style="font-size: 18px; font-weight: 600; background: linear-gradient(to left, #e37515 0%, #be1145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; ">
+                                    No content yet. Sign up to the Dictionary now so you can start a discussion. If you are a member, Sign in now.
+                                </a>
+                            }
+                        </div>
+                    }
+                    @if (Model.Any())
+                    {
+                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6"></div>
+                                <div class="col-sm-12 col-md-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 tab-pane" id="timeline">
+                                    <table id="example1" class="dataTable table table-borderless" role="alertdialog">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="" tabindex="0" rowspan="1" colspan="1">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            Contents
+                                                        </div>
+                                                        <div class="dropdown p-1">
+                                                            <button style="width:197px;" class="btn btn-outline-light dropdown-toggle custom-button-b2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Sort by Date
+                                                            </button>
+                                                            <ul class="dropdown-menu" style="width: 197px;">
+                                                                <li>
+                                                                    <a href="@Url.Action("Index", "DictionaryPanelContent",new { id = heading.HeadingID })" class="dropdown-item btn-sm">
+                                                                        <i class="nav-icon far fa-clock"></i>
+                                                                        Date
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="@Url.Action("Index", "DictionaryPanelContent", new { id = heading.HeadingID,status = "true" })" class="dropdown-item btn-sm">
+                                                                        <i class="nav-icon fas fa-heart"></i>
+                                                                        Like
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                @functions {
+                                                    private string ModifyColumnValue(string value)
+                                                    {
+                                                        var patternweblink = @"\[(.*?)\]";
+                                                        var modifiedValue = Regex.Replace(value, patternweblink, match =>
+                                                        {
+                                                            var matchedText = match.Value;
+                                                            var modifiedText = $"<a class=\"weblink\" href=\"{matchedText}\" style=\"color: #12A77F;\" target=\"_blank\">{matchedText}  <i class=\"fas fa-sign-out-alt\"></i></a>";
+                                                            return modifiedText;
+                                                        });
+                                                        modifiedValue = modifiedValue.Replace("[", "").Replace("]", "");
+
+                                                        var patternheadinglink = @"\`(.*?)\`";
+                                                        modifiedValue = Regex.Replace(modifiedValue, patternheadinglink, match =>
+                                                        {
+                                                            var matchedText = match.Value;
+                                                            var modifiedText = $"<a href=\"/DictionaryPanelContent/SearchHeading?HeadingName={matchedText}\" style=\"color: #572ADE;\" target=\"_blank\">{matchedText}</a>";
+                                                            return modifiedText;
+                                                        });
+                                                        modifiedValue = modifiedValue.Replace("`", "");
+
+                                                        return modifiedValue;
+                                                    }
+                                                }
+                                                var modifiedValue = ModifyColumnValue(item.ContentCaption);
+
+                                                string link = baseUrl + "DictionaryPanelContent/ContentLink/" + item.ContentID;
+
+                                                var list = lm.GetListByContentID(item.ContentID);
+
+                                                <tr role="row" class="odd">
+                                                    <td style="margin: 0px; padding: 0px; position: relative;" class="info-cell" data-user-id="@item.WriterID">
+                                                        <div class="timeline timeline-inverse" style="margin:0px;padding:0px;">
+                                                            <div class="time-label">
+                                                                <span class="bg-indigo">
+                                                                    @(((DateTime)item.ContentDate).ToString("dd MMM yyyy"))
+                                                                </span>
+                                                            </div>
+                                                            <!-- /.timeline-label -->
+                                                            <!-- timeline item -->
+                                                            <div style="margin: 0px; padding: 0px;">
+                                                                <div class="profile-card" style="margin-left: 9px; position: relative; z-index: 999; ">
+                                                                    <div class="img">
+                                                                        @if (item.Writer.WriterImage != null)
+                                                                        {
+                                                                            <img alt="Avatar" class="imgg" src="@Url.Action("GetImageWriter", "DictionaryPanel", new { id = item.WriterID })" oncontextmenu="return false">
+                                                                        }
+                                                                        @if (item.Writer.WriterImage == null)
+                                                                        {
+                                                                            <img alt="Avatar" class="imgg" src="~/Resources/defaultperson.png" oncontextmenu="return false">
+                                                                        }
+                                                                    </div>
+                                                                    <div class="captionn">
+                                                                        <a href="/DictionaryPanelWriter/Index/@item.WriterID" data-toggle="tooltip" title="Show Profile"><h3>@item.Writer.WriterName @item.Writer.WriterSurname </h3></a>
+                                                                        <p>@item.Writer.WriterTitle</p>
+                                                                        <div class="social-links">
+                                                                            <div class="row info-container" style="background-color: ghostwhite; border-radius: 8px; padding: 10px; "></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="timeline-item" style="background-color: #1d1f24; border-color: #181A1F; color: #d0d2d6; top: -30px; margin-left: 70px;border-radius:20px;padding:10px; ">
+                                                                    <div class="time" style="text-align: right; padding: 0;">
+                                                                        <input type="text" class="entry-link" value="@link">
+                                                                        <button type="button" data-toggle="tooltip" title="Copy link" class="btn btn-dark copy-button">
+                                                                            <i class="fas fa-link"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <h3 class="timeline-header" style="border-color: #1d1f24; color: #d0d2d6 "><i class="fas fa-user-astronaut"></i> <a href="/DictionaryPanelWriter/Index/@item.WriterID" style="color: #12A77F;"> @item.Writer.WriterName @item.Writer.WriterSurname</a></h3>
+                                                                    <div class="timeline-body">
+                                                                        @Html.Raw(modifiedValue)
+                                                                    </div>
+                                                                    <div class="timeline-footer" style="padding:0">
+                                                                        <div class="row" style="height:60px;">
+                                                                            <div class="col-6" style="display: flex; justify-content: left; height: 60px;">
+                                                                                <div style="display:flex;justify-content:center;">
+                                                                                    <small style="margin-top:20px;padding-inline:10px;"><i class="far fa-clock"></i> @(((DateTime)item.ContentDate).ToString("HH:mm"))</small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6" style="display: flex; justify-content: right; height: 60px;">
+                                                                                <div class="like-container">
+                                                                                    @if (User.Identity.IsAuthenticated)
+                                                                                    {
+                                                                                        var wrtr = wm.GetWriterIdByMail(User.Identity.Name);                                                                           
+                                                                                        var like = lm.GetLike(item.ContentID, wrtr.WriterID);
+                                                                                        <div class="like-container">
+                                                                                            @if (like != null)
+                                                                                            {
+                                                                                                <label class="like">
+                                                                                                    <input type="checkbox" style="display:none;" id="likeCheckbox" data-id=@item.ContentID checked />
+                                                                                                    <div class="hearth"></div>
+                                                                                                </label>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <label class="like">
+                                                                                                    <input type="checkbox" style="display:none;" id="likeCheckbox" data-id=@item.ContentID />
+                                                                                                    <div class="hearth"></div>
+                                                                                                </label>
+                                                                                            }
+                                                                                            <a id="likeList" data-id="@item.ContentID" style="cursor:pointer;">
+                                                                                                <small class="like-count"> @list.Count</small>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    }
+                                                                                    @if (!User.Identity.IsAuthenticated)
+                                                                                    {
+                                                                                        <small data-toggle="tooltip" data-html="true" title="<b>Sign up</b> now and start liking" style="margin-top:20px;padding-inline:20px;">@list.Count <i class="fas fa-heart"></i></small>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- END timeline item -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <section id="addcontent">
+                        <div class="card-footer" style=" margin-bottom: 10px; font-family: 'Kanit', sans-serif; }">
+                            @Html.Action("addContentPartial", "DictionaryPanelContent", new { id = ViewBag.headingid })
+                        </div>
+                    </section>
+                }
+            </div>
+        }
+    </section>
+</div>
+
+<div class="modal fade scrollbar" id="style-7" style="overflow-y: auto; overflow-x: hidden;" tabindex="-1" role="dialog" aria-labelledby="likesModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="likesModalLabel">Likes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span style="color: #9FA0A2;" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '#likeList', function () {
+                var id = $(this).data('id');
+                var url = '@Url.Action("GetLikes", "DictionaryPanelContent")' + '/' + id;
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (result) {
+                        $('.modal .modal-body').html(result);
+                        $('.modal').modal('show');
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: status + '!',
+                            text: 'An error occurred, like list could not be show.' + error,
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.modal').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        });
+
+        function showModal() {
+            $('.modal').modal('show');
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            var likeCheckboxs = document.querySelectorAll("#likeCheckbox");
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            likeCheckboxs.forEach(function (checkbox) {
+
+                checkbox.addEventListener("change", function () {
+
+                    var changedCheckbox = event.target;
+                    var id = changedCheckbox.getAttribute("data-id");
+
+                    var likeCountElement = this.closest(".like-container").querySelector(".like-count");
+                    var likeCountValue = parseInt(likeCountElement.textContent);
+
+                    if (checkbox.checked) {
+                        var url = '@Url.Action("addLike", "DictionaryPanelContent")' + '/' + id;
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            success: function () {
+                                likeCountValue += 1;
+                                likeCountElement.textContent = likeCountValue;
+                            },
+                            error: function () {
+                                Toast.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred, could not be liked.',
+                                    icon: 'error'
+                                })
+                            }
+                        });
+                    }
+                    else {
+                        var url = '@Url.Action("Dislike", "DictionaryPanelContent")' + '/' + id;
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            success: function () {
+                                likeCountValue -= 1;
+                                likeCountElement.textContent = likeCountValue;
+                            },
+                            error: function () {
+                                Toast.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred, could not be disliked.',
+                                    icon: 'error'
+                                })
+                            }
+                        });
+                    }
+                });
+
+            });
+        });
+    </script>
+
+    <script>
+        function hideDiv() {
+            $('#notContent-div').hide();
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var copyButtons = document.querySelectorAll(".copy-button");
+
+            copyButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var entryLinkInput = this.parentNode.querySelector(".entry-link");
+                    var entryLink = entryLinkInput.value;
+
+                    copyToClipboard(entryLink);
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Content link copied.'
+                    })
+                });
+            });
+
+            function copyToClipboard(text) {
+                var tempInput = document.createElement("input");
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var textarea = $("#ContentCaption");
+            var charCount = $("#charCount");
+
+            textarea.on("input", function () {
+                var textLength = textarea.val().length;
+                charCount.text(textLength + "/1000");
+            });
+        });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        $('#myForm').submit(function(event) {
+            event.preventDefault(); // Form submitini engelle
+
+            $.ajax({
+                url: $(this).attr('action'), // Formun action'ını al
+                type: $(this).attr('method'), // Formun methodunu al
+                data: $(this).serialize(), // Form verilerini al ve ajax isteği ile gönder
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Added!',
+                        text: 'The Content was added successfully.',
+                        icon: 'success'
+                    }).then(() => {
+                         var redirectUrl = '@Url.Action("Index", "DictionaryPanelContent")';
+                    window.location.href = redirectUrl;
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: status + '!',
+                        text: 'An error occurred, Content could not be added. Please make sure that this field is not blank or less than 3 characters!' + error,
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $(".info-cell").each(function () {
+                var userID = $(this).data("user-id");
+                var infoCell = $(this).find(".info-container");
+                var url = '@Url.Action("GetInfobyWriter", "DictionaryPanelContent")' + '/' + userID;
+
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (data) {
+                        var html = `
+                          <div class="row">
+                                <div class="col-md-3" style="width:25%;">
+                                    <div style="display: grid; place-items: center; height: 100%; max-width: 100%;margin-inline:5px;">
+                                        <i style="font-size:24px;" class="fas fa-tag"></i>
+                                        <a class="heading-count">${data[0]}</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" style="width:25%;">
+                                    <div style="display: grid; place-items: center; height: 100%; max-width: 100%; margin-inline: 5px;">
+                                        <i style="font-size:24px;" class="fas fa-paint-brush"></i>
+                                        <a class="content-count">${data[1]}</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" style="width:25%;">
+                                    <div style="display: grid; place-items: center; height: 100%; max-width: 100%; margin-inline: 5px;">
+                                        <i style="font-size:24px;" class="fas fa-layer-group"></i>
+                                        <a class="category-count">${data[2]}</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" style="width:25%;">
+                                    <div style="display: grid; place-items: center; height: 100%; max-width: 100%; margin-inline: 5px;">
+                                        <i style="font-size:24px;" class="fas fa-heart"></i>
+                                        <a class="category-count">${data[3]}</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                        infoCell.html(html);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+

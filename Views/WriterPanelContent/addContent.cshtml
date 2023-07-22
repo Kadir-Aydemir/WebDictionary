@@ -1,0 +1,207 @@
+﻿@model EntityLayer.Concrete.Content
+@{
+    ViewBag.Title = "addContent";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    .customtext {
+        font-family: 'Kanit', sans-serif;
+        display: inline-block;
+        font-size: 35px;
+        background: linear-gradient(to left, #572ADE 0%,#12A77F 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-inline: 20px;
+        margin-top: -20px;
+    }
+
+    .card {
+        font-family: 'Kanit', sans-serif;
+        background-color: #181A1F;
+        color: #9FA0A2;
+        box-shadow: none;
+    }
+
+
+    .form-group {
+        font-family: 'Kanit', sans-serif;
+        margin-bottom: 30px;
+        padding-inline: 25px;
+    }
+
+        .form-group .form-control {
+            color: #9FA0A2;
+            border: 2px solid #0000;
+            border-radius: 8px;
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        }
+
+            .form-group .form-control:hover {
+                background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+            }
+
+
+    @@media (max-width: 479.98px) {
+        .customtext {
+            font-size: 25px;
+            padding-inline: 0;
+        }
+
+        .form-group {
+            padding-inline: 0;
+        }
+    }
+
+    .custom-buttonn-auto {
+        border: 1px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        width: auto;
+    }
+
+        .custom-buttonn-auto:hover {
+            transition: opacity .3s ease;
+            color: white;
+            background: linear-gradient(to left,#572ADE,#12A77F) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+            border-color: transparent;
+        }
+</style>
+
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-paint-brush"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> My Content</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12" style="position: relative; margin: auto;">
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header border-0" style="padding:20px;">
+                <h3 class="card-title" style="margin-left:15px;">
+                    <i class="fas fa-plus mr-1"></i>
+                    Add New Content
+                </h3>
+                <div class="card-tools">
+                    <a style="margin-right:15px;" href="/WriterPanel/AllHeading" class="btn bg-gray-dark btn-sm">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_w51pcehl.json"
+                                       background="transparent" speed="1" style="max-width: 100vh; max-height: 100vh;" loop autoplay></lottie-player>
+                    </div>
+                    <div class="col-lg-6">
+                        @{ string heading = ViewBag.heading;
+                            if (heading.Length > 35)
+                            {
+                                heading = heading.Substring(0, 35) + "...";
+                            }
+                        }
+                        <div class="customtext">
+                            @heading
+                        </div>
+                        <br /><br />
+                        <div class="row" style=" padding-inline: 25px;margin-bottom:5px;">
+                            <button id="addLinkButton" class="btn btn-outline-light custom-buttonn-auto" style="margin:5px;" data-toggle="tooltip" title="Make sure you type the full heading">
+                                Heading link
+                            </button>
+                            <button id="addWebLinkButton" class="btn btn-outline-light custom-buttonn-auto" style="margin:5px;" data-toggle="tooltip" title="The link you provided must be prefixed with 'Http(s)://' for it to be valid">
+                                Http://
+                            </button>
+                        </div>
+                        @using (Html.BeginForm("addContent", "WriterPanelContent", FormMethod.Post))
+                        {
+                            <div class="form-group">
+                                @Html.Label("Content Caption")
+                                @Html.TextAreaFor(x => x.ContentCaption, 15, 40, new { @class = "form-control", @maxlength = "1000" })
+                                <p id="charCount">0/1000</p>
+                                @Html.ValidationMessageFor(x => x.ContentCaption, "", new { @style = "color:red" })
+                                <br />
+                                <input type="hidden" name="HeadingID" value="@ViewBag.id" />
+                                <div style="text-align: right;">
+                                    <button class="btn btn-outline-light custom-button" style="margin-top:10px;">Add Content</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Allheading').addClass('active');
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var textarea = $("#ContentCaption");
+            var charCount = $("#charCount");
+
+            textarea.on("input", function () {
+                var textLength = textarea.val().length;
+                charCount.text(textLength + "/1000");
+            });
+        });
+    </script>
+
+    <script>
+        function getSelectedText() {
+            var textarea = document.getElementById("ContentCaption");
+            var selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+            return selectedText;
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#addLinkButton').click(function () {
+                var selectedText = getSelectedText();
+
+                var textarea = $('#ContentCaption');
+                var text = textarea.val();
+                var link = '`' + selectedText + '`';
+
+                var newText = text.replace(selectedText, link);
+                textarea.val(newText);
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#addWebLinkButton').click(function () {
+                var selectedText = getSelectedText();
+
+                var textarea = $('#ContentCaption');
+                var text = textarea.val();
+                var link = '[' + selectedText + ']';
+
+                var newText = text.replace(selectedText, link);
+                textarea.val(newText);
+            });
+        });
+    </script>
+}
+

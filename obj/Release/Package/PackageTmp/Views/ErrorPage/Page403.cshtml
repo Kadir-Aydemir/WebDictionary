@@ -1,0 +1,604 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Error Page 403</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="~/Resources/dictionaryLogo.png">
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link href="~/AdminLTE-3.0.4/dist/css/adminlte.min.css" rel="stylesheet" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- notify -->
+    <link href="~/AdminLTE-3.0.4/plugins/toastr/toastr.min.css" rel="stylesheet" />
+
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+        .customtext {
+            font-family: 'Kanit', sans-serif;
+            font-size: 55px;
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .center-div .customtext2 {
+            font-size: 16px;
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .customtext2 {
+            font-size: 16px;
+            background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .containerr {
+            font-family: 'Kanit', sans-serif;
+            transform: translate(0,-50%);
+            width: 100%;
+            /* text-align: left;*/
+            margin-top: 40px;
+        }
+
+            .containerr h1 {
+                position: relative;
+                font-size: 55px;
+                background: linear-gradient(to left, #572ADE 0%, #12A77F 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+                .containerr h1 span::before {
+                    content: 'Dictionary';
+                    animation: animate 8s infinite linear;
+                }
+
+        @@keyframes animate {
+            0% {
+                content: 'headings';
+            }
+
+            20% {
+                content: 'contents';
+            }
+
+            40% {
+                content: 'share';
+            }
+
+            60% {
+                content: 'freedom';
+            }
+
+            80% {
+                content: 'with people';
+            }
+
+            100% {
+                content: 'Dictionary';
+            }
+        }
+
+        p {
+            font-family: 'Kanit', sans-serif;
+            font-size: 20px;
+        }
+
+        .card {
+            background-color: #181A1F;
+            color: #9FA0A2;
+            margin-block: 20px;
+            box-shadow: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 75vh;
+        }
+
+        @@media (max-width: 479.98px) {
+            .card {
+                /*width: 40vh;*/
+                height: 50vh;
+            }
+
+            .containerr {
+                margin-top: 30px;
+            }
+
+                .containerr h1 {
+                    font-size: 35px;
+                }
+
+            .customtext {
+                font-size: 35px;
+            }
+
+            p {
+                /* margin-right: 30px;*/
+                font-size: 16px;
+            }
+        }
+
+        *,
+        *:after,
+        *:before {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --transition: 0.25s;
+            --spark: 1.8s;
+            --hue: 245;
+        }
+
+        body {
+            --active: 0;
+            background: hsl( var(--hue) calc(var(--active) * 97%) 6% );
+            transition: background var(--transition);
+            overflow: hidden;
+        }
+
+        .buttonn {
+            --cut: 0.1em;
+            --active: 0;
+            --bg: radial-gradient( 120% 120% at 126% 126%, hsl(var(--hue) calc(var(--active) * 97%) 98% / calc(var(--active) * 0.9)) 40%, transparent 50% ) calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat, radial-gradient( 120% 120% at 120% 120%, hsl(var(--hue) calc(var(--active) * 97%) 70% / calc(var(--active) * 1)) 30%, transparent 70% ) calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat, hsl(var(--hue) calc(var(--active) * 100%) calc(12% - (var(--active) * 8%)));
+            background: var(--bg);
+            font-size: 2rem;
+            font-weight: 500;
+            border: 0;
+            cursor: pointer;
+            padding: 0.9em 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 0.25em;
+            white-space: nowrap;
+            border-radius: 2rem;
+            position: relative;
+            box-shadow: 0 0 calc(var(--active) * 6em) calc(var(--active) * 3em) hsl(var(--hue) 97% 61% / 0.5), 0 0.05em 0 0 hsl(var(--hue) calc(var(--active) * 97%) calc((var(--active) * 50%) + 30%)) inset, 0 -0.05em 0 0 hsl(var(--hue) calc(var(--active) * 97%) calc(var(--active) * 10%)) inset;
+            transition: box-shadow var(--transition), scale var(--transition), background var(--transition);
+            scale: calc(1 + (var(--active) * 0.1));
+            transform-style: preserve-3d;
+            perspective: 100vmin;
+            overflow: hidden;
+        }
+
+            .buttonn:active {
+                scale: 1;
+            }
+
+        .star {
+            height: calc(var(--size) * 1px);
+            aspect-ratio: 1;
+            background: white;
+            border-radius: 50%;
+            /*	filter: blur(4px);*/
+            position: absolute;
+            opacity: var(--alpha);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(10deg) rotate(0deg) translateY(calc(var(--distance) * 1px));
+            animation: orbit calc(var(--duration) * 1s) calc(var(--delay) * -1s) infinite linear;
+        }
+
+        @@keyframes orbit {
+            to {
+                transform: translate(-50%, -50%) rotate(10deg) rotate(360deg) translateY(calc(var(--distance) * 1px));
+            }
+        }
+
+        .galaxy {
+            position: absolute;
+            width: 100%;
+            aspect-ratio: 1;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            overflow: hidden;
+            opacity: var(--active);
+            transition: opacity var(--transition);
+            /*transform-style: preserve-3d;
+        perspective: 100vmin;*/
+            /*	opacity: 0.25;*/
+        }
+
+        .galaxy__ring {
+            height: 200%;
+            width: 200%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            transform: translate(-28%, -40%) rotateX(-24deg) rotateY(-30deg) rotateX(90deg);
+            transform-style: preserve-3d;
+            /*	background: red;*/
+        }
+
+        .galaxy__container {
+            position: absolute;
+            inset: 0;
+            opacity: var(--active);
+            transition: opacity var(--transition);
+            mask: radial-gradient(white, transparent);
+        }
+
+        .star--static {
+            animation: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(0, 0);
+            max-height: 4px;
+            filter: brightness(4);
+            opacity: 0.9;
+            animation: move-x calc(var(--duration) * 0.1s) calc(var(--delay) * -0.1s) infinite linear, move-y calc(var(--duration) * 0.2s) calc(var(--delay) * -0.2s) infinite linear;
+        }
+
+        .buttonn:hover .star--static {
+            animation-play-state: paused;
+        }
+
+        @@keyframes move-x {
+            0% {
+                translate: -100px 0;
+            }
+
+            100% {
+                translate: 100px 0;
+            }
+        }
+
+        @@keyframes move-y {
+            0% {
+                transform: translate(0, -50px);
+            }
+
+            100% {
+                transform: translate(0, 50px);
+            }
+        }
+
+        .spark {
+            position: absolute;
+            inset: 0;
+            border-radius: 2rem;
+            rotate: 0deg;
+            overflow: hidden;
+            mask: linear-gradient(white, transparent 50%);
+            animation: flip calc(var(--spark) * 2) infinite steps(2, end);
+        }
+
+        @@keyframes flip {
+            to {
+                rotate: 360deg;
+            }
+        }
+
+        .spark:before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            aspect-ratio: 1;
+            top: 0%;
+            left: 50%;
+            z-index: -1;
+            translate: -50% -15%;
+            rotate: 0;
+            transform: rotate(-90deg);
+            opacity: calc((var(--active)) + 0.4);
+            background: conic-gradient( from 0deg, transparent 0 340deg, white 360deg );
+            transition: opacity var(--transition);
+            animation: rotate var(--spark) linear infinite both;
+        }
+
+        .spark:after {
+            content: "";
+            position: absolute;
+            inset: var(--cut);
+            border-radius: 2rem;
+        }
+
+        .backdrop {
+            position: absolute;
+            inset: var(--cut);
+            background: var(--bg);
+            border-radius: 2rem;
+            transition: background var(--transition);
+        }
+
+        @@keyframes rotate {
+            to {
+                transform: rotate(90deg);
+            }
+        }
+
+
+
+        @@supports(selector(:has(:is(+ *)))) {
+            body:has(.buttonn:is(:hover, :focus-visible)) {
+                --active: 1;
+                --play-state: running;
+            }
+
+            .bodydrop {
+                display: none;
+            }
+        }
+
+        .buttonn:is(:hover, :focus-visible) ~ :is(.bodydrop, .particle-pen) {
+            --active: 1;
+            --play-state: running;
+        }
+
+        .bodydrop {
+            background: hsl( 260 calc(var(--active) * 97%) 6% );
+            position: fixed;
+            inset: 0;
+            z-index: -1
+        }
+
+
+
+        .buttonn:is(:hover, :focus-visible) {
+            --active: 1;
+            --play-state: running;
+        }
+
+
+        .galaxy-button {
+            position: relative;
+        }
+
+        @@keyframes float-out {
+            to {
+                rotate: 360deg;
+            }
+        }
+
+        .text {
+            translate: 2% -6%;
+            letter-spacing: 0.01ch;
+            /*background: linear-gradient(90deg, hsl(0 0% calc((var(--active) * 100%) + 65%)), hsl(0 0% calc((var(--active) * 100%) + 26%)));
+        -webkit-background-clip: text;*/
+            color: hsl(0 0% calc(60% + (var(--active) * 26%)));
+        }
+
+        .buttonn svg {
+            inline-size: 1.25em;
+            translate: -25% -5%;
+        }
+
+        .divexplore {
+            justify-content: right;
+            display: flex;
+            margin-right: 60px;
+        }
+
+        @@media (max-width: 479.98px) {
+            .divexplore {
+                justify-content: center;
+                display: flex;
+                margin-right: 0px;
+            }
+        }
+
+        .scrollbar {
+            overflow-y: scroll;
+        }
+
+        .force-overflow {
+            min-height: 250px;
+        }
+
+        #style-7::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #181A1F;
+            border-radius: 10px;
+        }
+
+        #style-7::-webkit-scrollbar {
+            width: 5px;
+            background-color: #181A1F;
+        }
+
+        #style-7::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, #12A77F), color-stop(0.72, #572ADE), color-stop(0.86, #572ADE));
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-collapse layout-top-nav scrollbar" id="style-7" style="overflow-y: auto; overflow-x: hidden;">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <div class="row">
+            <!-- /.navbar -->
+            <div class="col-0">
+                <!-- Main Sidebar Container -->
+            </div>
+            <div class="col-12" style=" background-color: #0F1116;height:88vh">
+                <div class="content-wrapper" style="background-color: #0F1116; color: #9FA0A2; display: flex; justify-content: center;margin-top:50px; ">
+                    <section class="content" style="max-width: 1280px; width: 100%;">
+                        <div class="container" style="max-width: 1280px; width: 100%;">
+                            <div class="row scrollbar" id="style-7" style="background-color: #181A1F; color: #9FA0A2; height: 85vh; border-radius: 40px; overflow-y: auto; overflow-x: hidden;">
+                                <div class="col-lg-12">
+                                    <div class="card" style="height: 80vh; border-radius: 40px; ">
+                                        <div class="row scrollbar" id="style-7" style="background-color: #181A1F; color: #9FA0A2;  overflow-y: auto; overflow-x: hidden;">
+                                            <div class="col-lg-6" style="display: flex; justify-content: center;">
+                                                <lottie-player src="https://lottie.host/17aa98e3-291b-4090-90e3-9ccbe9d1a9a9/LHiZrzyV37.json"
+                                                               background="transparent" speed="1" style="max-width: 100vh; max-height: 100vh;" loop autoplay></lottie-player>
+                                            </div>
+                                            <div class="col-lg-6" style="display: flex; justify-content: center;">
+                                                <div style="height: 100%; max-width: 100%; max-height: 100%;padding:40px;">
+                                                    <div style="" class="customtext">Forbidden !</div>
+                                                    <br />
+                                                    <p>
+                                                        <a style="color: #DC235D"> Error code 403:</a> You don't have permission to access on this server.
+                                                    </p>
+                                                    <br />
+                                                    <br />
+                                                    <div class="divexplore">
+                                                        <div class="galaxy-button" style="text-align:center;">
+                                                            <button class="buttonn" onclick="window.location.href='@Url.Action("Index", "DictionaryPanel")'">
+                                                                <span class="spark"></span>
+                                                                <span class="backdrop"></span>
+                                                                <span class="galaxy__container">
+                                                                    <span class="star star--static"></span>
+                                                                    <span class="star star--static"></span>
+                                                                    <span class="star star--static"></span>
+                                                                    <span class="star star--static"></span>
+                                                                </span>
+                                                                <span class="galaxy">
+                                                                    <span class="galaxy__ring">
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                        <span class="star"></span>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="text"><i class="fas fa-home"></i> Return Home</span>
+                                                            </button>
+                                                            <div class="bodydrop"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="background-color: #0F1116; color: #9FA0A2; display: flex; justify-content: center;border:none;">
+        <!-- Default to the left -->
+        <div class="row" style="width: 550px; height: 50px; margin-top: 25px;">
+            <div class="col-2" style="display: flex; justify-content: center;width:15%;padding:0;">
+                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_gbHcwp1UaT.json"
+                               background="transparent" speed="1" style="max-width: 50px; max-height: 50px;" loop autoplay></lottie-player>
+            </div>
+            <div class="col-10" style="display: flex; justify-content: flex-start; width: 85%;margin-top:12px;">
+                <strong>
+                    Copyright &copy; 2023. All rights reserved. Design by
+                    <a style="color: #12A77F" href="https://github.com/Kadir-Aydemir" target="_blank"> Kadir AYDEMİR</a>
+                </strong>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const RANDOM = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+        const PARTICLES = document.querySelectorAll('.star')
+        PARTICLES.forEach(P => {
+            P.setAttribute('style', `
+                                                                            --angle: ${RANDOM(0, 360)};
+                                                                            --duration: ${RANDOM(6, 20)};
+                                                                            --delay: ${RANDOM(1, 10)};
+                                                                            --alpha: ${RANDOM(40, 90) / 100};
+                                                                            --size: ${RANDOM(2, 6)};
+                                                                            --distance: ${RANDOM(40, 200)};`)
+        })
+    </script>
+    <script src="~/AdminLTE-3.0.4/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>$.widget.bridge('uibutton', $.ui.button)</script>
+    <!-- Bootstrap 4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+
+    <!-- Sparkline -->
+    <script src="~/AdminLTE-3.0.4/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/AdminLTE-3.0.4/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/AdminLTE-3.0.4/plugins/moment/moment.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/AdminLTE-3.0.4/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/AdminLTE-3.0.4/dist/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/AdminLTE-3.0.4/dist/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/AdminLTE-3.0.4/dist/js/demo.js"></script>
+
+
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({
+                    scrollTop: $(this.hash).offset().top
+                }, 900);
+            });
+        });
+
+    </script>
+
+    @{ string yol = "@lottiefiles";}
+    <script src="https://unpkg.com/@yol/lottie-player@latest/dist/lottie-player.js"></script>
+</body>
+
+</html>
+
+
+
+

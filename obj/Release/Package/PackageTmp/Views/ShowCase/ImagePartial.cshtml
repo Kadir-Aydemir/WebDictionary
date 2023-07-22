@@ -1,0 +1,31 @@
+﻿@using EntityLayer.Concrete
+@model List<ImageFile>
+
+<div class="gallery-inner container py-md-5 pb-3">
+    <h4 class="sub-tittle-w3 text-uppercase text-center">Gallery</h4>
+    <h3 class="tittle-w3 text-uppercase mb-lg-5 mb-3 text-center">Project Images</h3>
+    <div class="row">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            if (i % 3 == 0 && i != 0)
+            {
+            @:</div> <!-- Önceki row bölümünü kapat -->
+            @:<div class="row">
+            }
+
+            <div class="col-md-4 proj_gallery_grid" data-aos="zoom-in">
+                <div class="section_1_gallery_grid" data-aos="zoom-in">
+                    <a title="@Model[i].ImageName" href="@Url.Action("GetImage", "Gallery", new { id = Model[i].ImageId })">
+                        <div class="section_1_gallery_grid1">
+                            <img src="@Url.Action("GetImage", "Gallery", new { id = Model[i].ImageId })" alt=" " class="img-fluid" />
+                            <div class="proj_gallery_grid1_pos">
+                                <h3>Recognize</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!-- //gallery container -->

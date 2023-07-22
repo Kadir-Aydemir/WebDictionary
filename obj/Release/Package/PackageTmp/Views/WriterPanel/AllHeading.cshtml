@@ -1,0 +1,231 @@
+﻿@using EntityLayer.Concrete
+@using DataAccessLayer.EntityFramework
+@using BusinessLayer.Concrete
+@model List<Heading>
+@{
+    ViewBag.Title = "AllHeading";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+
+    ContentManager cm = new ContentManager(new EfContentDal(), new EfHeadingDal(), new EfWriterDal());
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    table {
+        font-family: 'Kanit', sans-serif;
+    }
+
+    .form-control.form-control-sm {
+        color: #9FA0A2;
+        border: 2px solid #0000;
+        border-radius: 6px;
+        background: linear-gradient(#1d1f24,#1d1f24) padding-box, linear-gradient(to left,#572ADE,#12A77F) border-box;
+        margin-right: 16px;
+    }
+
+        .form-control.form-control-sm:hover {
+            background: linear-gradient(#181A1F,#181A1F) padding-box, linear-gradient(to left,#12A77F,#12A77F) border-box;
+        }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li style="margin-top:5px"><i style="font-size:25px;" class="fas fa-th"></i></li>
+                    <li style="margin-left:10px"><h1 style="font-family: 'Kanit', sans-serif;" class="m-0"> All Headings</h1></li>
+                </ol>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">WebDictionary v1</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="row">
+    <section class="col-lg-12">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" style="background-color: #181A1F; color: #9FA0A2; border-radius: 40px;">
+            <div class="card-header" style="padding:20px;">
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6"></div>
+                        <div class="col-sm-12 col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-borderless table-hover table-dark dataTable dtr-inline projects" role="grid" aria-describedby="example2_info" style="background-color: #181A1F; color: #9FA0A2;">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 1%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="#: activate to sort column descending" aria-sort="ascending">#</th>
+                                        <th style="width: 27%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Heading: activate to sort column ascending">Heading</th>
+                                        <th style="width: 20%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Creator: activate to sort column ascending">Creator</th>
+                                        <th style="width: 17%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending">Category</th>
+                                        <th style="width: 12%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Content: activate to sort column ascending">Content</th>
+                                        <th style="width: 23%" class="sorting text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Transiction: activate to sort column ascending">Transiction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        int contentcount = cm.GetListByHeadingId(item.HeadingID).Count();
+                                        if ((Model.IndexOf(item)) % 2 == 0)
+                                        {
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1" tabindex="0"> @item.HeadingID</td>
+                                                @if (item.HeadingImage != null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImage", "Heading", new { id = item.HeadingID })">
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <a>@item.HeadingName</a>
+                                                                <br />
+                                                                <small>
+                                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                @if (item.HeadingImage == null)
+                                                {
+                                                    <td style="">
+                                                        <a>@item.HeadingName</a>
+                                                        <br />
+                                                        <small>
+                                                            Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+
+                                                        </small>
+                                                    </td>
+                                                }
+                                                @if (item.Writer.WriterImage != null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })"> @item.Writer.WriterName @item.Writer.WriterSurname
+                                                    </td>
+                                                }
+                                                @if (item.Writer.WriterImage == null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                        @item.Writer.WriterName @item.Writer.WriterSurname
+                                                    </td>
+                                                }
+                                                <td style="">
+                                                    @item.Category.CategoryName
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    <span class="badge badge-pill badge-light">@contentcount</span>
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <a class="btn" href="/DictionaryPanelContent/Index/@item.HeadingID" style="background-color: #572ADE;color:white">
+                                                        <i class="fas fa-paint-brush">
+                                                        </i>
+                                                        Contents
+                                                    </a>
+                                                    <a class="btn" href="/WriterPanelContent/addContent/@item.HeadingID" style="background-color: #12A77F;color:white">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Write now
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr role="row" class="even">
+                                                <td class="sorting_1" tabindex="0"> @item.HeadingID</td>
+                                                @if (item.HeadingImage != null)
+                                                {
+                                                    <td style="">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style=" display: grid; place-items: center;padding:0;">
+                                                                <img style="max-height: 50px; max-width: 50px; border-radius: 5px; " alt="Avatar" class="" src="@Url.Action("GetImage", "Heading", new { id = item.HeadingID })">
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <a>@item.HeadingName</a>
+                                                                <br />
+                                                                <small>
+                                                                    Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                @if (item.HeadingImage == null)
+                                                {
+                                                    <td style="">
+                                                        <a>@item.HeadingName</a>
+                                                        <br />
+                                                        <small>
+                                                            Created: @(((DateTime)item.HeadingDate).ToString("dd MMM yyyy HH:mm"))
+
+                                                        </small>
+                                                    </td>
+                                                }
+                                                @if (item.Writer.WriterImage != null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="@Url.Action("GetImage", "Writer", new { id = item.WriterID })"> @item.Writer.WriterName @item.Writer.WriterSurname
+                                                    </td>
+                                                }
+                                                @if (item.Writer.WriterImage == null)
+                                                {
+                                                    <td style="">
+                                                        <img style="height:40px;width:40px;" alt="Avatar" class="table-avatar" src="~/Resources/defaultperson.png">
+                                                        @item.Writer.WriterName @item.Writer.WriterSurname
+                                                    </td>
+                                                }
+                                                <td style="">
+                                                    @item.Category.CategoryName
+                                                </td>
+                                                <td style="" class="project-state">
+                                                    <span class="badge badge-pill badge-light">@contentcount</span>
+                                                </td>
+                                                <td style="" class="project-actions text-right">
+                                                    <a class="btn" href="/DictionaryPanelContent/Index/@item.HeadingID" style="background-color: #572ADE;color:white">
+                                                        <i class="fas fa-paint-brush">
+                                                        </i>
+                                                        Contents
+                                                    </a>
+                                                    <a class="btn" href="/WriterPanelContent/addContent/@item.HeadingID" style="background-color: #12A77F;color:white">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Write now
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Allheading').addClass('active');
+        });
+    </script>
+}
+
+
+
+

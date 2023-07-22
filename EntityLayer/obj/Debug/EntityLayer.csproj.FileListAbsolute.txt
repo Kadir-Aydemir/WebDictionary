@@ -1,0 +1,12 @@
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityLayer.dll.config
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityLayer.dll
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityLayer.pdb
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityFramework.dll
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityFramework.SqlServer.dll
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityFramework.xml
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\bin\Debug\EntityFramework.SqlServer.xml
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\obj\Debug\EntityLayer.csproj.AssemblyReference.cache
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\obj\Debug\EntityLayer.csproj.CoreCompileInputs.cache
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\obj\Debug\EntityLayer.csproj.CopyComplete
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\obj\Debug\EntityLayer.dll
+D:\C# Project\ASP.NET MVC5\WebDictionary\EntityLayer\obj\Debug\EntityLayer.pdb

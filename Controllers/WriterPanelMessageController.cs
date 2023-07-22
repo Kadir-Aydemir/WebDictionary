@@ -5,9 +5,12 @@ using EntityLayer.Concrete;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
+using Message = EntityLayer.Concrete.Message;
 
 namespace WebDictionary.Controllers
 {
@@ -18,9 +21,12 @@ namespace WebDictionary.Controllers
         DraftMessageManager dmm = new DraftMessageManager(new EfDraftMessageDal());
         DraftMessageValidator dvalidator = new DraftMessageValidator();
 
+        WriterManager wm = new WriterManager(new EfWriterDal());
+
         public ActionResult Inbox()
         {
-            var list = mm.GetListInbox();
+            string ReceiverMail = (string)Session["WriterMail"];
+            var list = mm.GetListInbox(ReceiverMail);
             return View(list);
         }
 
@@ -45,7 +51,8 @@ namespace WebDictionary.Controllers
 
         public ActionResult Sendbox()
         {
-            var list = mm.GetListSendbox();
+            string SenderMail = (string)Session["WriterMail"];
+            var list = mm.GetListSendbox(SenderMail);
             return View(list);
         }
 
@@ -64,22 +71,56 @@ namespace WebDictionary.Controllers
         }
 
         [HttpGet]
-        public ActionResult addNewMessage()
+        public ActionResult addNewMessage(string SenderMail)
         {
+            if (SenderMail != null)
+            {
+                ViewBag.mail = SenderMail;
+            }
             return View();
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult addNewMessage(Message message)
+        public ActionResult addNewMessage(Message message, DraftMessage draftMessage, FormCollection form)
         {
             ValidationResult result = validator.Validate(message);
             if (result.IsValid)
             {
-                message.SenderMail = "kadiraydemir123@gmail.com";
-                message.MessageDate = DateTime.Now;
-                mm.AddMessage(message);
-                return RedirectToAction("Sendbox");
+                string action = string.Empty;
+                string SenderMail = (string)Session["WriterMail"];
+                if (form["btnDraft"] != null)
+                {
+                    string ReceiverMail = form["ReceiverMail"];
+                    string Subject = form["Subject"];
+                    string MessageContent = form["MessageContent"];
+
+                    draftMessage.DraftReceiverMail = ReceiverMail;
+                    draftMessage.DraftSenderMail = SenderMail;
+                    draftMessage.DraftSubject = Subject;
+                    draftMessage.DraftMessageContent = MessageContent;
+                    draftMessage.DraftMessageDate = DateTime.Now;
+                    dmm.AddDraftMessage(draftMessage);
+                    action = "draftMessage";
+                }
+                else if (form["btnMessage"] != null)
+                {
+                    var receiver = wm.GetWriterByMailControl(message.ReceiverMail);
+                    if (receiver != null)
+                    {
+                        message.SenderMail = SenderMail;
+                        message.MessageDate = DateTime.Now;
+                        mm.AddMessage(message);
+
+                        action = "Sendbox";
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ReceiverMail", "The Dictionary does not have an writer with this email!");
+                        return View();
+                    }
+                }
+                return RedirectToAction(action);
             }
             else
             {
@@ -93,7 +134,8 @@ namespace WebDictionary.Controllers
 
         public ActionResult draftMessage()
         {
-            var list = dmm.GetList();
+            string SenderMail = (string)Session["WriterMail"];
+            var list = dmm.GetList(SenderMail);
             return View(list);
         }
 
@@ -112,13 +154,44 @@ namespace WebDictionary.Controllers
         }
 
         [HttpPost]
-        public ActionResult updateDraft(DraftMessage p)
+        [ValidateInput(false)]
+        public ActionResult updateDraft(DraftMessage draftMessage, Message message, FormCollection form)
         {
-            ValidationResult result = dvalidator.Validate(p);
+            ValidationResult result = dvalidator.Validate(draftMessage);
             if (result.IsValid)
             {
-                dmm.UpdateDraftMessage(p);
-                return RedirectToAction("draftMessage");
+                string action = string.Empty;
+
+                if (form["btnDraft"] != null)
+                {
+                    dmm.UpdateDraftMessage(draftMessage);
+                    action = "draftMessage";
+                }
+                else if (form["btnMessage"] != null)
+                {
+                    var receiver = wm.GetWriterByMailControl(draftMessage.DraftReceiverMail);
+                    if (receiver != null)
+                    {
+                        DateTime Date = DateTime.Now;
+
+                        message.ReceiverMail = draftMessage.DraftReceiverMail;
+                        message.SenderMail = draftMessage.DraftSenderMail;
+                        message.Subject = draftMessage.DraftSubject;
+                        message.MessageContent = draftMessage.DraftMessageContent;
+                        message.MessageDate = Date;
+                        mm.AddMessage(message);
+
+                        dmm.DeleteDraftMessage(draftMessage);
+
+                        action = "Sendbox";
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("DraftReceiverMail", "The Dictionary does not have an writer with this email!");
+                        return View();
+                    }
+                }
+                return RedirectToAction(action);
             }
             else
             {
@@ -137,13 +210,15 @@ namespace WebDictionary.Controllers
 
         public PartialViewResult trashInbox()
         {
-            var inbox = mm.GetListInboxRemoved();
+            string ReceiverMail = (string)Session["WriterMail"];
+            var inbox = mm.GetListInboxRemoved(ReceiverMail);
             return PartialView(inbox);
         }
 
         public PartialViewResult trashSendbox()
         {
-            var sendbox = mm.GetListSendboxRemoved();
+            string SenderMail = (string)Session["WriterMail"];
+            var sendbox = mm.GetListSendboxRemoved(SenderMail);
             return PartialView(sendbox);
         }
 
@@ -162,13 +237,14 @@ namespace WebDictionary.Controllers
 
         public PartialViewResult leftMenu()
         {
-            int inbox = mm.GetListInboxNotRead().Count();
+            string ReceiverMail = (string)Session["WriterMail"];
+            int inbox = mm.GetListInboxNotRead(ReceiverMail).Count();
             ViewBag.inbox = inbox;
 
-            int draft = dmm.GetList().Count();
+            int draft = dmm.GetList(ReceiverMail).Count();
             ViewBag.draft = draft;
 
-            int trash = (mm.GetListSendboxRemoved().Count()) + (mm.GetListInboxRemoved().Count());
+            int trash = (mm.GetListSendboxRemoved(ReceiverMail).Count()) + (mm.GetListInboxRemoved(ReceiverMail).Count());
             ViewBag.trash = trash;
 
             return PartialView();
