@@ -35,7 +35,7 @@ WebDictionary: As the name suggests, it is a Dictionary application. I developed
 
 ## License
 
-Distributed under the Apache License. See [LICENSE](https://github.com/Kadir-Aydemir/WebDictionary/blob/main/LICENSE.md) for more information.
+Distributed under the Apache License. See [LICENSE](https://github.com/Kadir-Aydemir/WebDictionary/blob/main/LICENSE) for more information.
 
 ## Authors
 
