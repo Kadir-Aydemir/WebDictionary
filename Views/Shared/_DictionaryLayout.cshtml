@@ -156,8 +156,30 @@
             background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, #12A77F), color-stop(0.72, #572ADE), color-stop(0.86, #572ADE));
         }
 
+        #style-1::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #181A1F;
+            border-radius: 10px;
+        }
+
+        #style-1::-webkit-scrollbar {
+            width: 2px;
+            background-color: #181A1F;
+        }
+
+        #style-1::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, #48494B), color-stop(0.72, #48494B), color-stop(0.86, #48494B));
+        }
+
         h1 {
             font-family: 'Kanit', sans-serif;
+        }
+
+        .layout-top-nav .wrapper .main-sidebar {
+            background-color: #0F1116;
+            top: 95px;
+            position:fixed;
         }
     </style>
     @RenderSection("scriptshead", false)
@@ -300,17 +322,18 @@
             <!-- /.navbar -->
             <div class="col-0">
                 <!-- Main Sidebar Container -->
-                <aside class="main-sidebar sidebar-dark-dark elevation-0" style="background-color: #0F1116; position: fixed; top: 95px;">
-                    <div style="background-color: #181A1F; color: #9FA0A2;">
+                <aside class="main-sidebar sidebar-dark-dark elevation-0">
+                    <div style="background-color: #181A1F; color: #9FA0A2;border-radius:6px">
                         <!-- Brand Logo -->
                         <a href="#" class="brand-link" style="border-color: #181A1F;cursor:default;">
                             <i class="fas fa-star" style="margin-inline:20px;"></i>
                             <span class="brand-text font-weight-normal">Popular</span>
                         </a>
                         <!-- Sidebar -->
-                        <div class="sidebar">
-                            <nav class="mt-2">
-                                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="flex-wrap: nowrap;">
+                        <div class="sidebar scrollbar" id="style-1" style="overflow-y: auto; overflow-x: hidden; height: 79vh; background-color: #0F1116;padding:0 ">
+                            <div style="height: 8px; background-color: #181A1F;"></div>
+                            <nav style="background-color: #181A1F;">
+                                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="flex-wrap: nowrap;padding:0px 8px;">
                                     @if (popular.Count <= 20)
                                     {
                                         foreach (var item in popular)
